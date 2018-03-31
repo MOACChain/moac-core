@@ -1,4 +1,24 @@
-MOAC Pangu 0.8 testnet
+## MOAC Pangu 0.8 testnet
+This release is for MOAC project Pangu 0.8.
+Release Date： 3/31/2018
+Major Progress：
+
+* V-node module，
+* Smart Contract Service (POS) module，
+* chain3 lib，
+* MOAC explorer
+
+Available feature：
+
+* v-node mining
+* SCS mining
+* Sharding
+* System contract for auto trigger, hash lock
+* Subchain Protocol contract for SCS miner registration
+* Subchain contract for Dapp configuration and flush control
+* wallet
+
+### Packages:
 
 1. Setup
 --Debian/Ubuntu/CentOS--

@@ -23,7 +23,9 @@ Available feature：
 Current version only work with "--test" option, not working with mainnet yet. 
 
 
-#### --Debian/Ubuntu/CentOS Linux--
+#### Debian/Ubuntu/CentOS Linux
+ 
+ [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Ubuntu.zip)
  
 Untar the file using tar, under the directory
 
@@ -49,7 +51,9 @@ from another terminal, run moac again to attach the running node
 
 	./moac attach $HOME/.moac/testnet/moac.ipc
 
-#### --Windows-- 
+#### Windows
+
+[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Ubuntu.zip)
 
 This version only work with "--test" option, not working with mainnet yet.
 

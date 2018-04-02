@@ -53,7 +53,7 @@ from another terminal, run moac again to attach the running node
 
 #### Windows
 
-[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Ubuntu.zip)
+[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Windows.zip)
 
 This version only work with "--test" option, not working with mainnet yet.
 

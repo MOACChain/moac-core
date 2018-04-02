@@ -1,14 +1,18 @@
 ## MOAC Pangu 0.8 
 This release is for MOAC project Pangu 0.8.
+
 Release Date： 3/31/2018
-Major Progress：
+
+**Major Progress：**
 
 * V-node module，
-* Smart Contract Service (POS) module，
-* chain3 lib，
-* MOAC explorer
+* Smart Contract Service (POS) module (*in April*)，
+* [chain3 lib](https://github.com/innowells/Chain3)，
+* [MOAC explorer](http://121.43.164.140:8000/),
+* [Mining](http://moacpool.tk/), (*provided by third party*)
+* Wallets， (*provided by third party*)
 
-Available feature：
+**Available feature：**
 
 * v-node mining
 * SCS mining
@@ -79,7 +83,7 @@ from another terminal, run moac again to attach the running node
 
 	./moac.exe attach \\.\pipe\moac.ipc
 
-#### --Example Console commands-- 
+#### Example Console commands
 
 If console is not open, open the console using the instructions from above.
 
@@ -103,7 +107,7 @@ If console is not open, open the console using the instructions from above.
 
 	`> mc.accounts`
 
-#### --Example Console Javascript files-- 
+#### Example Console Javascript files
 
 MOAC can execute Javascript functions under the console.
 

@@ -3,6 +3,8 @@ This release is for MOAC project Pangu 0.8.
 
 Release Date： 3/31/2018
 
+This release is for testnet only. The mainnet will be available in April.
+
 **Major Progress：**
 
 * V-node module，
@@ -10,7 +12,7 @@ Release Date： 3/31/2018
 * [chain3 lib](https://github.com/innowells/Chain3)，
 * [MOAC explorer](http://121.43.164.140:8000/),
 * [Mining](http://moacpool.tk/), (*provided by third party*)
-* Wallets， (*provided by third party*)
+* [Wallets](https://www.mytokenpocket.vip/)， (*provided by third party*)
 
 **Available feature：**
 

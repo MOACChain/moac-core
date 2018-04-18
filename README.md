@@ -1,5 +1,13 @@
 ## MOAC Pangu 0.8 
-This release is for MOAC project Pangu 0.8.
+
+This release is for MOAC project Pangu 0.8.1:
+Release Date: 04/18/2018
+
+* The network ID changed to 99 (mainnet) and 101 (testnet) to adopt the EIP155 specification.
+* Fixed a previous "no data attached" issue in contract deploying.
+* Added config file vnodeconfig.json.
+
+This release is for MOAC project Pangu 0.8.0:
 
 Release Date： 3/31/2018
 

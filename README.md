@@ -11,6 +11,9 @@ This release is for testnet only. The mainnet will be available in late April.
 * The network ID changed to 99 (mainnet) and 101 (testnet) to adopt the EIP155 specification.
 * Fixed a previous "no data attached" issue in contract deploying.
 * Added config file vnodeconfig.json.
+* [MOAC explorer](http://47.75.144.55:3000/home/), (*new version connect to the testnet 101*)
+* [Mining](http://moacpool.tk/), (*provided by third party， updated to the new testnet 101*)
+* [Faucet](http://faucet.moacpool.tk:8080/), (*provided by third party*)
 
 ### This release is for MOAC project Pangu 0.8.0:
 

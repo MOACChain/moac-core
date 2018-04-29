@@ -1,5 +1,20 @@
 ## MOAC Pangu 0.8.x 
 
+### This release is for MOAC project Pangu 0.8.2:
+
+Release Date: 04/28/2018
+
+This release is for both mainnet and testnet. The mainnet will be launched on May 1st, 2018.
+
+**Updates：**
+
+* The SCS ports are loaded and will be ready to use after the mainnet is launched and testing is finished for SCS.
+* Fixed an issue of pending transactions . 
+* Removed config file and put the configs in the source files.
+* [MOAC explorer](http://47.75.144.55:3000/home/), (*connect to the testnet*)
+* [Mining](http://moacpool.tk/), (*provided by third party， testnet only, will swich to mainnet after mainnet is launched*)
+* [Faucet](http://faucet.moacpool.tk:8080/), (*provided by third party, for testnet*)
+
 ### This release is for MOAC project Pangu 0.8.1:
 
 Release Date: 04/18/2018

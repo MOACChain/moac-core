@@ -9,7 +9,7 @@ The mainnet was launched on April 30th, 2018.
 
 **Updates：**
 
-* Added the community message in the genesis block.
+* Added the community message in the [genesis block](http://explorer.moac.io/block/0). 
 * Updated the system contract to fix future send issue.
 * The SCS ports were loaded and will be ready to use after the mainnet is launched and testing is finished for SCS.
 * Fixed an issue of pending transactions . 
@@ -28,9 +28,9 @@ This release is for testnet only. The mainnet will be available in late April.
 * The network ID changed to 99 (mainnet) and 101 (testnet) to adopt the EIP155 specification.
 * Fixed a previous "no data attached" issue in contract deploying.
 * Added config file vnodeconfig.json.
-* [MOAC explorer](http://47.75.144.55:3000/home/), (*new version connect to the testnet 101*)
-* [Mining](http://moacpool.tk/), (*provided by third party， updated to the new testnet 101*)
-* [Faucet](http://faucet.moacpool.tk:8080/), (*provided by third party*)
+* [MOAC explorer](http://explorer.moac.io/), (*new version connect to the testnet 101*)
+* [Mining], (*provided by third party， updated to the new testnet 101*)
+* [Faucet], (*provided by third party*)
 
 ### This release is for MOAC project Pangu 0.8.0:
 
@@ -43,9 +43,9 @@ This release is for testnet only. The mainnet will be available in April.
 * V-node module，
 * Smart Contract Service (POS) module (*in April*)，
 * [chain3 lib](https://github.com/innowells/Chain3)，
-* [MOAC explorer](http://121.43.164.140:8000/),
-* [Mining](http://moacpool.tk/), (*provided by third party*)
-* [Wallets](https://www.mytokenpocket.vip/)， (*provided by third party*)
+* [MOAC explorer](http://explorer.moac.io/),
+* [Mining], (*provided by third parties*)
+* [Wallets]， (*provided by third parties*)
 
 **Available feature：**
 
@@ -59,25 +59,37 @@ This release is for testnet only. The mainnet will be available in April.
 
 ### Binary Packages:
 
-Current version only work with "--test" option, not working with mainnet yet. 
+A stable release Pangu 0.8.2 is released April 30th, 2018.
+
+The default directory of mainnet is：
+
+	Mac: ~/Library/MoacNode
+	Linux: ~/.moac
+	Windows: %APPDATA%\MOAC
+
+The default direcotry of testnet is:
+
+	Mac: ~/Library/MoacNode/testnet
+	Linux: ~/.moac/testnet
+	Windows: %APPDATA%\MOAC\testnet
 
 
 #### Debian/Ubuntu/CentOS Linux
  
- [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Ubuntu.zip)
+ [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/0.8.2/pangu0.8.2.ubuntu.tar.gz)
  
 Untar the file using tar, under the directory
 
+To start connecting with mainnet
+	./moac
+
+To start connecting with testnet
 	./moac --testnet
 
 To enable the console, can use:
 
+	./moac console
 	./moac --testnet console
-
-To see the help, use
-
-	./moac --help
-
 
 A testnet directory will be created under 
 
@@ -90,17 +102,23 @@ from another terminal, run moac again to attach the running node
 
 	./moac attach $HOME/.moac/testnet/moac.ipc
 
+To see the help, use
+
+	./moac --help
+
 #### Windows
 
-[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/0.8.0/MOAC-Pangu-0.8.0-Windows.zip)
+[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/0.8.2/pangu0.8.2.windows.zip)
 
 This version only work with "--test" option, not working with mainnet yet.
 
 Untar the file using tar, under the directory 
 
+	moac.exe
 	moac.exe --testnet
 
-To see the help, use moac --help
+To see the help, use 
+	moac.exe --help
 
 To enable the console, can use: 
 
@@ -138,7 +156,7 @@ If console is not open, open the console using the instructions from above.
 
 	`> personal.newAccount()`
 
-5. See the accounts
+5. See the accounts in the node
 
 	`> mc.accounts`
 
@@ -177,3 +195,29 @@ will fail.
 	> FutureSend(mc.accounts[0], '', mc.accounts[1], 0.1, 20000, 0)
 
 The transaction will happen when blocknumber = 20000.
+
+#### Community messages
+
+MOAC saved some messages in a system contract to honor the contributors.
+
+Users can check these messages by calling the system contract.
+
+The binary package contains a sysinfo_test.js file. It contains four lines:
+
+	var infoabi='[{"constant ......}]';
+	var infoaddress='0x0000000000000000000000000000000000000088';
+	var infoContract=mc.contract(JSON.parse(infoabi));
+	var genesisInfo=infoContract.at(infoaddress);
+
+To use the function, first load the file under the console:
+
+	> loadScript("sysinfo_test.js")
+
+Then run the function:
+	
+	> genesisInfo.CommunityMsg()
+	"313936392C415250414E45542E313937332C5443502F49502E20323030392C426974636F696E2E2068656C6C6F2032303138EFBC8C4D4F414320697320636F6D696E672E"
+
+These messages are in HEX format, you need a [HEX to ASCII converter](https://www.rapidtables.com/convert/number/hex-to-ascii.html) to see the texts.
+There are other messages in the contract made by the contributors. 
+Thanks very much for all who contributes to the project!

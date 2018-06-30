@@ -1,39 +1,38 @@
-## [墨客中文发布信息-盘古版](READMECH.md)
+## 墨客中文发布信息-盘古版
 
-## MOAC Pangu 0.8.x 
+## [MOAC Pangu 0.8.x ](README.md)
 
-### This release is for Pangu 0.8.4:
+### 墨客盘古 0.8.4 发布:
 
-Release Date: 06/30/2018
+发布日期: 06/30/2018
 
-This release is for testnet only. 
+本版本仅适用在测试网络（testnet, id=101）
 
-**Updates：**
+**主要更新：**
 
-* Smart Contract Server(SCS) is released for public testing. Users can run the SCS and connect to the testnet. They can also get mining rewards from MicroChain.
-* The MOAC client can connect with SCSs.
-* MicroChain can be deployed on SCSs with instructions. 
+* 智能合约服务器(SCS)目前可以与测试网络连接，参与子链（MicroChain）的验证，并从中获得挖矿奖励.
+* 墨客链客户端（VNODE），可以连接测试网络和SCS服务器.
+* 测试链上可以部署子链，步骤可以参考WIKI部分说明. 
 
-**Other tools and useful links**
+**工具网站**
 
+* [MOAC explorer](http://explorer.moac.io/), (*mainnet*)：主网浏览器，可以看到区块状态，[帐号列表](), [发行的ERC20代币](http://explorer.moac.io/tokenlist20), 和 [发行的ERC721代币](http://explorer.moac.io/tokenlist721)
+* [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)：测试网络浏览器。
+* [MOAC online wallet](https://moacwalletonline.com/): 可以使用KEYSTORE JSON文件来发送交易
 
-* [MOAC explorer](http://explorer.moac.io/), (*mainnet*), network info, [Account list](), [ERC20 token](http://explorer.moac.io/tokenlist20), and [ERC721 token](http://explorer.moac.io/tokenlist721)
-* [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)
-* [MOAC online wallet](https://moacwalletonline.com/)
+**墨客社区网站**
 
-**Connecting with MOAC community**
-
-* [Official Website](https://moac.io)
+* [Official Website](https://moac.io)：官方主网
 * [Blog/Medium](https://medium.com/@moac_io)
 * [Facebook](https://www.facebook.com/moacchain/)
 * [Twitter](https://twitter.com/moac_io)
 * [Reddit](https://www.reddit.com/r/MOAC/)
 * [LinkedIn](https://www.linkedin.com/company/moac-chain)
 * [Telegram Developers](https://t.me/MOACDevelopers)
-* [Telegram English Users](https://t.me/moacblockchain)
+* [墨客中文电报群](https://t.me/moacchina)
 * [Youtube for Developers] (https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
 
-### This release is for MOAC project Pangu 0.8.2:
+### 墨客盘古 0.8.2 发布:
 
 Release Date: 04/30/2018
 
@@ -50,7 +49,7 @@ The mainnet was launched on April 30th, 2018.
 * [MOAC explorer](http://explorer.moac.io/), (*mainnet*)
 * [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)
 
-### This release is for MOAC project Pangu 0.8.1:
+### 墨客盘古 0.8.1 发布:
 
 Release Date: 04/18/2018
 
@@ -65,7 +64,7 @@ This release is for testnet only. The mainnet will be available in late April.
 * [Mining], (*provided by third party， updated to the new testnet 101*)
 * [Faucet], (*provided by third party*)
 
-### This release is for MOAC project Pangu 0.8.0:
+### 墨客盘古 0.8.0 发布:
 
 Release Date： 3/31/2018
 
@@ -90,17 +89,17 @@ This release is for testnet only. The mainnet will be available in April.
 * Subchain contract for Dapp configuration and flush control
 * wallet
 
-### Binary Packages:
+### 可执行文件包:
 
 A stable release Pangu 0.8.2 is released April 30th, 2018.
 
-The default directory of mainnet is：
+墨客主网络（mainnet，id=101）的默认路径为:
 
 	Mac: ~/Library/MoacNode
 	Linux: ~/.moac
 	Windows: %APPDATA%\MOAC
 
-The default direcotry of testnet is:
+测试网络（testnet，id=101）的默认路径为:
 
 	Mac: ~/Library/MoacNode/testnet
 	Linux: ~/.moac/testnet
@@ -169,7 +168,7 @@ from another terminal, run moac again to attach the running node
 
 	./moac.exe attach \\.\pipe\moac.ipc
 
-#### Example Console commands
+#### 命令行中的例子
 
 If console is not open, open the console using the instructions from above.
 
@@ -193,7 +192,7 @@ If console is not open, open the console using the instructions from above.
 
 	`> mc.accounts`
 
-#### Example Console Javascript files
+#### 命令行下的Javascript文件例子
 
 MOAC can execute Javascript functions under the console.
 
@@ -229,11 +228,9 @@ will fail.
 
 The transaction will happen when blocknumber = 20000.
 
-#### Community messages
+#### 墨客社区创世语
 
-MOAC saved some messages in a system contract to honor the contributors.
-
-Users can check these messages by calling the system contract.
+在墨客链启动前，向社区征集了创世语，并储存在一个智能合约中。使用者可以通过下面的调用来查看创世语。
 
 The binary package contains a sysinfo_test.js file. It contains four lines:
 

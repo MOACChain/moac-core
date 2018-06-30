@@ -31,7 +31,7 @@ This release is for testnet only.
 * [LinkedIn](https://www.linkedin.com/company/moac-chain)
 * [Telegram Developers](https://t.me/MOACDevelopers)
 * [Telegram English Users](https://t.me/moacblockchain)
-* [Youtube for Developers] (https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
+* [Youtube for Developers](https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
 
 ### This release is for MOAC project Pangu 0.8.2:
 

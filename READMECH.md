@@ -8,7 +8,7 @@
 
 本版本仅适用在测试网络（testnet, id=101）
 
-**主要更新：**
+**主要更新**
 
 * 智能合约服务器(SCS)目前可以与测试网络连接，参与子链（MicroChain）的验证，并从中获得挖矿奖励.
 * 墨客链客户端（VNODE），可以连接测试网络和SCS服务器.
@@ -30,16 +30,16 @@
 * [LinkedIn](https://www.linkedin.com/company/moac-chain)
 * [Telegram Developers](https://t.me/MOACDevelopers)
 * [墨客中文电报群](https://t.me/moacchina)
-* [Youtube for Developers] (https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
+* [Youtube for Developers](https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
 
 ### 墨客盘古 0.8.2 发布:
 
-Release Date: 04/30/2018
+发布日期: 04/30/2018
 
 This release is for both mainnet and testnet. 
 The mainnet was launched on April 30th, 2018.
 
-**Updates：**
+**主要更新**
 
 * Added the community message in the [genesis block](http://explorer.moac.io/block/0). 
 * Updated the system contract to fix future send issue.
@@ -51,11 +51,11 @@ The mainnet was launched on April 30th, 2018.
 
 ### 墨客盘古 0.8.1 发布:
 
-Release Date: 04/18/2018
+发布日期: 04/18/2018
 
 This release is for testnet only. The mainnet will be available in late April.
 
-**Updates：**
+**主要更新**
 
 * The network ID changed to 99 (mainnet) and 101 (testnet) to adopt the EIP155 specification.
 * Fixed a previous "no data attached" issue in contract deploying.
@@ -66,11 +66,11 @@ This release is for testnet only. The mainnet will be available in late April.
 
 ### 墨客盘古 0.8.0 发布:
 
-Release Date： 3/31/2018
+发布日期: 3/31/2018
 
 This release is for testnet only. The mainnet will be available in April.
 
-**Major Progress：**
+**主要更新**
 
 * V-node module，
 * Smart Contract Service (POS) module (*in April*)，
@@ -93,7 +93,7 @@ This release is for testnet only. The mainnet will be available in April.
 
 A stable release Pangu 0.8.2 is released April 30th, 2018.
 
-墨客主网络（mainnet，id=101）的默认路径为:
+墨客主网络（mainnet，id=99）的默认路径为:
 
 	Mac: ~/Library/MoacNode
 	Linux: ~/.moac

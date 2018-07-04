@@ -168,6 +168,12 @@ from another terminal, run moac again to attach the running node
 
 	./moac.exe attach \\.\pipe\moac.ipc
 
+#### 运行'scsserver'
+
+必须在含有'scsserver'文件的文件夹中，运行
+
+	./scsserver
+
 #### 命令行中的例子
 
 If console is not open, open the console using the instructions from above.

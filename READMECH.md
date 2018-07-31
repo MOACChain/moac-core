@@ -1,8 +1,42 @@
-## 墨客中文发布信息-盘古版
+## 墨客中文发布信息
 
-## [MOAC Pangu 0.8.x ](README.md)
+## [MOAC English](README.md)
 
-### 墨客盘古 0.8.4 发布:
+## 墨客女娲 1.0.x 
+
+### 墨客女娲版本 1.0.0:
+
+发布日期: 07/31/2018
+
+**主要更新：**
+
+* 墨客主链客户端（VNODE），可以在正式网络和测试网络连接子链服务器（SCS），以部署子链（MicroChain）。
+* 可以通过主链客户端在主链和测试链上部署子链，步骤可以参考WIKI部分说明. 
+* 主链客户端可以参与子链挖矿并获得奖励。
+* 提供一个使用POS共识的子链模板。
+
+
+**可用功能：**
+
+* 允许主网子链挖矿。
+* 支持子链分片。
+* 支持IPFS子链部署。
+* 支持无币区块链部署。
+
+**下载链接**
+
+主链客户端（VNODE）
+
+[Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.ubuntu.tar.gz)
+[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.win.zip)
+[Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.mac.tar.gz)
+
+子链服务器（SCS）
+
+将于8月8日公布
+
+
+### 墨客盘古版本 0.8.4:
 
 发布日期: 06/30/2018
 
@@ -79,7 +113,7 @@ This release is for testnet only. The mainnet will be available in April.
 * [Mining], (*provided by third parties*)
 * [Wallets]， (*provided by third parties*)
 
-**Available feature：**
+**可用功能：**
 
 * v-node mining
 * SCS mining

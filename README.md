@@ -1,4 +1,40 @@
-## [墨客中文发布信息-盘古版](READMECH.md)
+## [墨客中文发布信息](READMECH.md)
+
+## MOAC Nuwa 1.0.x 
+
+### This release is for Nuwa 1.0.0:
+
+Release Date: 07/31/2018
+
+**Major Progress：**
+
+* Fully functional VNODE to support MicroChain;
+* Fully functional SCS server to support MicroChain；
+* Enabled VNODE to get rewards from MicroChain mining;
+* MicroChain protocol smart contract;
+* MicroChain base smart contract that supports POS consensus;
+* Fully functional MicroChain supports sharding;
+* Supports FileStorm Protocol for IPFS MicroChain; 
+* Supports MicroChain without token;
+
+**Available feature：**
+
+* MicroChain mining through SCSs and MicroChain contracts;
+* MicroChain supports POS consensus;
+* IPFS MicroChain support.
+
+**Download links**
+
+VNODE client
+
+[Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.ubuntu.tar.gz)
+[Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.win.zip)
+[Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.mac.tar.gz)
+
+SCS server
+
+Will be released on 08/08/2018.
+
 
 ## MOAC Pangu 0.8.x 
 
@@ -18,7 +54,7 @@ This release is for testnet only.
 
 
 * [MOAC explorer](http://explorer.moac.io/), (*mainnet*), network info, [Account list](), [ERC20 token](http://explorer.moac.io/tokenlist20), and [ERC721 token](http://explorer.moac.io/tokenlist721)
-* [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)
+* [MOAC testnet explorer](http://testnet.moac.io:3000/home), (*testnet*)
 * [MOAC online wallet](https://moacwalletonline.com/)
 
 **Connecting with MOAC community**

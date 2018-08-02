@@ -2,7 +2,21 @@
 
 ## MOAC Nuwa 1.0.x 
 
-### This release is for Nuwa 1.0.0:
+### Nuwa 1.0.1:
+
+Release Date: 08/01/2018
+
+This release is to fix a bug that event subscription in some machines does not work.
+
+**Download links**
+
+VNODE client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.mac.tar.gz)
+
+### Nuwa 1.0.0:
 
 Release Date: 07/31/2018
 
@@ -23,13 +37,6 @@ Release Date: 07/31/2018
 * MicroChain supports POS consensus;
 * IPFS MicroChain support.
 
-**Download links**
-
-VNODE client
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.mac.tar.gz)
 
 SCS server
 
@@ -38,7 +45,7 @@ Will be released on 08/08/2018.
 
 ## MOAC Pangu 0.8.x 
 
-### This release is for Pangu 0.8.4:
+### Pangu 0.8.4:
 
 Release Date: 06/30/2018
 
@@ -69,7 +76,7 @@ This release is for testnet only.
 * [Telegram English Users](https://t.me/moacblockchain)
 * [Youtube for Developers](https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
 
-### This release is for MOAC project Pangu 0.8.2:
+### Pangu 0.8.2:
 
 Release Date: 04/30/2018
 
@@ -86,7 +93,7 @@ The mainnet was launched on April 30th, 2018.
 * [MOAC explorer](http://explorer.moac.io/), (*mainnet*)
 * [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)
 
-### This release is for MOAC project Pangu 0.8.1:
+### Pangu 0.8.1:
 
 Release Date: 04/18/2018
 
@@ -101,7 +108,7 @@ This release is for testnet only. The mainnet will be available in late April.
 * [Mining], (*provided by third party， updated to the new testnet 101*)
 * [Faucet], (*provided by third party*)
 
-### This release is for MOAC project Pangu 0.8.0:
+### Pangu 0.8.0:
 
 Release Date： 3/31/2018
 

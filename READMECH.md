@@ -4,6 +4,27 @@
 
 ## 墨客女娲 1.0.x 
 
+### 墨客女娲版本 1.0.2:
+
+发布日期: 08/10/2018
+
+感谢墨客社区的大力支持，墨客主网顺利地从盘古版本升级到女娲。本次发布的主链节点和子链服务器1.0.2版本可以在主网和101测试网上运行子链。目前我们在测试网上已经部署了一些子链所需的服务，请参考[测试网101子链部署信息](https://nodes101.moac.io/) 和[如何运行SCS服务器](https://github.com/MOACChain/moac-core/wiki/MicroChainSCSMining).
+
+**下载链接**
+
+主链节点服务器（VNODE）
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.ubuntu.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.mac.tar.gz)
+
+子链服务器（SCS）
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.ubuntu.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.mac.tar.gz)
+
+
 ### 墨客女娲版本 1.0.1:
 
 发布日期: 08/01/2018
@@ -31,7 +52,7 @@
 
 **下载链接**
 
-主链客户端（VNODE）
+主链节点服务器（VNODE）
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.ubuntu.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.win.zip)
@@ -50,7 +71,7 @@
 
 **主要更新**
 
-* 智能合约服务器(SCS)目前可以与测试网络连接，参与子链（MicroChain）的验证，并从中获得挖矿奖励.
+* 子链服务器(SCS)目前可以与测试网络连接，参与子链（MicroChain）的验证，并从中获得挖矿奖励.
 * 墨客链客户端（VNODE），可以连接测试网络和SCS服务器.
 * 测试链上可以部署子链，步骤可以参考WIKI部分说明. 
 

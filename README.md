@@ -2,6 +2,29 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa 1.0.2:
+
+Release Date: 08/10/2018
+
+Thanks for the support from the community, MOAC mainnet upgraded successfully from Pangu to Nuwa after block number 647,200. The VNODE and SCS clients release 1.0.2 can be used to build MicroChain and enable the MicroChain mining in both testnet and mainnet.
+To help the developers to try the SCS mining, we has a website providing information in the testnet, please check [Testnet MicroChain Information](https://nodes101.moac.io/) and [instructions to start SCS](https://github.com/MOACChain/moac-core/wiki/MicroChainSCSMining).
+
+**Download links**
+
+VNODE client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.mac.tar.gz)
+
+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.mac.tar.gz)
+
+
+
 ### Nuwa 1.0.1:
 
 Release Date: 08/01/2018

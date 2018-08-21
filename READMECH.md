@@ -15,15 +15,15 @@
 
 FileStorm 子链共识协议:
 
-* [FileStorm 子链共识协议合约](https://github.com/MOACChain/moac-core/releases/download/v0.9/DeploySubChainBase.sol)
+* [FileStorm 子链共识协议合约](https://github.com/MOACChain/moac-core/releases/download/v1.0/DeploySubChainBase.sol)
 
 FileStorm 子链合约:
 
-* [FileStorm Dapp子链合约](https://github.com/MOACChain/moac-core/releases/download/v0.9/FileStormMicroChain.sol)
+* [FileStorm Dapp子链合约](https://github.com/MOACChain/moac-core/releases/download/v1.0/FileStormMicroChain.sol)
 
 FileStorm 子链专用SCS客户端:
 
-* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v0.9/filestorm.tar)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0/filestorm.tar)
 <!-- * [Windows 可执行文件包]()
 * [MAC OS 可执行文件包]() -->
 

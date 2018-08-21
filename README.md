@@ -12,15 +12,15 @@ The FileStorm is a DAPP running on MOAC MicroChain to perform the Interplanetary
 
 FileStorm MicroChain protocol:
 
-* [Smart Contract for the FileStorm protocol](https://github.com/MOACChain/moac-core/releases/download/v0.9/DeploySubChainBase.sol)
+* [Smart Contract for the FileStorm protocol](https://github.com/MOACChain/moac-core/releases/download/v1.0/DeploySubChainBase.sol)
 
 FileStorm MicroChain:
 
-* [Smart Contract for the FileStorm Dapp](https://github.com/MOACChain/moac-core/releases/download/v0.9/FileStormMicroChain.sol)
+* [Smart Contract for the FileStorm Dapp](https://github.com/MOACChain/moac-core/releases/download/v1.0/FileStormMicroChain.sol)
 
 Custom SCS client for FileStorm:
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v0.9/filestorm.tar)
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0/filestorm.tar)
 <!-- * [Binary package for Windows]()
 * [Binary package for MAC OS]() -->
 

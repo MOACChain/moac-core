@@ -4,6 +4,30 @@
 
 ## 墨客女娲 1.0.x 
 
+### 文件风暴（FileStorm）:
+
+发布日期: 08/18/2018
+
+文件风暴（FileStorm）是一个通过墨客子链实现的IPFS存储平台。它需要专用的SCS客户端来部署和执行IPFS功能。当前的FileStorm SCS客户端可以接入墨客女娲版本 1.0.2。
+更多信息可以参考[FileStorm](https://github.com/MOACChain/moac-core/wiki/FileStorm)和[FileStorm使用指南](https://github.com/MOACChain/moac-core/wiki/FileStormUserGuide).
+
+**下载链接**
+
+FileStorm 子链共识协议:
+
+* [FileStorm 子链共识协议合约](https://github.com/MOACChain/moac-core/releases/download/v0.9/DeploySubChainBase.sol)
+
+FileStorm 子链合约:
+
+* [FileStorm Dapp子链合约](https://github.com/MOACChain/moac-core/releases/download/v0.9/FileStormMicroChain.sol)
+
+FileStorm 子链专用SCS客户端:
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v0.9/filestorm.tar)
+* [Windows 可执行文件包]()
+* [MAC OS 可执行文件包]()
+
+
 ### 墨客女娲版本 1.0.2:
 
 发布日期: 08/10/2018
@@ -14,9 +38,10 @@
 
 主链节点服务器（VNODE）
 
-* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.ubuntu.tar.gz)
-* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.win.zip)
-* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa1.0.2.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.ubuntu.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.mac.tar.gz)
+   
 
 子链服务器（SCS）
 

@@ -21,8 +21,8 @@ FileStorm MicroChain:
 Custom SCS client for FileStorm:
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v0.9/filestorm.tar)
-* [Binary package for Windows]()
-* [Binary package for MAC OS]()
+<!-- * [Binary package for Windows]()
+* [Binary package for MAC OS]() -->
 
 ### Nuwa 1.0.2:
 

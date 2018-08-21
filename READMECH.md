@@ -24,8 +24,8 @@ FileStorm 子链合约:
 FileStorm 子链专用SCS客户端:
 
 * [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v0.9/filestorm.tar)
-* [Windows 可执行文件包]()
-* [MAC OS 可执行文件包]()
+<!-- * [Windows 可执行文件包]()
+* [MAC OS 可执行文件包]() -->
 
 
 ### 墨客女娲版本 1.0.2:

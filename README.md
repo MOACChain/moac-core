@@ -3,6 +3,12 @@
 ## MOAC Nuwa 1.0.x 
 
 ### FileStorm:
+Release Date: 08/27/2018
+
+Added some small enhancements.
+[FileStorm 1.0.1](https://github.com/MOACChain/moac-core/releases/download/1.0.1/filestorm1.0.1.tar)
+
+Use [deploy.js](https://github.com/MOACChain/moac-core/releases/download/1.0.1/deploy.js) to create one vnode and 3 (or more) scs.
 
 Release Date: 08/18/2018
 

@@ -16,7 +16,7 @@ We also update the MicroChain protocol contracts. Please use the new contracts w
 VNODE+SCS client
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.win.zip)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
 
 MicroChain contracts

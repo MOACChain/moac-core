@@ -2,6 +2,35 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa 1.0.3:
+
+Release Date: 09/29/2018
+
+This release is for testnet only.
+It fixed a few issues discovered during our pressure test on the microchain and implement new RPC commands for the SCS server.
+We also update the MicroChain protocol contracts. Please use the new contracts with the updated servers.
+
+**Download links**
+
+VNODE client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.MAC.tar.gz)
+
+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.MAC.tar.gz)
+
+MicroChain contracts
+
+* [SubChainProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainProtocolBase.sol)
+* [VnodeProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/VnodeProtocolBase.sol)
+* [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainBase.sol)
+
+
 ### FileStorm:
 Release Date: 08/27/2018
 

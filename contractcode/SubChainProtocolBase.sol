@@ -2,229 +2,320 @@ pragma solidity ^0.4.11;
 //David Chen
 //Subchain definition for application.
 
+
 contract SysContract {
-  function delayedSend(uint _blk, address _to,  uint256 _value, bool bonded) public returns (bool success);
+    function delayedSend(uint _blk, address _to, uint256 _value, bool bonded) public returns (bool success);
 }
 
-contract SubChainProtocolBase {
 
-/*
- * Basic SCS structure
-*/
+contract SubChainProtocolBase {
+    enum SCSStatus { notRegistered, performing, withdrawPending, initialPending, withdrawDone, badActor }
+
     struct SCS {
         address from; //address as id
         uint256 bond;   // value
-
-		uint state; //0:not-registered 1:performing 2:withdraw pending 3:initial pending 4. withdraw done 5. inactive
-		uint256 registerblock;
-		uint256 withdrawblock;
+        uint state; // one of SCSStatus
+        uint256 registerBlock;
+        uint256 withdrawBlock;
     }
 
-	
-	struct SCSApproval {
-		uint bondApproved;
-		uint bondedCount;
-		address[] subchainaddr;
-		uint[] amount;
-	}
+    struct SCSApproval {
+        uint bondApproved;
+        uint bondedCount;
+        address[] subchainAddr;
+        uint[] amount;
+    }
 
-    mapping(address => SCS) public SCSList;
-    mapping(address => SCSApproval) public SCSApprovalList;
+    mapping(address => SCS) public scsList;
+    mapping(address => SCSApproval) public scsApprovalList;
 
-    uint public SCSCount;
-	string public SubChainProtocol;
-	uint public bondMin;
-	uint public PEDNINGBLOCK = 50;
-	uint public WITHDRAWBLOCK = 8640;
-	SysContract constant sysContract = SysContract(0x0000000000000000000000000000000000000065); 
+    uint public scsCount;
+    string public subChainProtocol;
+    uint public bondMin;
+    uint public constant PENDING_BLOCK_DELAY = 5; // 8 minutes
+    uint public constant WITHDRAW_BLOCK_DELAY = 8640; // one day, given 10s block rate
+    SysContract internal constant SYS_CONTRACT = SysContract(0x0000000000000000000000000000000000000065);
+
+    //monitor if subchain is inactive
+    //this is used to allow node to exit from zoombie subchain
+    mapping(address => uint) public subChainLastActiveBlock;
+    mapping(address => uint) public subChainExpireBlock;
 
     //events
-	event Register(address scs);
-	event UnRegister(address sender);
+    event Registered(address scs);
+    event UnRegistered(address sender);
 
-    
+    address[] public scsArray;
+    uint public protocolType;
+
     //constructor
-	//bmin - minimum deposit requirement in unit of Sha, 1 mc = 
-	//
-    function SubChainProtocolBase(string protocol, uint bmin) public {
-		SCSCount = 0;
-		SubChainProtocol = protocol;
-		bondMin = bmin;
+    function SubChainProtocolBase(string protocol, uint bmin, uint _protocolType) public {
+        scsCount = 0;
+        subChainProtocol = protocol;
+        bondMin = bmin;
+        protocolType = _protocolType;
     }
 
-	// register for SCS
-	// SCS will be notified through 3rd party communication method. SCS will need to register here manually.
-	// One protocol base can have several different subchains.
-    function register(address scs) public payable returns (bool) {
-        //already registered or not enough bond
-		require ((SCSList[scs].state == 0 || SCSList[scs].state == 5) && msg.value >= bondMin );
-
-		SCSList[scs].from = scs;
-		SCSList[scs].bond = msg.value;
-		SCSList[scs].state = 1;
-		SCSList[scs].registerblock = block.number + PEDNINGBLOCK;
-		SCSList[scs].withdrawblock = 2**256-1;
-		SCSCount ++;
-		return true;
-    }
-	
-	// withdrawRequest for SCS
-    function withdrawRequest() public returns (bool success) {
-        //only can withdraw when active
-		require (SCSList[msg.sender].state == 1 );
-		
-		SCSList[msg.sender].withdrawblock = block.number;
-		SCSList[msg.sender].state = 2;
-
-		SCSCount--;
-		
-		UnRegister(msg.sender);
-		return true;
-    }
-	
-	function withdraw() public {
-		if(SCSList[msg.sender].state == 2 && block.number > (SCSList[msg.sender].withdrawblock + WITHDRAWBLOCK))
-		{
-			SCSList[msg.sender].state == 4;
-			SCSList[msg.sender].from.transfer(SCSList[msg.sender].bond);
-		}
-	}
-
-	function isPerforming(address _addr) view public returns (bool res){
-		return (SCSList[_addr].state == 1 && SCSList[_addr].registerblock < block.number);
-	}
-
-	function getSelectionTarget(uint thousandth, uint minnum) view public returns (uint target) {   
-		// find a target to choose thousandth/1000 of total scs
-		if(minnum < 50 ) {
-			minnum = 50;
-		}
-		
-	    if ( SCSCount < minnum)             // or use SCSCount* thousandth / 1000 + 1 < minnum
-		    return 255;
-
-       uint m = thousandth * SCSCount / 1000 ;
-	   
-	   if ( m < minnum )
-	        m = minnum;
-
-		target = (m * 256 / SCSCount+1) / 2 ;     
-
-		return target;
-	}
-
-	//display approved scs list
-    function approvalAddresses(address addr) public view returns (address[]) {
-        address[] memory res = new address[](SCSApprovalList[addr].bondedCount);
-		for( uint i=0; i<SCSApprovalList[addr].bondedCount; i++ ){
-		    res[i] = (SCSApprovalList[addr].subchainaddr[i]);
-		}
-		return res;
-    }
-    
-	//display approved amount array
-    function approvalAmounts(address addr) public view returns (uint[]) {
-        uint[] memory res = new uint[](SCSApprovalList[addr].bondedCount);
-		for( uint i=0; i<SCSApprovalList[addr].bondedCount; i++ ){
-		    res[i] = (SCSApprovalList[addr].amount[i]);
-		}
-		return res;    
-        
-    }    
-
-	//approve the bond to be deduced if act maliciously
-	function approveBond(address scs, uint amount, uint8 v, bytes32 r, bytes32 s) public returns (bool){
-		//make sure SCS is performing
-		if( !isPerforming(scs) )
-			return false;
-
-		//verify signature
-		//combine scs and subchain address
-		bytes32 hash = sha256(scs, msg.sender);
-		
-		//verify signature matches. 
-		if( ecrecover(hash, v, r, s) != scs){
-			return false;
-		}
-
-		//check if bond still available for SCSApproval
-		if( SCSList[scs].bond < (SCSApprovalList[scs].bondApproved + amount))
-			return false;
-
-		//add subchain info			
-		SCSApprovalList[scs].bondApproved += amount;
-		SCSApprovalList[scs].subchainaddr.push(msg.sender);
-		SCSApprovalList[scs].amount.push(amount);
-		SCSApprovalList[scs].bondedCount ++;
-		
-		return true;
-	}
-
-	//must called from SubChainBase
-	function forfeitBond(address scs, uint amount) public payable returns (bool) {
-		//check if subchain is approved
-		for( uint i=0; i<SCSApprovalList[scs].bondedCount; i++ ){
-			if( SCSApprovalList[scs].subchainaddr[i] == msg.sender && SCSApprovalList[scs].amount[i] == amount){
-
-				//delete array item by moving the last item in current postion and delete the last one
-				SCSApprovalList[scs].bondApproved -= amount;
-				SCSApprovalList[scs].bondedCount --;
-				SCSApprovalList[scs].subchainaddr[i] = SCSApprovalList[scs].subchainaddr[SCSApprovalList[scs].bondedCount];
-				SCSApprovalList[scs].amount[i] = SCSApprovalList[scs].amount[SCSApprovalList[scs].bondedCount];
-
-				delete SCSApprovalList[scs].subchainaddr[SCSApprovalList[scs].bondedCount];
-				delete SCSApprovalList[scs].amount[SCSApprovalList[scs].bondedCount];
-				SCSApprovalList[scs].subchainaddr.length --;
-				SCSApprovalList[scs].amount.length --;
-				
-				//doing the deduction
-				SCSList[scs].bond -= amount;
-				msg.sender.transfer(amount);
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	//user to request to release from a subchain
-	function releaseBond(address scs, uint amount, uint8 v, bytes32 r, bytes32 s) public returns (bool){
-		//verify signature
-		//combine scs and subchain address
-		bytes32 hash = sha256(scs, msg.sender);
-		
-		//verify signature matches. 
-		if( ecrecover(hash, v, r, s) != scs){
-			return false;
-		}
-
-		//add subchain info			
-		for( uint i=0; i<SCSApprovalList[scs].bondedCount; i++ ){
-
-			if( SCSApprovalList[scs].subchainaddr[i] == msg.sender && SCSApprovalList[scs].amount[i] == amount){
-
-				SCSApprovalList[scs].bondApproved -= amount;
-				SCSApprovalList[scs].bondedCount --;
-				SCSApprovalList[scs].subchainaddr[i] = SCSApprovalList[scs].subchainaddr[SCSApprovalList[scs].bondedCount];
-				SCSApprovalList[scs].amount[i] = SCSApprovalList[scs].amount[SCSApprovalList[scs].bondedCount];
-
-				//clear
-				delete SCSApprovalList[scs].subchainaddr[SCSApprovalList[scs].bondedCount];
-				delete SCSApprovalList[scs].amount[SCSApprovalList[scs].bondedCount];
-				SCSApprovalList[scs].subchainaddr.length --;
-				SCSApprovalList[scs].amount.length --;
-
-				break;
-			}
-			
-		}
-		
-		return true;
-	}
-
-    function() public {
+    function() public payable {  // todo: david review
         revert();
     }
 
+    // register for SCS
+    // SCS will be notified through 3rd party communication method. SCS will need to register here manually.
+    // One protocol base can have several different subchains.
+    function register(address scs) public payable returns (bool) {
+        //already registered or not enough bond
+        require(
+            (scsList[scs].state == uint(SCSStatus.notRegistered)
+            || scsList[scs].state == uint(SCSStatus.performing))
+            && msg.value >= bondMin * 10 ** 18
+        );
+
+        addScsId(scs);
+
+        scsList[scs].from = scs;
+        if (scsList[scs].state == uint(SCSStatus.notRegistered)) {
+            //if not register before, update
+            scsList[scs].registerBlock = block.number + PENDING_BLOCK_DELAY;
+            scsList[scs].withdrawBlock = 2 ** 256 - 1;
+            scsCount++;
+            scsList[scs].bond = msg.value;
+        } else {
+            //add more fund
+            scsList[scs].bond += msg.value;            
+        }
+        scsList[scs].state = uint(SCSStatus.performing);
+        return true;
+    }
+
+    // withdrawRequest for SCS
+    function withdrawRequest() public returns (bool success) {
+        //only can withdraw when active
+        require(scsList[msg.sender].state == uint(SCSStatus.performing));
+
+        //need to make sure node is not working for any suchain anymore
+        require(scsApprovalList[msg.sender].bondedCount == 0 );        
+
+        scsList[msg.sender].withdrawBlock = block.number;
+        scsList[msg.sender].state = uint(SCSStatus.withdrawPending);
+        scsCount--;
+
+        removeScsId(msg.sender);
+
+        UnRegistered(msg.sender);
+        return true;
+    }
+
+    function withdraw() public {
+        if (
+            scsList[msg.sender].state == uint(SCSStatus.withdrawPending)
+            && block.number > (scsList[msg.sender].withdrawBlock + WITHDRAW_BLOCK_DELAY)
+        ) {
+            scsList[msg.sender].state == uint(SCSStatus.withdrawDone);
+            scsList[msg.sender].from.transfer(scsList[msg.sender].bond);
+        }
+    }
+
+    function isPerforming(address _addr) public view returns (bool res) {
+        return (scsList[_addr].state == uint(SCSStatus.performing) && scsList[_addr].registerBlock < block.number);
+    }
+
+    function getSelectionTarget(uint thousandth, uint minnum) public view returns (uint target) {
+        // find a target to choose thousandth/1000 of total scs
+        if (minnum < 50) {
+            minnum = 50;
+        }
+
+        if (scsCount < minnum) {          // or use scsCount* thousandth / 1000 + 1 < minnum
+            return 255;
+        }
+
+        uint m = thousandth * scsCount / 1000;
+
+        if (m < minnum) {
+            m = minnum;
+        }
+
+        target = (m * 256 / scsCount + 1) / 2;
+
+        return target;
+    }
+
+    function getSelectionTargetByCount(uint targetnum) public view returns (uint target) {
+        if (scsCount <= targetnum) {        
+            return 255;
+        }
+
+        //calculate distance
+        target = (targetnum * 256 / scsCount + 1) / 2;
+
+        if (target == 0 ) {
+            target = 0;
+        }
+
+        return target;
+    }
+
+
+    //display approved scs list
+    function approvalAddresses(address addr) public view returns (address[]) {
+        address[] memory res = new address[](scsApprovalList[addr].bondedCount);
+        for (uint i = 0; i < scsApprovalList[addr].bondedCount; i++) {
+            res[i] = (scsApprovalList[addr].subchainAddr[i]);
+        }
+        return res;
+    }
+
+    //display approved amount array
+    function approvalAmounts(address addr) public view returns (uint[]) {
+        uint[] memory res = new uint[](scsApprovalList[addr].bondedCount);
+        for (uint i = 0; i < scsApprovalList[addr].bondedCount; i++) {
+            res[i] = (scsApprovalList[addr].amount[i]);
+        }
+        return res;
+    }
+
+    //subchain need to set this before allow nodes to join
+    function setSubchainExpireBlock(uint blk) public {
+        subChainExpireBlock[msg.sender] = blk;
+    }
+
+    //set active block
+    function setSubchainActiveBlock() public {
+        subChainLastActiveBlock[msg.sender] = block.number;
+    }
+
+    //approve the bond to be deduced if act maliciously
+    function approveBond(address scs, uint amount, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
+        //require subchain is active
+        //require( (subChainLastActiveBlock[msg.sender] + subChainExpireBlock[msg.sender])  > block.number);
+
+        //make sure SCS is performing
+        if (!isPerforming(scs)) {
+            return false;
+        }
+
+        //verify signature
+        //combine scs and subchain address
+        bytes32 hash = sha256(scs, msg.sender);
+
+        //verify signature matches.
+        if (ecrecover(hash, v, r, s) != scs) {
+            return false;
+        }
+
+        //check if bond still available for SCSApproval
+        if (scsList[scs].bond < (scsApprovalList[scs].bondApproved + amount)) {
+            return false;
+        }
+
+        //add subchain info
+        scsApprovalList[scs].bondApproved += amount;
+        scsApprovalList[scs].subchainAddr.push(msg.sender);
+        scsApprovalList[scs].amount.push(amount);
+        scsApprovalList[scs].bondedCount++;
+
+        return true;
+    }
+
+    //must called from SubChainBase
+    function forfeitBond(address scs, uint amount) public payable returns (bool) {
+        //require( (subChainLastActiveBlock[msg.sender] + subChainExpireBlock[msg.sender])  > block.number);
+        
+        //check if subchain is approved
+        for (uint i = 0; i < scsApprovalList[scs].bondedCount; i++) {
+            if (scsApprovalList[scs].subchainAddr[i] == msg.sender && scsApprovalList[scs].amount[i] == amount) {
+                //delete array item by moving the last item in current postion and delete the last one
+                scsApprovalList[scs].bondApproved -= amount;
+                scsApprovalList[scs].bondedCount--;
+                scsApprovalList[scs].subchainAddr[i]
+                    = scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].amount[i] = scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+
+                delete scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                delete scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].subchainAddr.length--;
+                scsApprovalList[scs].amount.length--;
+
+                //doing the deduction
+                scsList[scs].bond -= amount;
+                //scsList[scs].state = uint(SCSStatus.badActor);
+                msg.sender.transfer(amount);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    //scs to request to release from a subchain if subchain is not active
+    //anyone can request this
+    function releaseRequest(address scs, address subchain) public returns (bool) {
+        //check subchain info
+        for (uint i=0; i < scsApprovalList[scs].bondedCount; i++) {
+            if (scsApprovalList[scs].subchainAddr[i] == subchain && 
+                (subChainLastActiveBlock[subchain] + subChainExpireBlock[subchain])  < block.number) {
+                scsApprovalList[scs].bondApproved -= scsApprovalList[scs].amount[i];
+                scsApprovalList[scs].bondedCount--;
+                scsApprovalList[scs].subchainAddr[i]
+                    = scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].amount[i] = scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+
+                //clear
+                delete scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                delete scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].subchainAddr.length--;
+                scsApprovalList[scs].amount.length--;
+
+                //DAVID: not send back bond. It only happens in withdraw request. 
+                //just make node out of subchain
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //subchain to request to release a scs from a subchain
+    function releaseFromSubchain(address scs, uint amount) public returns (bool) {
+        //check subchain info
+        for (uint i=0; i < scsApprovalList[scs].bondedCount; i++) {
+            if (scsApprovalList[scs].subchainAddr[i] == msg.sender && scsApprovalList[scs].amount[i] == amount) {
+                scsApprovalList[scs].bondApproved -= amount;
+                scsApprovalList[scs].bondedCount--;
+                scsApprovalList[scs].subchainAddr[i]
+                    = scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].amount[i] = scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+
+                //clear
+                delete scsApprovalList[scs].subchainAddr[scsApprovalList[scs].bondedCount];
+                delete scsApprovalList[scs].amount[scsApprovalList[scs].bondedCount];
+                scsApprovalList[scs].subchainAddr.length--;
+                scsApprovalList[scs].amount.length--;
+
+                //DAVID: not send back bond. It only happens in withdraw request. 
+                //just make node out of subchain
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function addScsId(address scsId) private {
+        if (scsList[scsId].state == uint(SCSStatus.notRegistered)) {
+            scsArray.push(scsId);
+        }
+    }
+
+    function removeScsId(address scsId) private {
+        uint len = scsArray.length;
+        for (uint i=0; i<len; i++) {
+            if (scsArray[i] ==  scsId) {
+                scsArray[i] = scsArray[len - 1];
+                delete scsArray[len - 1];
+                scsArray.length--;
+            }
+        }
+    }
 }

@@ -1,773 +1,1197 @@
 pragma solidity ^0.4.11;
 //David Chen
 //Subchain protocol definition for consenus.
-//It also contains the logic to allow user to join this 
+//It also contains the logic to allow user to join this
 //pool with bond
-import './SubChainProtocolBase.sol';
+import "./SubChainProtocolBase.sol";
+
 
 contract SCSRelay {
-	// 0-registeropen, 1-registerclose, 2-createproposal, 3-disputeproposal, 4-approveproposal
-	function notifySCS(address cnt, uint msgtype) public returns (bool success) ;
+    // 0-registeropen, 1-registerclose, 2-createproposal, 3-disputeproposal, 4-approveproposal, 5-registeradd
+    function notifySCS(address cnt, uint msgtype) public returns (bool success);
 }
 
+//ATO new
+contract MarketableToken {
+    function initToken(address[] addr, uint256[] bals, uint256[] lock) public ;
+    function refresh() public;
+    function buyMintToken(address useraddr, uint256 value) public payable returns (uint256);
+    function sellMintTokenPre(address useraddr, uint256 amount) public returns (uint256);
+    function sellMintToken(address useraddr, uint256 amount) public returns (bool);
+    function requestEnterMicrochain(address useraddr, uint256 amount) public returns (bool);
+    function redeemFromMicroChain(address[] addr, uint256[] bals) public returns (bool);
+    function totalSupply() public view returns (uint256);
+}
+
+
 contract SubChainBase {
+    enum ProposalFlag {noState, pending, disputed, approved, rejected, expired, pendingAccept}
+    enum ProposalCheckStatus {undecided, approval, expired}
+    enum ConsensusStatus {initStage, workingStage, failure}
+    enum SCSRelayStatus {registerOpen, registerClose, createProposal, disputeProposal, approveProposal, registerAdd, regAsMonitor, regAsBackup, updateLastFlushBlk, distributeProposal}
+    enum SubChainStatus {open, pending, close}
 
-	struct proposal {
-		address proposedBy;
-		bytes32 lastApproved;
-		bytes32 hash;
-		//bytes newState;
-		uint[] distributionAmount;
-		uint flag; // 1-pending, 2-disputed 3-approved, 4-rejected, 5-expired  6-pendingAccept
-		uint startingBlock;
-		uint[] voters; //voters index
-		uint votecount;
-		bytes32 nextDisputeHash;
-		bytes32 disputeOnHash;
-	}
+    struct Proposal {
+        address proposedBy;
+        bytes32 lastApproved;
+        bytes32 hash;
+        uint start;
+        uint end;
+        //bytes newState;
+        uint[] distributionAmount;
+        uint flag; // one of ProposalFlag
+        uint startingBlock;
+        uint[] voters; //voters index
+        uint votecount;
+        uint[] badActors;
+        address[] viaNodeAddress;
+        uint[] viaNodeAmount;
+        address[] ercAddress;
+        uint[] ercAmount;
+        address[] userAddr;
+        uint[] amount;
+        address[] minerAddr;
+        uint distributeFlag;
+    }
+    
+    struct ErcMapping {
+        bytes32 hash;
+        address[] ercAddress;
+        uint[] ercAmount;
+    }
 
-	struct VRS {
-		bytes32 r;
-		bytes32 s;
-		uint8 v;
-	}
+    struct VRS {
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+    }
 
-	struct SyncNode {
-		address nodeid;
-		string link;
-	}
+    struct SyncNode {
+        address nodeId;
+        string link;
+    }
+    
+    struct holdings {
+        address[] userAddr;
+        uint[] amount;
+    }
 
-	address public Protocol;
-    uint public MinMember;
-	uint public MaxMember;
-	uint public SelTarget;
-	uint public ConsensusFlag; // 0: init stage 1: working stage 2: failure
-	uint public FlushInRound;
-	bytes32 public ProposalHashInProgress;
-	bytes32 public ProposalHashApprovedLast;  //index: 8
-	uint curFlushIndex;
-	uint pendingFlushIndex;
-	
-	bytes public FuncCode;
-	bytes State;
+    address public protocol;
+    uint public minMember;
+    uint public maxMember;
+    uint public selTarget;
+    uint public consensusFlag; // 0: init stage 1: working stage 2: failure
+    uint public flushInRound;
+    bytes32 public proposalHashInProgress;
+    bytes32 public proposalHashApprovedLast;  //index: 7
+    uint internal curFlushIndex;
+    uint internal pendingFlushIndex;
 
-	uint lastFlushBlk;
+    bytes public funcCode;
+    bytes internal state;
 
-	address owner;
+    uint internal lastFlushBlk;
 
-	//nodes list is updated at each successful flush
-    uint public NodeCount;
-    address[] public NodeList;
+    address internal owner;
 
-	uint8[2] public RandIndex;
-	mapping(address => uint ) public NodePerformance;
-	mapping(bytes32 => proposal) public Proposals;
-	mapping(address => uint ) public CurrentRefundGas;
+    //nodes list is updated at each successful flush
+    uint public nodeCount;
+    address[] public nodeList;    //index: 0f
 
-	bool registerFlag;
+    uint8[2] public randIndex;
+    mapping(address => uint ) public nodePerformance;
+    mapping(bytes32 => Proposal) public proposals;  //index: 12
+    mapping(address => uint) public currentRefundGas;
 
-	SCSRelay constant scsrelay = SCSRelay(0x000000000000000000000000000000000000000d); 
-	uint public constant NodeInitPerformance = 5;
-	uint public ProposalExpiration = 12;
-	uint public PenaltyBond = 10**18;
-	mapping(address=>address) public ScsBeneficiary;
-	uint public BlockReward = 5*10**13;
-	uint public TXReward = 1 * 10**11;
+    uint internal registerFlag;
 
-	uint public NodeToReleaseCount;
-	uint[5] public NodesToRelease;  //nodes wish to withdraw, only allow 5 to release at a time
-	mapping(address=>VRS) NodesToReleaseVRS;
-	uint[] public NodesToDispel;
+    uint public proposalExpiration = 12;
+    uint public penaltyBond = 10 ** 18; // 1 Moac penalty
+    mapping(address=>address) public scsBeneficiary;
+    uint public blockReward = 5 * 10 ** 14;    //index: 18
+    uint public txReward  = 1 * 10 ** 11;
+    uint public viaReward = 1 * 10 ** 13;
 
-	address[] public NodesToJoin;  //nodes to be joined
-	uint public JoinCntMax;
-	uint public JoinCntNow;
-	uint public MonitorFee = 1 * 10**15;
-	mapping(address=>uint) public NodesWatching;  //nodes watching	
+    uint public nodeToReleaseCount;
+    uint[5] public nodesToRelease;  //nodes wish to withdraw, only allow 5 to release at a time
+    mapping(address=>VRS) internal nodesToReleaseVRS;
+    uint[] public nodesToDispel;
 
-	SyncNode[] public SyncNodes;
+    address[] public nodesToJoin;  //nodes to be joined
+    uint public joinCntMax;
+    uint public joinCntNow;
+    uint public MONITOR_JOIN_FEE = 1 * 10 ** 16;
+    mapping(address=>uint) public nodesWatching;  //nodes watching
+
+    SyncNode[] public syncNodes;
+    uint indexAutoRetire;
+
+    uint constant VIANODECNT = 100;
+    SCSRelay internal constant SCS_RELAY = SCSRelay(0x000000000000000000000000000000000000000d);
+    uint public constant NODE_INIT_PERFORMANCE = 5;
+    uint public constant AUTO_RETIRE_COUNT = 2;
+    bool public constant AUTO_RETIRE = false;
+    address public VnodeProtocolBaseAddr;
+    uint public MONITOR_MIN_FEE = 1 * 10 ** 12;
+    uint public syncReward = 1 * 10 ** 11;
+    uint public MAX_GAS_PRICE = 20 * 10 ** 9;
+
+    uint public DEFLATOR_VALUE = 80; // in 1/millionth: in a year, exp appreciation is 12x
+
+    uint internal subchainstatus;
+    uint256 public BALANCE = 0;
+    // address public ERCAddr;
+    // ErcMapping internal erc;
+    // mapping(bytes32 => ErcMapping) internal erc;
+    // ErcMapping[] public erc;
+    
+    // ATO new
+    address public tokenAddress;
+    //temp holdingplace whenentering microchain
+    holdings internal holdingPool;
+    uint public holdingPoolPos = 0;
+    uint public MAX_USERADDR_TO_SUBCHAIN = 40;
+
+    // inidicator of fund needed
+    uint public contractNeedFund;
+
+    //events
+    event ReportStatus(string message);
+    event TransferAmount(address addr, uint amount);
+
+
 
     //constructor
-    function SubChainBase(address proto, uint min, uint max, uint thousandth, uint flushRound) public {
-		SubChainProtocolBase protocnt = SubChainProtocolBase(proto);
-		SelTarget = protocnt.getSelectionTarget(thousandth, min);
+    function SubChainBase(address proto, address vnodeProtocolBaseAddr, uint min, uint max, uint thousandth, uint flushRound) public {
+        VnodeProtocolBaseAddr = vnodeProtocolBaseAddr;
+        // ERCAddr = ercAddr;
+        SubChainProtocolBase protocnt = SubChainProtocolBase(proto);
+        selTarget = protocnt.getSelectionTarget(thousandth, min);
+        protocnt.setSubchainExpireBlock(flushInRound*5);
+        protocnt.setSubchainActiveBlock();
 
-		MinMember = min;
-		MaxMember = max;
-		Protocol = proto;
-		ConsensusFlag = 0;
-		//DirectCallGas = 100;
-		owner = msg.sender;
+        minMember = min;
+        maxMember = max;
+        protocol = proto; //address
+        consensusFlag = uint(ConsensusStatus.initStage);
+        owner = msg.sender;
 
-		FlushInRound = flushRound;
-		if ( FlushInRound <= 2 )
-			FlushInRound = 2;
-		lastFlushBlk = 2**256-1;
+        flushInRound = flushRound;
+        if (flushInRound <= 100) {
+            flushInRound = 100;
+        }
+        lastFlushBlk = 2 ** 256 - 1;
 
-		RandIndex[0] = uint8(0);
-		RandIndex[1] = uint8(1);
+        randIndex[0] = uint8(0);
+        randIndex[1] = uint8(1);
+        indexAutoRetire = 0;
+        subchainstatus = uint(SubChainStatus.open);
     }
 
-	function SetOwner() public {
-		if ( owner == address(0) ) {
-			owner = msg.sender;
-		}
-	}
-
-    function DeployCode(bytes code) public {
-		require(msg.sender == owner);
-		FuncCode = code;
+    function() public payable {
+        //only allow protocol send
+        require(protocol == msg.sender);
     }
-	
-
-	function IsMemberValid( address addr ) public view returns (bool) {
-		return NodePerformance[addr] > 0;
-	}
-
-	function MatchSelTarget(address addr, uint8 index1, uint8 index2) private view returns (bool){
-		// check if seltargetdist matches.
-		uint addr0 = getindexByte(addr, index1, index2);         
-		uint cont0 = getindexByte(address(this), index1, index2);
-
-        if ( SelTarget == 255 ) 
-		    return true;
-
-        if( addr0 >= cont0 ){ 
-		   if( ( addr0 - cont0 ) <= SelTarget){
-		       return true;
-		   }else{
-		      if (cont0 - SelTarget < 0  ) {
-			     if((addr0 - cont0 ) >= 256 - SelTarget   )  //lower half round to top,  addr0 -256 >= cont0 -SelTarget
-				     return true;
-			     return false;
-			  }  
-			  return false;
-		   }		    		   
-		}else{   //addr0 < cont0
-		
-		   if( (cont0 - addr0) <= SelTarget){
-		       return true;
-		   }else{
-		      if (cont0 + SelTarget >= 256  ) {
-			     if((cont0- addr0) >= 256- SelTarget)  //top half round to bottom,   addr0 +256  <= (SelTarget+cont0)
-				     return true;
-			     return false;
-			  }  
-			  return false;
-		   }	
-		}
-
-
-		return true;
-	}
-
-	function IsSCSValid(address addr) private view returns (bool) {
-
-		if( !IsMemberValid(addr))
-			return false;
-
-		//no need to check this again if nodes already in list 
-		//if( !MatchSelTarget(addr, RandIndex[0], RandIndex[1])) 
-		//	return false;
-
-		//check if valid registered in protocol pool
-		SubChainProtocolBase protocnt = SubChainProtocolBase(Protocol);
-		if( !protocnt.isPerforming(addr) )
-			return false;
-
-		return true;
-	}
-
-	function IsMonitor(address monitor) public view returns(bool) {
-		return NodesWatching[monitor] == 1;
-	}
-
-	function RegisterAsMonitor(address monitor) public payable {
-		require(msg.value >= MonitorFee );
-		require(NodesWatching[monitor] == 0 );
-		require(monitor != address(0));
-		NodesWatching[monitor] = 1;
-	}
-
-	//v,r,s are the signature of msg hash(scsaddress+subchainaddr)
-	function RegisterAsSCS(address beneficiary, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
-		
-		//uint gas = msg.gas;
-		if( !registerFlag )
-			return false;
-
-		//check if valid registered in protocol pool
-		SubChainProtocolBase protocnt = SubChainProtocolBase(Protocol);
-		if( !protocnt.isPerforming(msg.sender) )
-			return false;
-
-		if( !MatchSelTarget(msg.sender, RandIndex[0], RandIndex[1])) 
-			return false;
-
-		//if reach max, reject
-		if( NodeCount > MaxMember )
-			return false;
-
-		//check if node already registered
-		for( uint i=0; i<NodeCount; i++){
-			if(	NodeList[i]  == msg.sender )
-				return false;
-		}
-
-		//make sure msg.sender approve bond deduction
-		if( !protocnt.approveBond( msg.sender, PenaltyBond, v, r, s))
-			return false;
-
-		NodeList.push(msg.sender);
-		NodeCount ++;
-		NodePerformance[msg.sender] = NodeInitPerformance;
-
-		//todo: refund gas
-		//msg.sender.send(msg.gas * tx.gasprice);
-		
-		if( beneficiary == address(0) ){
-			ScsBeneficiary[msg.sender] = msg.sender;
-		}else{
-			ScsBeneficiary[msg.sender] = beneficiary;
-		}
-
-		return true;
-	}
-
-	//v,r,s are the signature of msg hash(scsaddress+subchainaddr)
-	function RegisterAsBackup(address beneficiary, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
-		
-		//uint gas = msg.gas;
-		if( !registerFlag )
-			return false;
-
-		//check if valid registered in protocol pool
-		SubChainProtocolBase protocnt = SubChainProtocolBase(Protocol);
-		if( !protocnt.isPerforming(msg.sender) )
-			return false;
-
-		if( !MatchSelTarget(msg.sender, RandIndex[0], RandIndex[1])) 
-			return false;
-
-		//if reach max, reject
-		if( JoinCntNow >= JoinCntMax )
-			return false;
-
-		//check if node already registered
-		for( uint i=0; i<NodeCount; i++){
-			if(	NodeList[i]  == msg.sender )
-				return false;
-		}
-
-		for( i=0; i<NodesToJoin.length; i++){
-			if(	NodesToJoin[i]  == msg.sender )
-				return false;
-		}
-
-		//make sure msg.sender approve bond deduction
-		if( !protocnt.approveBond( msg.sender, PenaltyBond, v, r, s))
-			return false;
-
-		NodesToJoin.push(msg.sender);
-		JoinCntNow ++;
-		NodePerformance[msg.sender] = NodeInitPerformance;
-
-		//todo: refund gas
-		//msg.sender.send(msg.gas * tx.gasprice);
-		
-		if( beneficiary == address(0) ){
-			ScsBeneficiary[msg.sender] = msg.sender;
-		}else{
-			ScsBeneficiary[msg.sender] = beneficiary;
-		}
-
-		return true;
-	}
-
-
-	//user can explicitly release
-	function requestRelease(uint index, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
-		//only in nodelist can call this function
-		require( NodeList[index] == msg.sender);
-		//check if full already
-		if(NodeToReleaseCount >= 5 )
-			return false;
-
-		//check if already requested
-		for( uint ii=0; ii<NodeToReleaseCount; ii++){
-			if(	NodesToRelease[ii]  == index ){
-				return false;
-			}
-		}	
-
-		//
-		NodesToRelease[NodeToReleaseCount-1] = index;
-		NodeToReleaseCount ++;
-
-		//save v r s
-		NodesToReleaseVRS[msg.sender].v = v;
-		NodesToReleaseVRS[msg.sender].r = r;
-		NodesToReleaseVRS[msg.sender].s = s;
-		
-
-		return true;
-		
-	}
-
-	
-	function applyJoinNodes() private {
-
-		for( uint i=0; i<JoinCntNow; i++){
-			NodeList.push(NodesToJoin[i]);
-			NodeCount ++;
-		}
-
-		//clear join info
-		for( i=0; i<JoinCntNow; i++){
-			delete NodesToJoin[i];
-		}
-
-		JoinCntNow = 0;
-		NodesToJoin.length = 0;
-		JoinCntMax = 0;
-
-	}
-
-
-	// reuse this code for remove bad one or other volunteerleaving
-	// nodetype 0: bad ones, 1: volunteer leaving
-	function applyRemoveNodes(uint nodetype) private {
-		SubChainProtocolBase protocnt = SubChainProtocolBase(Protocol);
-
-		uint count = NodesToDispel.length;
-		if( nodetype == 1){
-			count = NodeToReleaseCount;
-		}
-
-		if( count == 0 )
-			return;
-			
-		// all nodes set 0 at initial, set node to be removed as 1. 
-		uint[] memory nodeMark = new uint[](NodeCount);
-		uint idx = 0;
-		for( uint i=0; i<count;i++){
-			if( nodetype == 0 ){
-				//bad ones
-				nodeMark[NodesToDispel[i]] = 1;
-			}else{
-				idx = NodesToRelease[i];
-				//volunteer leaving, only were not marked as bad ones
-				if( nodeMark[idx] == 0){
-					nodeMark[idx] = 1;
-					//release fund
-					address cur = NodeList[idx];
-					protocnt.releaseBond(cur, PenaltyBond,NodesToReleaseVRS[cur].v,NodesToReleaseVRS[cur].r,NodesToReleaseVRS[cur].s);
-				}
-			}
-		}
-
-		//adjust to update NodeList
-		for( i=NodeCount-1; i>=0; ){
-			if( nodeMark[i] == 1 ){
-				//swap with last element
-				// remove node from list
-				NodeCount --;
-				NodeList[i] = NodeList[NodeCount];
-				delete NodeList[NodeCount];
-				NodeList.length --;
-			}
-			if( i==0 )
-				break;
-			else
-			 	i--;
-		}
-	}
-
-
-	//	uint[2] private randindex =[1,4]; 
-	function getindexByte(address a, uint8 randindex1, uint8 randindex2) private  pure returns (uint b){
-	    uint8 first=uint8(uint(a) / (2**(4*(39 - uint(randindex1))))* 2**4  );       
-		uint8 second=uint8(uint8(uint(a) / (2**(4*(39 - uint(randindex2)))) * 2**4)/2**4);    // &15
-		return uint(byte(first+second));
-	}		
-
-
-	function RegisterOpen() public {
-		require(msg.sender == owner);
-		registerFlag = true;
-
-		//call precompiled code to invoke action on v-node
-		scsrelay.notifySCS(address(this), 0);
-	}
-
-	function RegisterClose() public returns (bool) {
-		require(msg.sender == owner);
-		registerFlag = false;
-
-		if( NodeCount < MinMember )
-			return false;
-
-		//now we can start to work now
-		lastFlushBlk = block.number;
-		curFlushIndex = 0;
-
-		//call precompiled code to invoke action on v-node
-		scsrelay.notifySCS(address(this), 1);
-		return true;
-	}
-
-	function RegisterAdd(uint nodetoadd) public {
-		require(msg.sender == owner);
-		registerFlag = true;
-		JoinCntMax = nodetoadd;
-		JoinCntNow = 0;
-
-		//call precompiled code to invoke action on v-node
-		scsrelay.notifySCS(address(this), 5);
-	}
-
-	function GetEstFlushBlock(uint index) public view returns (uint){
-		uint blk = lastFlushBlk + NodeCount*FlushInRound ;
-		//each flusher has [0, 2*expire] to finish
-		if( index >= curFlushIndex ){
-			blk += ( index - curFlushIndex)* 2*ProposalExpiration;
-		}else {
-			blk += ( index + NodeCount - curFlushIndex)* 2*ProposalExpiration;
-		}
-
-		if( block.number < blk){
-			return blk - block.number;
-		}else if( block.number < (blk+ProposalExpiration)){
-			return 0;
-		}
-
-		//overdue, wait for next one expires
-		return ProposalExpiration;
-	}
-
-	function IsValidFlusher(uint index) public view returns (bool){
-		return  GetEstFlushBlock(index) == 0 ;
-	}
-	
-
-	//create proposal
-	//	bytes32 hash;
-	//	bytes newState;
-	function CreateProposal(uint indexinlist, bytes32 lastFlushedHash, bytes32 hash, uint[] distAmount ) public returns (bool) {
-		require(indexinlist < NodeCount && msg.sender == NodeList[indexinlist]);
-		require(IsValidFlusher(indexinlist));
-
-		//if already a hash proposal in progress, check if it is set to expire
-		uint gasinit = msg.gas;//gasleft();
-		if( Proposals[ProposalHashInProgress].flag == 1 || Proposals[ProposalHashInProgress].flag == 2)
-		{
-			//for some reason, lastone is not updated
-			//set to expire
-			Proposals[ProposalHashInProgress].flag = 5;  //expired.
-			//reduce proposer's performance
-			if( NodePerformance[Proposals[ProposalHashInProgress].proposedBy] > 0 ){
-				NodePerformance[Proposals[ProposalHashInProgress].proposedBy] --;
-			}
-			
-		}	
-
-		//proposal must based on last approved hash	
-		if( lastFlushedHash != ProposalHashApprovedLast)
-			return false;
-
-		//check if sender is part of SCS list
-		if( !IsSCSValid(msg.sender)) 
-			return false;
-
-		//check if proposal is already in 
-		if( Proposals[hash].flag > 0 )
-			return false;
-
-		//store it into storage.
-		Proposals[hash].proposedBy = msg.sender;
-		Proposals[hash].lastApproved = ProposalHashApprovedLast;
-		Proposals[hash].hash = hash;
-		//Proposals[hash].newState = newState;
-		for( uint i=0; i<NodeCount; i++ ){
-			Proposals[hash].distributionAmount.push(distAmount[i]);
-		}
-		Proposals[hash].flag = 1;
-		Proposals[hash].startingBlock = block.number;
-		//add into voter list
-		Proposals[hash].voters.push(indexinlist);
-		Proposals[hash].votecount ++;
-		
-		//notify v-node
-		scsrelay.notifySCS(address(this), 2);
-
-		ProposalHashInProgress = hash;
-		pendingFlushIndex = indexinlist;
-		CurrentRefundGas[msg.sender] += (gasinit - msg.gas)* tx.gasprice; 
-		return true;
-	}
-
-	//dispute proposal
-	function DisputeProposal(uint indexinlist, bytes32 disputehash, bytes32 newhash, uint[] distAmount) public returns (bool) {
-		require(indexinlist < NodeCount && msg.sender == NodeList[indexinlist]);
-		uint gasinit = msg.gas;
-
-		//check if sender is part of SCS list
-		if( !IsSCSValid(msg.sender)) 
-			return false;
-
-		//check if proposal is already in 
-		if( Proposals[newhash].flag > 0 )
-			return false;
-
-		//check if dispute proposal is there or decision has been made
-		if( Proposals[disputehash].flag == 0 || Proposals[disputehash].flag >2 )
-			return false;
-
-		//check if out of  2*expire
-		if( (Proposals[disputehash].startingBlock + 2*ProposalExpiration) < block.number ){
-			Proposals[disputehash].flag = 5;  //expired.				
-			//reduce proposer's performance
-			if( NodePerformance[Proposals[disputehash].proposedBy] > 0 ){
-				NodePerformance[Proposals[disputehash].proposedBy] --;
-			}
-			return false;
-		}else if ((Proposals[disputehash].startingBlock + ProposalExpiration) < block.number ){
-			//in [expire, 2*expire] 
-			//won't chanllenge any more
-			return false;
-		}
-
-		//check if another dispute is there 
-		if( Proposals[disputehash].nextDisputeHash > 0 )
-			return false;
-		
-
-		//store it into storage.
-		Proposals[newhash].proposedBy = msg.sender;
-		Proposals[newhash].lastApproved = ProposalHashApprovedLast;
-		Proposals[newhash].hash = newhash;
-		//Proposals[newhash].newState = newState;
-		for( uint i=0; i<NodeCount; i++ ){
-			Proposals[newhash].distributionAmount.push(distAmount[i]);
-		}
-		Proposals[newhash].flag = 2; //disputed
-		Proposals[newhash].startingBlock = block.number;
-		Proposals[newhash].disputeOnHash = disputehash;
-
-		//update last
-		Proposals[disputehash].flag = 2; //disputed
-		Proposals[disputehash].nextDisputeHash = newhash;
-		//add into voter list
-		Proposals[newhash].voters.push(indexinlist);
-		Proposals[newhash].votecount ++;
-		
-		//notify v-node
-		scsrelay.notifySCS(address(this), 3);
-		
-		CurrentRefundGas[msg.sender] += (gasinit - msg.gas)* tx.gasprice; 
-		return true;
-	}
-
-	//vote on proposal
-	function VoteOnProposal(uint indexinlist, bytes32 hash) public returns (bool) {
-		require(indexinlist < NodeCount && msg.sender == NodeList[indexinlist]);
-		uint gasinit = msg.gas;
-		//check if sender is part of SCS list
-		if( !IsSCSValid( msg.sender)) 
-			return false;
-
-		//check if proposal is in proper flag state
-		if( Proposals[hash].flag != 2 )
-			return false;
-
-		//check if dispute proposal in proper range [0, expire]
-		if( (Proposals[hash].startingBlock + ProposalExpiration) < block.number ){
-			return false;
-		}
-
-		//traverse back to make sure not double vote
-		bytes32 curhash = hash;
-		while( Proposals[curhash].flag > 0 ){
-			for(uint i=0; i<Proposals[curhash].votecount; i++){
-				if( Proposals[curhash].voters[i] == indexinlist)
-					return false;
-			}
-			curhash = Proposals[curhash].disputeOnHash;
-		}
-
-		//add into voter list
-		Proposals[hash].voters.push(indexinlist);
-		Proposals[hash].votecount ++;
-		
-		CurrentRefundGas[msg.sender] += (gasinit - msg.gas)* tx.gasprice; 
-		return true;
-	}
-
-	function CheckProposalStatus(bytes32 hash ) public view returns (uint) {
-		//if reaches 50% more agreement
-		if( (Proposals[hash].votecount *2) > NodeCount ){
-			//more than 50% approval
-			return 1;
-		}
-
-		//if pass expiration checkpoint [expire, 2*expire]
-		if ((Proposals[hash].startingBlock + ProposalExpiration) < block.number) {
-			//if only exact one vote make it as yes and not disputed
-			if( Proposals[hash].flag == 1 && Proposals[hash].votecount == 1)
-				return 1;
-
-			//expired
-			return 2;
-		} 
-
-		//undecided
-		return 0;
-	}
-
-	//request proposal approval 
-	function RequestProposalAction(uint indexinlist, bytes32 hash) public payable returns (bool) {		
-		require(indexinlist < NodeCount && msg.sender == NodeList[indexinlist]);
-		require(Proposals[hash].flag >0 && Proposals[hash].flag <= 2);
-		
-		uint gasinit = msg.gas;
-		//check if sender is part of SCS list
-		if( !IsSCSValid( msg.sender)) 
-			return false;
-
-		//check if ready to accept
-		uint chk =   CheckProposalStatus(hash);
-		if( chk == 0 ){
-			return false;
-		}else if (chk == 2 ){
-			Proposals[hash].flag = 5;  //expired.
-			//reduce proposer's performance
-			address by = Proposals[hash].proposedBy;
-			if( NodePerformance[by] > 0 ){
-				NodePerformance[by] --;
-			}			
-			return false;
-
-		}
-
-		//make sure the proposal to be approved is the correct proposal in progress
-		//or is the dispute proposal of correct proposal
-		if( ProposalHashInProgress != hash )
-		{
-			bytes32 roothash = hash;
-			while( Proposals[roothash].disputeOnHash != 0 && ProposalHashInProgress != hash){
-				roothash = Proposals[roothash].disputeOnHash;
-			}
-
-			if(ProposalHashInProgress != roothash )
-				return false;
-		}
-
-		//mark as approved
-		Proposals[hash].flag = 3;
-		//reset flag
-		ProposalHashInProgress = 0x0;
-		ProposalHashApprovedLast = hash;
-		lastFlushBlk = block.number;
-
-		//mark any previous one as rejected
-		bytes32 curhash = hash;
-		uint i =0;
-		while( Proposals[curhash].disputeOnHash != 0 ){
-			curhash = Proposals[curhash].disputeOnHash;
-			if( Proposals[curhash].flag == 2)
-				Proposals[curhash].flag = 4; //rejected
-
-			
-			SubChainProtocolBase protocnt = SubChainProtocolBase(Protocol);
-			//take away voters' bond, proposer is also a voter to itself.
-			for( i=0; i<Proposals[curhash].votecount; i++ ){
-				uint vtindex = Proposals[hash].voters[i];
-
-				protocnt.forfeitBond(NodeList[vtindex], PenaltyBond);
-				NodePerformance[NodeList[vtindex]] = 0;
-				NodesToDispel.push(vtindex);
-			}
-		}
-
-		//for correct voter, increase performance
-		for( i=0; i<Proposals[hash].votecount; i++ ){
-			address vt = NodeList[Proposals[hash].voters[i]];
-			if( NodePerformance[vt] < NodeInitPerformance )
-				NodePerformance[vt] ++ ;
-		}
-		
-
-		//award to distribution list
-		for( i=0; i<NodeCount; i++ ){
-			CurrentRefundGas[NodeList[i]] = 0;
-			uint targetgas = Proposals[hash].distributionAmount[i] + CurrentRefundGas[NodeList[i]];
-			ScsBeneficiary[ NodeList[i] ].transfer(targetgas);
-		}
-
-		//remove bad nodes
-		applyRemoveNodes(0);
-
-		//remove node to release 
-		applyRemoveNodes(1);
-
-		//update randindex
-		bytes32 randseed = sha256(hash, block.number);
-		RandIndex[0] = uint8(randseed[0])/8;
-		RandIndex[1] = uint8(randseed[1])/8;
-
-		//if some nodes want to join in
-		if( registerFlag){
-			registerFlag = false;
-			applyJoinNodes();
-		}
-
-		curFlushIndex = pendingFlushIndex+1;
-		if( curFlushIndex > NodeCount) {
-			curFlushIndex = 0;
-		}
-		//notify v-node
-		scsrelay.notifySCS(address(this), 4);		
-
-		//refund current caller
-		msg.sender.transfer( (gasinit - msg.gas)* tx.gasprice ); 
-
-		return true;
-	}
-
-	function AddSyncNode(address id, string link) public {
-		require( owner == msg.sender);		
-		SyncNodes.push(SyncNode(id,link));
-	}
-
-	function RemoveSyncNode(uint index) public {
-		require( owner == msg.sender && SyncNodes.length > index );		
-		SyncNodes[index] = SyncNodes[SyncNodes.length-1];
-		delete SyncNodes[SyncNodes.length-1];
-		SyncNodes.length --;
-	}
-
-	function AddFund() payable public {
-		// do nothing
-	}
-
-	function Withdraw(address recv, uint amount) payable public {
-		require( owner == msg.sender);		
-
-		//withdraw to address
-		recv.transfer(amount);
-	}
-
-
-	function Close() public {
-		require( owner == msg.sender);		
-
-		//refund all to owner
-		msg.sender.transfer(this.balance);
-	}
-
-	function() public payable{
-		//only allow protocol send
-		require(Protocol == msg.sender);
-	}
 
+    function setOwner() public {
+        // todo david, how can owner be 0
+        if (owner == address(0)) {
+            owner = msg.sender;
+        }
+    }
+
+    function isMemberValid(address addr) public view returns (bool) {
+        return nodePerformance[addr] > 0;
+    }
+
+    function getSCSRole(address scs) public view returns (uint) {
+        uint i = 0;
+
+        for (i = 0; i < nodeList.length; i++) {
+            if (nodeList[i] == scs) {
+                return 1;
+            }
+        }
+        
+        if (nodesWatching[scs] >= 10**9) {
+            return 2;
+        }
+        
+        for (i = 0; i < nodesToJoin.length; i++) {
+            if (nodesToJoin[i] == scs) {
+                return 3;
+            }
+        }
+        
+        if (matchSelTarget(scs, randIndex[0], randIndex[1])) {
+            //ReportStatus("SCS not selected");
+            SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+            if (!protocnt.isPerforming(scs)) {
+                return 0;
+            }
+            return 4;
+        }
+        
+        return 0;
+    }
+
+    function registerAsMonitor(address monitor) public payable { 
+        require(msg.value >= MONITOR_MIN_FEE);
+        require(nodesWatching[monitor] == 0); 
+        require(monitor != address(0));
+        nodesWatching[monitor] = msg.value;
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.regAsMonitor));
+    }
+
+    //v,r,s are the signature of msg hash(scsaddress+subchainAddr)
+    // function registerOwnerSCS(address scs, address beneficiary) public returns (bool) {
+    //     require(msg.sender == owner);
+    //     require(scs != address(0));
+    //     require(beneficiary != address(0));
+
+    //     nodeList.push(scs);
+    //     nodeCount++;
+    //     nodePerformance[scs] = NODE_INIT_PERFORMANCE;
+    //     scsBeneficiary[scs] = beneficiary;
+    // }
+
+
+    //v,r,s are the signature of msg hash(scsaddress+subchainAddr)
+    function registerAsSCS(address beneficiary, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
+        if (registerFlag != 1) {
+            //ReportStatus("Register not open");
+            return false;
+        }
+        //check if valid registered in protocol pool
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        if (!protocnt.isPerforming(msg.sender)) {
+            //ReportStatus("SCS not performing");
+            return false;
+        }
+
+        if (!matchSelTarget(msg.sender, randIndex[0], randIndex[1])) {
+            //ReportStatus("SCS not selected");            
+            return false;
+        }
+
+        // if reach max, reject
+        if (nodeCount > maxMember) {
+            //ReportStatus("max nodes reached");            
+            return false;
+        }
+
+        //check if node already registered
+        for (uint i=0; i < nodeCount; i++) {
+            if (nodeList[i] == msg.sender) {
+                //ReportStatus("Node already registered");
+                return false;
+            }
+        }
+
+        //make sure msg.sender approve bond deduction
+        if (!protocnt.approveBond(msg.sender, penaltyBond, v, r, s)) {
+            //ReportStatus("Bond approval failed.");            
+            return false;
+        }
+
+        nodeList.push(msg.sender);
+        nodeCount++;
+        nodePerformance[msg.sender] = NODE_INIT_PERFORMANCE;
+
+        //todo: refund gas
+        //msg.sender.send(gasleft() * tx.gasprice);
+
+        if (beneficiary == address(0)) {
+            scsBeneficiary[msg.sender] = msg.sender;
+        }
+        else {
+            scsBeneficiary[msg.sender] = beneficiary;
+        }
+
+        //ReportStatus("Reg successful");
+
+        return true;
+    }
+
+    //v,r,s are the signature of msg hash(scsaddress+subchainAddr)
+    function registerAsBackup(address beneficiary, uint8 v, bytes32 r, bytes32 s) public returns (bool) {
+        if (registerFlag != 2) {
+            return false;
+        }
+
+        //check if valid registered in protocol pool
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        if (!protocnt.isPerforming(msg.sender)) {
+            return false;
+        }
+
+        if (!matchSelTarget(msg.sender, randIndex[0], randIndex[1])) {
+            return false;
+        }
+
+        //if reach max, reject
+        if (joinCntNow >= joinCntMax) {
+            return false;
+        }
+
+        uint i = 0;
+        //check if node already registered
+        for (i = 0; i < nodeCount; i++) {
+            if (nodeList[i] == msg.sender) {
+                return false;
+            }
+        }
+
+        for (i = 0; i < nodesToJoin.length; i++) {
+            if (nodesToJoin[i] == msg.sender) {
+                return false;
+            }
+        }
+
+        //make sure msg.sender approve bond deduction
+        if (!protocnt.approveBond(msg.sender, penaltyBond, v, r, s)) {
+            return false;
+        }
+
+        nodesToJoin.push(msg.sender);
+        joinCntNow++;
+        //set to performance to 0 since backup node has no block synced yet. 
+        nodePerformance[msg.sender] = 0;//NODE_INIT_PERFORMANCE;
+
+        //todo: refund gas
+        //msg.sender.send(gasleft() * tx.gasprice);
+
+        if (beneficiary == address(0)) {
+            scsBeneficiary[msg.sender] = msg.sender;
+        }
+        else {
+            scsBeneficiary[msg.sender] = beneficiary;
+        }
+
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.regAsBackup));
+        return true;
+    }
+
+    function BackupUpToDate(uint index) public {
+        require( registerFlag == 2 );
+        require( nodesToJoin[index] == msg.sender);
+        nodePerformance[msg.sender] = NODE_INIT_PERFORMANCE;
+    }
+
+    //user can explicitly release
+    function requestRelease(uint index) public returns (bool) {
+        //only in nodeList can call this function
+        require(nodeList[index] == msg.sender);
+        //check if full already
+        if (nodeToReleaseCount >= 5) {
+            return false;
+        }
+
+        //check if already requested
+        for (uint i = 0; i < nodeToReleaseCount; i++) {
+            if (nodesToRelease[i] == index) {
+                return false;
+            }
+        }
+
+        nodesToRelease[nodeToReleaseCount] = index;
+        nodeToReleaseCount++;
+
+        return true;
+    }
+
+    function registerOpen() public {
+        require(msg.sender == owner);
+        registerFlag = 1;
+
+        //call precompiled code to invoke action on v-node
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.registerOpen));
+    }
+
+    function registerClose() public returns (bool) {
+        require(msg.sender == owner);
+        registerFlag = 0;
+
+        if (nodeCount < minMember) {
+            SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+            //release already enrolled scs
+            //release already enrolled scs
+            for (uint i = nodeCount; i > 0; i--) {
+                //release fund
+                address cur = nodeList[i - 1];
+                protocnt.releaseFromSubchain(
+                    cur,
+                    penaltyBond
+                );
+
+                delete nodeList[i - 1];
+            }
+
+            nodeCount = 0;
+
+            return false;
+        }
+
+        //now we can start to work now
+        lastFlushBlk = block.number;
+        curFlushIndex = 0;
+
+        //call precompiled code to invoke action on v-node
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.registerClose));
+        return true;
+    }
+
+    function registerAdd(uint nodeToAdd) public {
+        require(msg.sender == owner);
+        registerFlag = 2;
+        joinCntMax = nodeToAdd;
+        joinCntNow = nodesToJoin.length;
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        selTarget = protocnt.getSelectionTargetByCount(nodeToAdd);
+
+        //call precompiled code to invoke action on v-node
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.registerAdd)); // todo David
+    }
+
+    //|----------|---------|---------|xxx|yyy|zzz|
+    function getEstFlushBlock(uint index) public view returns (uint) {
+        uint blk = lastFlushBlk + flushInRound;
+        //each flusher has [0, 2*expire] to finish
+        if (index >= curFlushIndex) {
+            blk += (index - curFlushIndex) * 2 * proposalExpiration;
+        }
+        else {
+            blk += (index + nodeCount - curFlushIndex) * 2 * proposalExpiration;
+        }
+
+        // if (curblk > (blk+2 * proposalExpiration)) {
+        //     uint jump = (curblk-blk)/(2 * proposalExpiration * nodeCount);
+        //     if ((curblk-blk) > (2 * proposalExpiration * nodeCount * jump + proposalExpiration)) {
+        //         blk = blk + (jump + 1) * (2 * proposalExpiration * nodeCount);
+        //     } else {
+        //         blk = blk + jump * (2 * proposalExpiration * nodeCount);
+        //     }
+        // }
+        return blk;
+    }
+
+
+    // create proposal
+    // bytes32 hash;
+    // bytes newState;
+    function createProposal(
+        uint indexInlist,
+        // bytes32 lastFlushedHash,
+        // bytes32 hash,
+        // uint start, 
+        // uint end,
+        bytes32[] hashlist,
+        uint[] blocknum,
+        uint[] distAmount,
+        uint[] badactors,
+        address[] viaNodeAddress,
+        uint[] viaNodeAmount,
+        address[] ercAddress,
+        uint[] ercAmount
+    )
+        public
+        returns (bool)
+    {
+        uint gasinit = msg.gas; //gasleft();
+        require(indexInlist < nodeCount && msg.sender == nodeList[indexInlist]);
+        require(block.number >= getEstFlushBlock(indexInlist) && 
+                block.number < (getEstFlushBlock(indexInlist)+ 2*proposalExpiration));
+        require( viaNodeAddress.length <= VIANODECNT);
+        require( viaNodeAddress.length == viaNodeAmount.length);
+        require( distAmount.length == nodeCount);
+        require( badactors.length < nodeCount/2);
+        require( tx.gasprice <= MAX_GAS_PRICE );
+        require( contractNeedFund < this.balance );
+
+        //if already a hash proposal in progress, check if it is set to expire
+        if (
+            proposals[proposalHashInProgress].flag == uint(ProposalFlag.pending)
+        ) {
+            //for some reason, lastone is not updated
+            //set to expire
+            proposals[proposalHashInProgress].flag = uint(ProposalFlag.expired);  //expired.
+            //reduce proposer's performance
+            if (nodePerformance[proposals[proposalHashInProgress].proposedBy] > 0) {
+                nodePerformance[proposals[proposalHashInProgress].proposedBy]--;
+            }
+        }
+
+        //proposal must based on last approved hash
+        if (hashlist[0] != proposalHashApprovedLast) {
+            //ReportStatus("Proposal base bad");
+
+            return false;
+        }
+
+        //check if sender is part of SCS list
+        if (!isSCSValid(msg.sender)) {
+            //ReportStatus("Proposal requester invalid");
+            return false;
+        }
+
+        bytes32 curhash = hashlist[1];
+        //check if proposal is already in
+        if (proposals[curhash].flag > uint(ProposalFlag.noState)) {
+            //ReportStatus("Proposal in progress");
+            return false;
+        }
+
+        //store it into storage.
+        proposals[curhash].proposedBy = msg.sender;
+        proposals[curhash].lastApproved = proposalHashApprovedLast;
+        proposals[curhash].hash = curhash;
+        proposals[curhash].start = blocknum[0];
+        proposals[curhash].end = blocknum[1];
+        //proposals[hash].newState = newState;
+        uint i=0;
+        for (i=0; i < nodeCount; i++) {
+            proposals[curhash].distributionAmount.push(distAmount[i]);
+            proposals[curhash].minerAddr.push(nodeList[i]);
+        }
+        proposals[curhash].flag = uint(ProposalFlag.pending);
+        proposals[curhash].startingBlock = block.number;
+        //add into voter list
+        proposals[curhash].voters.push(indexInlist);
+        proposals[curhash].votecount++;
+
+        for (i=0; i < badactors.length; i++) {
+            proposals[curhash].badActors.push(badactors[i]);
+        }
+
+        //set via node
+        for (i=0; i < viaNodeAddress.length; i++) {
+            proposals[curhash].viaNodeAddress.push(viaNodeAddress[i]);
+            proposals[curhash].viaNodeAmount.push(viaNodeAmount[i]);
+        }
+        
+        // ErcMapping ss;
+        for (i=0; i < ercAddress.length; i++) {
+            proposals[curhash].ercAddress.push(ercAddress[i]);
+            proposals[curhash].ercAmount.push(ercAmount[i]);
+            
+            // ss.ercAddress.push(ercAddress[i]);
+            // ss.ercAmount.push(ercAmount[i]);
+            // ss.hash = curhash;
+            // erc.push(ss);
+        }
+        
+        proposals[curhash].distributeFlag = 0;
+
+        //notify v-node
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.createProposal));
+
+        proposalHashInProgress = curhash;
+        pendingFlushIndex = indexInlist;
+        currentRefundGas[msg.sender] += (gasinit - msg.gas + 21486 ) * tx.gasprice;
+        //ReportStatus("Proposal creates ok");
+        
+        return true;
+    }
+
+
+    //vote on proposal
+    function voteOnProposal(uint indexInlist, bytes32 hash) public returns (bool) {
+        uint gasinit = msg.gas;
+        Proposal storage prop = proposals[hash];
+
+        require(indexInlist < nodeCount && msg.sender == nodeList[indexInlist]);
+        require( tx.gasprice <= MAX_GAS_PRICE );
+        //check if sender is part of SCS list
+        if (!isSCSValid(msg.sender)) {
+            //ReportStatus("Voter invalid");
+            
+            return false;
+        }
+
+        //check if proposal is in proper flag state
+        if (prop.flag != uint(ProposalFlag.pending)) {
+            //ReportStatus("Voting not ready");
+            return false;
+        }
+        //check if dispute proposal in proper range [0, expire]
+        if ((prop.startingBlock + 2*proposalExpiration) < block.number) {
+            //ReportStatus("Proposal expired");
+            return false;
+        }
+
+        //traverse back to make sure not double vote
+        for (uint i=0; i < prop.votecount; i++) {
+            if (prop.voters[i] == indexInlist) {
+                //ReportStatus("Voter already voted");
+                return false;
+            }
+        }
+
+        //add into voter list
+        prop.voters.push(indexInlist);
+        prop.votecount++;
+
+        currentRefundGas[msg.sender] += (gasinit - msg.gas + 21486) * tx.gasprice;
+        //ReportStatus("Voter votes ok");
+        
+        return true;
+    }
+
+    function checkProposalStatus(bytes32 hash ) public view returns (uint) {
+        if ((proposals[hash].startingBlock + 2*proposalExpiration) < block.number) {
+            //expired
+            return uint(ProposalCheckStatus.expired);
+        }
+
+        //if reaches 50% more agreement
+        if ((proposals[hash].votecount * 2) > nodeCount) {
+            //more than 50% approval
+            return uint(ProposalCheckStatus.approval);
+        }
+
+        //undecided
+        return uint(ProposalCheckStatus.undecided);
+    }
+    
+    // function ercTransfer(bytes32 hash ) public  {
+    //     TestCoin erccnt = TestCoin(ERCAddr);
+    //     uint i;
+    //     for (i = 0; i < proposals[hash].ercAddress.length; i++) {
+            
+    //         erccnt.transfer(proposals[hash].ercAddress[i], proposals[hash].ercAmount[i]);
+    //     }
+    // }
+
+    //request proposal approval
+    function requestProposalAction(uint indexInlist, bytes32 hash) public payable returns (bool) {
+        uint gasinit = msg.gas;
+        Proposal storage prop = proposals[hash];
+
+        require(indexInlist < nodeCount && msg.sender == nodeList[indexInlist]);
+        require(prop.flag == uint(ProposalFlag.pending));
+        require( tx.gasprice <= MAX_GAS_PRICE );
+
+        //check if sender is part of SCS list
+        if (!isSCSValid(msg.sender)) {
+            //ReportStatus("Requester not permitted");
+            return false;
+        }
+
+        //make sure the proposal to be approved is the correct proposal in progress
+        if (proposalHashInProgress != hash) {
+            //ReportStatus("Request incorrect.");
+             return false;
+        }
+
+        //check if ready to accept
+        uint chk = checkProposalStatus(hash);
+        if (chk == uint(ProposalCheckStatus.undecided)) {
+            //ReportStatus("No agreement");
+            return false;
+        } 
+        else if (chk == uint(ProposalCheckStatus.expired)) {
+            prop.flag = uint(ProposalFlag.expired);  //expired.
+            //reduce proposer's performance
+            address by = prop.proposedBy;
+            if (nodePerformance[by] > 0) {
+                nodePerformance[by]--;
+            }
+            //ReportStatus("Proposal expired");
+            
+            return false;
+        }
+
+
+        //mark as approved
+        prop.flag = uint(ProposalFlag.approved);
+        //reset flag
+        proposalHashInProgress = 0x0;
+        proposalHashApprovedLast = hash;
+        lastFlushBlk = block.number;
+
+        //punish bad actors
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        uint i = 0;
+        for (i=0; i<prop.badActors.length; i++) {
+            uint badguy = prop.badActors[i];
+            protocnt.forfeitBond(nodeList[badguy], penaltyBond);
+            nodePerformance[nodeList[badguy]] = 0;
+            nodesToDispel.push(badguy);
+        }
+
+        //for correct voter, increase performance
+        for (i = 0; i < prop.votecount; i++) {
+            address vt = nodeList[prop.voters[i]];
+            if (nodePerformance[vt] < NODE_INIT_PERFORMANCE) {
+                nodePerformance[vt]++;
+            }
+        }
+
+        //award to distribution list
+        //in following request action
+
+        //award via nodes
+        //in following request action
+
+        //token redeem
+        //token redeem is done in following request action        
+
+        //remove bad nodes
+        applyRemoveNodes(0);
+
+        //remove node to release
+        applyRemoveNodes(1);
+
+        //update randIndex
+        bytes32 randseed = sha256(hash, block.number);
+        randIndex[0] = uint8(randseed[0]) / 8;
+        randIndex[1] = uint8(randseed[1]) / 8;
+
+        //if some nodes want to join in
+        if (registerFlag == 2) {
+            applyJoinNodes();
+        }
+
+        curFlushIndex = pendingFlushIndex + 1;
+        if (curFlushIndex > nodeCount) {
+            curFlushIndex = 0;
+        }
+
+        //if need toauto retire nodes
+        if (AUTO_RETIRE) {
+            for (i=0; i<AUTO_RETIRE_COUNT; i++) {
+                if (indexAutoRetire >= nodeCount) {
+                    indexAutoRetire = 0;
+                }
+                requestRelease(indexAutoRetire);
+                indexAutoRetire ++ ;
+            }
+        }
+        
+
+        //notify v-node
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.approveProposal));
+
+        //make protocol pool to know subchain is active
+        protocnt.setSubchainActiveBlock();
+
+        //adjust reward
+        adjustReward();
+        
+        //refund current caller
+        msg.sender.transfer((gasinit - msg.gas + 15000) * tx.gasprice);
+        //ReportStatus("Request ok");
+        
+        if (subchainstatus == uint(SubChainStatus.pending)) {
+            withdrawal();
+        }
+
+        //update flag
+        prop.distributeFlag = 1;
+
+        return true;
+    }
+
+    function requestDistributeAction(bytes32 hash) public payable returns (bool) {
+        uint gasinit = msg.gas;
+        //any one can request
+        Proposal storage prop = proposals[hash];
+        require(prop.distributeFlag == 1);
+        uint i;
+        address cur;
+
+        //check if contract has enough fund
+        uint totalamount = 0;
+        for (i = 0; i < prop.viaNodeAddress.length; i++) {
+            totalamount += prop.viaNodeAmount[i];
+        }        
+
+        for (i = 0; i < prop.minerAddr.length; i++) {
+            cur = prop.minerAddr[i];
+            totalamount += currentRefundGas[cur];
+            totalamount += prop.distributionAmount[i];
+        }
+
+        //if not enough amount, halt proposal
+        if( totalamount > this.balance ) {
+            //set global flag
+            contractNeedFund += totalamount;
+            return false;
+        }
+
+        //setflag
+        prop.distributeFlag = 2;
+
+        //doing actual distribution
+        for ( i = 0; i < prop.viaNodeAddress.length; i++) {
+            prop.viaNodeAddress[i].transfer(prop.viaNodeAmount[i]);
+            TransferAmount(prop.viaNodeAddress[i], prop.viaNodeAmount[i]);
+        }
+
+        for ( i = 0; i < prop.minerAddr.length; i++) {
+            cur = prop.minerAddr[i];
+            uint targetGas = currentRefundGas[cur];
+            currentRefundGas[cur] = 0;
+            cur.transfer(targetGas);
+            TransferAmount(cur, targetGas);
+            targetGas = prop.distributionAmount[i];
+            scsBeneficiary[cur].transfer(targetGas);
+            TransferAmount(scsBeneficiary[cur], targetGas);
+            
+        }
+
+
+        //redeem tokens
+        if (BALANCE != 0 ) {
+            removeholdingPool(hash);
+            redeemFromMicroChain(prop.ercAddress, prop.ercAmount);
+        }
+        
+        SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.distributeProposal));
+        //refund current caller
+        msg.sender.transfer((gasinit - msg.gas + 15000) * tx.gasprice);
+        return true;
+    }
+
+    function removeholdingPool(bytes32 hash) private {
+        if (proposals[hash].lastApproved != 0x0) {
+            uint i;
+            bool val = false;
+            for (i = holdingPoolPos; i < holdingPool.userAddr.length; i++) {
+                if (proposals[hash].userAddr.length == MAX_USERADDR_TO_SUBCHAIN) {
+                    holdingPoolPos = i;
+                    val = true;
+                    break;
+                }
+                proposals[hash].userAddr.push(holdingPool.userAddr[i]);
+                proposals[hash].amount.push(holdingPool.amount[i]);
+            }
+            
+            if (val != true) {
+                holdingPoolPos = i;
+            }
+        }
+    }
+
+    function adjustReward() private {
+        blockReward = blockReward - blockReward * DEFLATOR_VALUE / 10 ** 6;    
+        txReward = txReward - txReward * DEFLATOR_VALUE / 10 ** 6;    
+        viaReward = viaReward - viaReward * DEFLATOR_VALUE / 10 ** 6;    
+        syncReward = syncReward - syncReward * DEFLATOR_VALUE / 10 ** 6;    
+    }
+
+    //to increase reward if deflator is too much
+    function increaseReward(uint percent) private {
+        require(owner == msg.sender);
+        blockReward = blockReward + blockReward * percent / 100;    
+        txReward = txReward - txReward * percent / 100;    
+        viaReward = viaReward - viaReward * percent / 100;    
+        syncReward = syncReward - syncReward * percent / 100;    
+    }
+
+    function addFund() public payable {
+        // do nothing
+        //ReportStatus("fund added" );
+        require(owner == msg.sender);
+        if( (this.balance + msg.value )  > contractNeedFund ) {
+            contractNeedFund = 0;
+            uint blk = lastFlushBlk + flushInRound + (nodeCount - 1) * 2 * proposalExpiration;
+            
+            if (block.number >= blk) {
+                lastFlushBlk = block.number;
+                SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.updateLastFlushBlk));
+            }
+        }
+    }
+
+    function withdraw(address recv, uint amount) public payable {
+        require(owner == msg.sender);
+
+        //withdraw to address
+        recv.transfer(amount);
+    }
+    
+    function withdrawal() private {
+        subchainstatus = uint(SubChainStatus.close);
+        //release fund
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        //release already enrolled scs
+        for (uint i = nodeCount; i > 0; i--) {
+            //release fund
+            address cur = nodeList[i-1];
+            protocnt.releaseFromSubchain(
+                cur,
+                penaltyBond
+            );
+
+            delete nodeList[i-1];
+        }
+
+        nodeCount = 0;
+
+        //refund all to owner
+        owner.transfer(this.balance);
+        
+        //kill self
+    }
+
+    function close() public {
+        require(owner == msg.sender);
+
+        subchainstatus = uint(SubChainStatus.pending);
+        
+        if (proposalHashInProgress == 0x0) {
+            lastFlushBlk = block.number - flushInRound;
+            SCS_RELAY.notifySCS(address(this), uint(SCSRelayStatus.updateLastFlushBlk));
+        }
+    }
+
+    function addSyncNode(address id, string link) public {
+        require(owner == msg.sender);
+        syncNodes.push(SyncNode(id, link));
+    }
+
+    function removeSyncNode(uint index) public {
+        require(owner == msg.sender && syncNodes.length > index);
+        syncNodes[index] = syncNodes[syncNodes.length - 1];
+        delete syncNodes[syncNodes.length - 1];
+        syncNodes.length--;
+    }
+
+    function isSCSValid(address addr) private view returns (bool) {
+        if (!isMemberValid(addr)) {
+            return false;
+        }
+
+        //check if valid registered in protocol pool
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        if (!protocnt.isPerforming(addr)) {
+            return false;
+        }
+        return true;
+    }
+
+    function applyJoinNodes() private {
+        uint i = 0;
+        for (i = joinCntNow; i > 0; i--) {
+            if( nodePerformance[nodesToJoin[i-1]] == NODE_INIT_PERFORMANCE) {
+                nodeList.push(nodesToJoin[i-1]);
+                nodeCount++;
+
+                //delete node
+                nodesToJoin[i-1] = nodesToJoin[nodesToJoin.length-1];
+                delete nodesToJoin[nodesToJoin.length-1];
+                nodesToJoin.length --;
+            }
+        }
+
+        joinCntNow = nodesToJoin.length;
+        if( joinCntNow == 0 ) {
+            joinCntMax = 0;
+            registerFlag = 0;
+        }
+    }
+
+    // reuse this code for remove bad node or other volunteerly leaving node
+    // nodetype 0: bad node, 1: volunteer leaving node
+    function applyRemoveNodes(uint nodetype) private {
+        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+
+        uint count = nodesToDispel.length;
+        if (nodetype == 1) {
+            count = nodeToReleaseCount;
+        }
+
+        if (count == 0) {
+            return;
+        }
+
+        // all nodes set 0 at initial, set node to be removed as 1.
+        uint[] memory nodeMark = new uint[](nodeCount);
+        uint idx = 0;
+        uint i = 0;
+        for (i = 0; i < count; i++) {
+            if (nodetype == 0) {
+                //bad ones
+                nodeMark[nodesToDispel[i]] = 1;
+            }
+            else {
+                idx = nodesToRelease[i];
+                //volunteer leaving, only were not marked as bad ones
+                if (nodeMark[idx] == 0) {
+                    nodeMark[idx] = 1;
+                    //release fund
+                    address cur = nodeList[idx];
+                    protocnt.releaseFromSubchain(
+                        cur,
+                        penaltyBond
+                    );
+                }
+            }
+        }
+
+        //adjust to update nodeList
+        for (i = nodeCount; i > 0; i--) {
+            if (nodeMark[i-1] == 1) {
+                //swap with last element
+                // remove node from list
+                nodeCount--;
+                nodeList[i-1] = nodeList[nodeCount];
+                delete nodeList[nodeCount];
+                nodeList.length--;
+                //nodesToDispel.length--;
+            }
+
+            // if (i == 0) {
+            //     break;
+            // }
+            // else {
+            //     i--;
+            // }
+        }
+
+        //clear nodesToDispel and nodesToRelease array
+        if (nodetype == 0) {
+            //clear bad ones
+            nodesToDispel.length = 0 ;
+        } else {
+            //clear release count
+            nodeToReleaseCount = 0;
+        }
+    }
+    
+    // ATO new
+    function rebuildFromLastFlushPoint() public {
+        require(msg.sender == owner);
+        //notifyscs
+        //set flushindex
+        curFlushIndex = 0;
+    }
+
+
+    function getindexByte(address a, uint8 randIndex1, uint8 randIndex2) private  pure returns (uint b) {
+        uint8 first = uint8(uint(a) / (2 ** (4 * (39 - uint(randIndex1)))) * 2 ** 4);
+        uint8 second = uint8(uint8(uint(a) / (2 ** (4 * (39 - uint(randIndex2)))) * 2 ** 4) / 2 ** 4);    // &15
+        return uint(byte(first + second));
+    }
+    
+    function matchSelTarget(address addr, uint8 index1, uint8 index2) public view returns (bool) {
+        // check if selTargetdist matches.
+        uint addr0 = getindexByte(addr, index1, index2);
+        uint cont0 = getindexByte(address(this), index1, index2);
+
+        if (selTarget == 255) {
+            return true;
+        }
+
+        if (addr0 >= cont0) {
+            if ((addr0 - cont0) <= selTarget) {
+                return true;
+            }
+            else {
+                if (cont0 - selTarget < 0) {
+                    if ((addr0 - cont0) >= 256 - selTarget) {
+                        //lower half round to top,  addr0 -256 >= cont0 -selTarget
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        }
+        else {
+            //addr0 < cont0
+            if ((cont0 - addr0) <= selTarget) {
+                return true;
+            }
+            else {
+                if (cont0 + selTarget >= 256) {
+                    if ((cont0 - addr0) >= 256 - selTarget) {
+                        //top half round to bottom,   addr0 +256  <= (selTarget+cont0)
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    //ATO new
+    //if this microchain support token, it can call below functions
+    function setToken(address addr) public {
+        require(msg.sender == owner);
+        require(addr != address(0));
+
+        tokenAddress = addr;
+        
+        MarketableToken token = MarketableToken(tokenAddress);
+        BALANCE = token.totalSupply();
+        
+    }
+
+    //ATO new
+    function initToken(address[] addr, uint256[] bals, uint256[] lock) public {
+        require(msg.sender == owner);
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            token.initToken(addr, bals, lock);
+        }
+    }
+
+    //ATO new
+    function refresh() public {
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            token.refresh();
+        }        
+    }
+
+    //ATO new
+    function buyMintToken() public payable returns (bool){
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            uint256 refund = token.buyMintToken(msg.sender, msg.value);
+            if( refund > 0 ) {
+                msg.sender.transfer( refund );
+            }
+        }              
+    }
+
+    //ATO new    
+    function sellMintToken(uint256 amount) public returns (bool){
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            uint256 proceed = token.sellMintTokenPre(msg.sender, amount);
+            if( proceed > 0 ) {
+                token.sellMintToken(msg.sender, amount);
+                msg.sender.transfer( proceed );
+                return true;
+            }
+        }              
+    }
+
+    //ATO new
+    function requestEnterMicrochain(uint256 amount) public returns (bool){
+        bool res = false;
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            res = token.requestEnterMicrochain(msg.sender, amount);
+            if (res) {
+                holdingPool.userAddr.push(msg.sender);
+                holdingPool.amount.push(amount);
+            }
+        }              
+        return res;
+    }
+    
+    //ATO new
+    function redeemFromMicroChain(address[] addr, uint256[] bals) private returns (bool){
+        if( tokenAddress != address(0)) {
+            MarketableToken token = MarketableToken(tokenAddress);
+            return token.redeemFromMicroChain(addr, bals);
+        }              
+    }
 }

@@ -4,6 +4,35 @@
 
 ## 墨客女娲 1.0.x 
 
+
+### 墨客女娲版本 1.0.3:
+
+发布日期: 09/29/2018
+
+本次发布的软件包仅适用于非主网的测试网。
+主要更新包括修正了压力测试中发现的一些问题，提高了子链系统的处理能力，相应的子链部署合约也进行了更新。
+新的子链部署合约需要和更新的软件包一起使用。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.MAC.tar.gz)
+
+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.MAC.tar.gz)
+
+部署子链的合约文件
+
+* [SubChainProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainProtocolBase.sol)
+* [VnodeProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/VnodeProtocolBase.sol)
+* [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainBase.sol)
+
 ### 文件风暴（FileStorm）:
 
 发布日期: 08/18/2018

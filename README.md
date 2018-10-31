@@ -2,6 +2,37 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa 1.0.4:
+
+Release Date: 10/31/2018
+
+This release is for testnet only.
+It fixed a few issues discovered during the test.
+It provides JSON-RPC commands for the SCS server in addition to nuwa1.0.3 RPC commands.
+For Linux and Windows platform, we provided both 386 and amd64 compilations.
+
+VNODE
+
+* Discard the vnode address error in vnodeconfig.json when scsservice is false;
+* Notify SCS only for mining SCS;
+* Fixed the issues found in the flush process;
+
+SCS
+
+* Fix some issues found in the flush process;
+* Provide new command options, user can use -h to see the new options ;
+* Add JSON-RPC rpc interfaces with new RPC commands:
+
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.mac.tar.gz)
+
+
 ### Nuwa 1.0.3:
 
 Release Date: 09/29/2018
@@ -17,7 +48,7 @@ VNODE+SCS client
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.ubuntu.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.mac.tar.gz)
 
 MicroChain contracts
 

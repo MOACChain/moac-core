@@ -4,6 +4,35 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa 1.0.4:
+
+发布日期: 10/31/2018
+
+本次发布的软件包仅适用于测试网。
+修正了测试中发现的一些问题，SCS端增加了JSON-RPC类型的RPC接口。
+本次发布对linux和windows提供了386和amd64的编译版本.
+
+VNODE
+
+* 修正了配置文件vnodeconfig.json中scsservice设置为false时，via没配置报错；
+* 仅对进行子链确认的SCS节点发送通知;
+* 修正子链对主链的写入确认中的问题;
+
+SCS
+
+* 修正子链对主链的写入确认中的问题;
+* 修改了command line界面的选项，提供了更多信息，可以用"-h"来看最新的信息；
+* 增加多个SCS端JSON-RPC的命令，具体可以参考[文档部分](https://github.com/MOACChain/moac-core/wiki/JSON-RPC)；
+
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.mac.tar.gz)
+
 
 ### 墨客女娲版本 1.0.3:
 
@@ -15,17 +44,11 @@
 
 **下载链接**
 
-VNODE 可执行文件包
+VNODE+SCS 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-vnode1.0.3.MAC.tar.gz)
-
-SCS 可执行文件包
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa-scs1.0.3.MAC.tar.gz)
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.mac.tar.gz)
 
 部署子链的合约文件
 
@@ -33,7 +56,16 @@ SCS 可执行文件包
 * [VnodeProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/VnodeProtocolBase.sol)
 * [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainBase.sol)
 
-### 文件风暴（FileStorm）:
+### 文件风暴（FileStorm）1.0.1:
+
+发布日期: 08/27/2018
+
+
+[文件风暴 1.0.1](https://github.com/MOACChain/moac-core/releases/download/1.0.1/filestorm1.0.1.tar)
+
+可以使用[deploy.js](https://github.com/MOACChain/moac-core/releases/download/1.0.1/deploy.js) 在一个VNODE和3个SCS来部署一个子链.
+
+### 文件风暴（FileStorm）1.0.0:
 
 发布日期: 08/18/2018
 

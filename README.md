@@ -9,19 +9,21 @@ Release Date: 10/31/2018
 This release is for testnet only.
 It fixed a few issues discovered during the test.
 It provides JSON-RPC commands for the SCS server in addition to nuwa1.0.3 RPC commands.
+A video tutorial can be found on MOAC youtube channel.
 For Linux and Windows platform, we provided both 386 and amd64 compilations.
 
 VNODE
 
-* Discard the vnode address error in vnodeconfig.json when scsservice is false;
-* Notify SCS only for mining SCS;
+* Discarded the vnode address error in vnodeconfig.json when scsservice is false;
+* NotifiedSCS only for mining SCS;
 * Fixed the issues found in the flush process;
 
 SCS
 
-* Fix some issues found in the flush process;
-* Provide new command options, user can use -h to see the new options ;
-* Add JSON-RPC rpc interfaces with new RPC commands:
+* Fixed an "out of gas" error when calling contract function using JSON-RPC calls
+* Fixed some issues found in the flush process;
+* Provided a new command options, user can use -h to see the new options ;
+* Added JSON-RPC rpc interfaces with new RPC commands;
 
 
 **Download links**

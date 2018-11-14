@@ -2,6 +2,33 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa v1.0.5: 
+
+Nuwa v1.0.5 is a package released for both mainnet and testnet. It enable all the functionality of MicroChain and fixed a few issues discovered during the test.
+It provides JSON-RPC commands for the SCS server.
+
+VNODE
+
+* Enabled the whitelist for Microchains in the mainnet;
+* Increased SubChainBase contract functions;
+* Fixed the issues found in the test process;
+
+SCS
+
+* Fixed the bugs in HandleProposalDistribute and getCurNodeList  functions;
+* Modified the way to get account nonce;
+* In command line flags, changed 'rpc1' to 'rpcdebug', 'rpc2' to 'rpc';
+* Used 'rpccorsdomain' flag to control the domains from which to accept cross origin requests;
+
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.mac.tar.gz)
+
 ### Nuwa 1.0.4:
 
 Release Date: 10/31/2018

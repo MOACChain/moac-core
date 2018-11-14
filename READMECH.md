@@ -4,6 +4,33 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa 1.0.5:
+
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了完整的子链功能；
+为用户提供了便于使用的SCS端的JSON-RPC的接口。
+
+VNODE
+
+* 在SubChainBase中增加了更多功能；
+* 在主链上提供了子链whitelist的控制功能;
+* 修正之前测试发现的一些问题;
+
+SCS
+
+* 修正 HandleProposalDistribute 和 getCurNodeList  函数中的问题;
+* 修改 account 在子链上获取 nonce 的方式;
+* 把SCS命令行的 RPC 命令名称进行了修改，之前'rpc1'改为'rpcdebug', 'rpc2'改为'rpc';
+* SCS命令行使用 'rpccorsdomain' 来控制外部访问SCS的功能;
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.mac.tar.gz)
+
 ### Nuwa 1.0.4:
 
 发布日期: 10/31/2018

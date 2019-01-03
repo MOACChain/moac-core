@@ -1,7 +1,15 @@
 pragma solidity ^0.4.11;
-//David Chen
-//Subchain definition for application.
 
+/**
+ * @title SubChainProtocolBase.sol
+ * @author David Chen
+ * @dev 
+ * Subchain definition for application.
+ * SCS need to use this contract to register/withdraw
+ * from the subchain.
+ * Requires : none
+ * Required by: SubChainBase.sol
+ */
 
 contract SysContract {
     function delayedSend(uint _blk, address _to, uint256 _value, bool bonded) public returns (bool success);
@@ -307,12 +315,11 @@ contract SubChainProtocolBase {
             scsArray.push(scsId);
         }
     }
-
     function removeScsId(address scsId) private {
         uint len = scsArray.length;
-        for (uint i=0; i<len; i++) {
-            if (scsArray[i] ==  scsId) {
-                scsArray[i] = scsArray[len - 1];
+        for (uint i=len; i>0; i--) {
+            if (scsArray[i-1] ==  scsId) {
+                scsArray[i-1] = scsArray[len - 1];
                 delete scsArray[len - 1];
                 scsArray.length--;
             }

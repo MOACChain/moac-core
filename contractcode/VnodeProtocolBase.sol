@@ -22,6 +22,8 @@ contract VnodeProtocolBase {
         uint state; // one of VnodeStatus
         uint256 registerBlock;
         uint256 withdrawBlock;
+        string rpclink;
+        address via;
         string link;
     }
 
@@ -30,6 +32,9 @@ contract VnodeProtocolBase {
 
     uint public vnodeCount;
     uint public bondMin;
+    address public owner;
+    mapping(address => address[]) public outageReportList;
+
     uint public constant PEDNING_BLOCK_DELAY = 50; // 8 minutes
     uint public constant WITHDRAW_BLOCK_DELAY = 8640; // one day, given 10s block rate
  
@@ -48,10 +53,14 @@ contract VnodeProtocolBase {
         nd.state = uint(VnodeStatus.performing);
         nd.registerBlock = block.number + PEDNING_BLOCK_DELAY;
         nd.withdrawBlock = 2 ** 256 - 1;
+        nd.rpclink = "";
+        nd.via = address(0);
         nd.link = "";
         
         vnodeStore.push(nd);
         vnodeCount++;
+
+        owner = msg.sender;
     }
 
     function() public payable {  
@@ -59,7 +68,7 @@ contract VnodeProtocolBase {
     }
 
     // register for vnode
-    function register(address vnode, string link) public payable returns (bool) {
+    function register(address vnode, address via, string link, string rpclink) public payable returns (bool) {
         //already registered or not enough bond
         require( vnodeList[vnode] == 0 && msg.value >= bondMin*10**18 );
 
@@ -69,6 +78,8 @@ contract VnodeProtocolBase {
         nd.state = uint(VnodeStatus.performing);
         nd.registerBlock = block.number + PEDNING_BLOCK_DELAY;
         nd.withdrawBlock = 2 ** 256 - 1;
+        nd.rpclink = rpclink;
+        nd.via = via;
         nd.link = link;
         
         vnodeStore.push(nd);
@@ -135,7 +146,7 @@ contract VnodeProtocolBase {
 
         uint index = randness%vnodeCount;
         //skip dummy
-        if(index ==0 ){
+        if(index ==0){
             index++;
         }
         if( isPerforming(vnodeStore[index].from) ) {
@@ -145,5 +156,55 @@ contract VnodeProtocolBase {
         return  "";
     }
 
- 
+    //report one vnode is outage. limit to 5, no duplicate report from one sender
+    function reportOutage(address vnode ) public {
+        if( outageReportList[vnode].length < 5 ) {
+            //check if reported by this sender already
+            for( uint i=0; i<outageReportList[vnode].length; i++) {
+                if( outageReportList[vnode][i] == msg.sender ) {
+                    return;
+                }
+            }
+            outageReportList[vnode].push(msg.sender);
+        }
+    }
+
+    //sweep only n vnodes at a time
+    function sweepOutage(uint level, uint startpos, uint count) public {
+        require(msg.sender == owner);
+        require(level > 0 && level <= 5);
+        require(startpos > 0 && startpos < vnodeCount);
+
+        //check endpos 
+        uint endpos = startpos + count - 1;
+        if(endpos >= vnodeCount ) {
+            endpos = vnodeCount - 1;
+        }
+
+        //check each node
+        uint i = 0;
+        for( i=endpos; i>=startpos; i-- ) {
+            //if in outage list
+            if( outageReportList[vnodeStore[i].from].length >= level ) {
+                delete outageReportList[vnodeStore[i].from];
+
+                //remove from list
+                //replace with last one
+                vnodeCount--;
+                vnodeStore[i].from = vnodeStore[vnodeCount].from;
+                vnodeStore[i].bond = vnodeStore[vnodeCount].bond;
+                vnodeStore[i].registerBlock = vnodeStore[vnodeCount].registerBlock;
+                vnodeStore[i].withdrawBlock = vnodeStore[vnodeCount].withdrawBlock;
+                vnodeStore[i].link = vnodeStore[vnodeCount].link;
+                delete vnodeStore[vnodeCount];
+
+                //update index
+                vnodeList[vnodeStore[i].from] = i;
+
+
+            }
+        }
+
+    }
+
 }

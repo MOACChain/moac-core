@@ -2,10 +2,57 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa v1.0.6: 
+
+Nuwa v1.0.6 is a package released for both mainnet and testnet. 
+It enable the cross-chain atomic swap of tokens between MicroChains and MotherChain.
+
+For VNODE users:
+* If you want to use the cross-chain atomic swap, you need to upgrade the VNODE software to this version v1.0.6.
+* If you only mining or monitoring the network, you don't have to upgrade your VNODE software.
+
+For SCS users:
+* Please upgrade to this version to allow cross-chain atomic swap functions.
+* Please also use the MicroChain contracts provided with v1.0.6.
+
+VNODE
+
+* Enable the cross-chain atomic swap of tokens between MicroChains and MotherChain;
+* Fixed the issues found in the v1.0.5;
+
+SCS
+
+* Enable the cross-chain atomic swap of tokens between MicroChains and MotherChain;
+* Support proxy server cache and added NotifySyncEvent in proxy server;
+
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.mac.tar.gz)
+
+MicroChain contracts
+
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainProtocolBase.sol)
+* [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/VnodeProtocolBase.sol)
+* [SubChainBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainBase.sol)
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+
 ### Nuwa v1.0.5: 
 
 Nuwa v1.0.5 is a package released for both mainnet and testnet. It enable all the functionality of MicroChain and fixed a few issues discovered during the test.
 It provides JSON-RPC commands for the SCS server.
+
+For VNODE users:
+* If you want to become a VNODE proxy and join MicroChain mining, you need to upgrade the VNODE software to this version v1.0.5.
+* If you only mining or monitoring the network, you don't need to upgrade your VNODE software.
+
+For SCS users:
+* Please upgrade to this version as soon as possible to allow MicroChain usage.
+* Please also use the MicroChain contracts provided with v1.0.5.
 
 VNODE
 
@@ -28,6 +75,13 @@ VNODE+SCS client
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.mac.tar.gz)
+
+MicroChain contracts
+
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainProtocolBase.sol)
+* [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/VnodeProtocolBase.sol)
+* [SubChainBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainBase.sol)
+
 
 ### Nuwa 1.0.4:
 

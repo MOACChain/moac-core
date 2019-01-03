@@ -4,11 +4,61 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa v1.0.6: 
+
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了母链和子链之间的原子跨链交易；
+
+
+对于VNODE节点用户
+* 如果要使用跨链功能，必须升级到v1.0.6；
+* 如果只是使用VNODE挖矿，或者作为监听节点，短期内不会有影响，但建议升级；
+
+对于SCS节点用户
+* 如果要使用跨链功能，必须升级到v1.0.6；
+* 必须使用v1.0.6提供的带有跨链功能的子链合约来部署子链；
+
+VNODE
+
+* 在母链上提供了原子跨链功能;
+* 修正之前测试发现的一些问题;
+
+SCS
+
+* 为子链提供了原子跨链功能，可以配合子链DAPP来完成和母链之间的原子交易;
+* 和子链代理节点之间提供了缓存功能，增加了NotifySyncEvent;
+
+
+**Download links**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.mac.tar.gz)
+
+MicroChain contracts
+
+带有跨链功能的子链合约
+
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainProtocolBase.sol)
+* [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/VnodeProtocolBase.sol)
+* [SubChainBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainBase.sol)
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+
 ### Nuwa 1.0.5:
 
 本次发布的软件包可用于主网和测试网。
 修正了之前测试中发现的一些问题，提供了完整的子链功能；
 为用户提供了便于使用的SCS端的JSON-RPC的接口。
+
+对于VNODE节点用户
+* 如果要配置子链，成为子链代理节点（MicroChain Proxy）的，请尽快升级到v1.0.5；
+* 如果只是使用VNODE挖矿，或者作为监听节点，短期内不会有影响，但建议升级；
+
+对于SCS节点用户
+* 必须升级到v1.0.5；
+* 必须使用v1.0.5提供的子链合约来初始部署子链；
 
 VNODE
 
@@ -30,6 +80,12 @@ VNODE+SCS 可执行文件包
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.mac.tar.gz)
+
+MicroChain contracts
+
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainProtocolBase.sol)
+* [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/VnodeProtocolBase.sol)
+* [SubChainBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainBase.sol)
 
 ### Nuwa 1.0.4:
 

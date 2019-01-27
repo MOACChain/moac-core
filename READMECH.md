@@ -4,6 +4,51 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa v1.0.7: 
+
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了母链和子链之间的使用MOAC和ERC20 token的原子跨链交易；
+优化了跨链功能：
+1. 允许快速充值并将充值上限提高到500以上；
+2. 优化VIA节点奖励模式;
+3. 增加白名单快速通道，使得符合一定条件的母链合约可以不经审核直接部署;
+4. 修正Fixed the bug that MicroChain flush stop before DAPP deployed;
+5. 提供MOAC和母链ERC20 TOKEN对子链的跨链兑换功能;
+6. 提供ARM linux的编译版本.
+
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.arm.tar.gz)
+
+带有跨链功能的子链合约
+
+MOAC 跨链交换子链 tokens
+
+* [SubChainBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseASM.sol)
+* [VnodeProtocolBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseASM.sol)
+
+母链 ERC20 token 跨链交换子链 tokens
+
+* [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/erc20.sol)
+* [SubChainBaseAST](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseAST.sol)
+* [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseAST.sol)
+
+带有跨链功能的子链协议合约
+
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainProtocolBase.sol)
+
+带有跨链功能的子链DAPP合约
+
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+
+
+
 ### Nuwa v1.0.6: 
 
 本次发布的软件包可用于主网和测试网。
@@ -25,7 +70,7 @@ VNODE
 
 SCS
 
-* 为子链提供了原子跨链功能，可以配合子链DAPP来完成和母链之间的原子交易;
+* 为子链提供了原子跨链功能，可以配合子链DAPP来完成和母链之间的原子交易，每次充/提不超过500母链token;
 * 和子链代理节点之间提供了缓存功能，增加了NotifySyncEvent;
 
 

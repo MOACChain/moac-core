@@ -2,6 +2,65 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa v1.0.7: 
+
+Nuwa v1.0.7 is a package released to use cross chain service between MotherChain and MicroChain. 
+It optimized the MicroChain service with:
+1.  Enable the fast deposit to MicroChain from MotherChain and increase the flush limit larger than 500;
+2. Optimized the via reward model;
+3. Added express Smart Contract channel for white list;
+4. Fixed the bug that MicroChain flush stop before DAPP deployed;
+5. Provide a Atomic Swap of Moac (ASM) in addition to Atomic Swap of Token (AST).Enabled the atomic swap of tokens and MOACs between MicroChains and MotherChain;
+6. Added compiled binaries for ARM linux.
+
+For VNODE users:
+* If you want to use the cross-chain atomic swap, you need to upgrade the VNODE software to this version v1.0.7.
+* If you only mining or monitoring the network, you don't have to upgrade your VNODE software.
+
+For SCS users:
+* Please upgrade to this version to allow cross-chain atomic swap functions.
+* Please also use the MicroChain contracts provided with v1.0.7.
+
+VNODE
+
+* Enable the cross-chain atomic swap of tokens and MOACs between MicroChains and MotherChain;
+* Optimized the via reward model;
+* Added express Smart Contract channel for white list;
+
+SCS
+
+* Enable the cross-chain atomic swap of Moacs between MicroChains and MotherChain;
+* Fixed the bug that MicroChain flush stop before DAPP deployed;
+
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.arm.tar.gz)
+
+MicroChain contracts v1.0.7
+
+Atomic Swap of MOAC with MicroChain tokens
+
+* [SubChainBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseASM.sol)
+* [VnodeProtocolBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseASM.sol)
+
+Atomic Swap of ERC20 token with MicroChain tokens
+
+* [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/erc20.sol)
+* [SubChainBaseAST](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseAST.sol)
+* [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseAST.sol)
+
+MicroChain protocol 
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainProtocolBase.sol)
+
+Example DAPP contract using Atomic Swap of MOAC/tokens
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+
 ### Nuwa v1.0.6: 
 
 Nuwa v1.0.6 is a package released for both mainnet and testnet. 

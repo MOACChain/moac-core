@@ -4,6 +4,50 @@
 
 ## 墨客女娲 1.0.x 
 
+
+### Nuwa 1.0.8
+
+本次发布的软件包仅用测试网，用于测试子链的多合约部署。
+本版本的SCS和VNODE需要一起使用以支持子链上部署多个合约。
+子链多合约指的是在一条子链中部署多个智能合约，多合约可以将业务逻辑进行拆分，相互调用，合约之间也可以进行升级;
+为SCS提供更多开发接口，便于用户使用；
+
+1.  允许子链上同时部署多个合约;
+2.  通过 SCS RPCdebug 接口提供多个合约查询方法以允许用户调用子链上的多个合约，并查询结果;
+3.  通过 SCS RPC 接口提供多个合约查询方法以允许用户调用子链上的多个合约，并查询结果;
+4.  优化了P2P的连接方式；
+
+合约例子里面提供了可以部署一条支持AST的多合约子链，包括以下合约
+
+* erc20.sol: 母链上的ERC20 token合约，可以用于交换子链原生token；
+* SubChainProtocolBase.sol: 支持多合约的子链池合约;
+* VnodeProtocolBase.sol: 支持多合约的VNODE代理池合约.
+* SubChainBase.sol: 支持多合约的子链合约.;
+* Dappbase.sol: 支持多合约的子链DAPP控制合约;
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.arm.tar.gz)
+
+母链 ERC20 token 跨链交换子链 tokens
+
+* [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/erc20.sol)
+* [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/VnodeProtocolBase.sol)
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainProtocolBase.sol)
+
+带有跨链功能的子链协议合约
+
+* [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainBase.sol)
+
+带有跨链功能的子链DAPP控制合约
+
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/DappBase.sol)
+
 ### Nuwa v1.0.7: 
 
 本次发布的软件包可用于主网和测试网。
@@ -45,7 +89,7 @@ MOAC 跨链交换子链 tokens
 
 带有跨链功能的子链DAPP合约
 
-* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/dappbase.sol)
 
 
 

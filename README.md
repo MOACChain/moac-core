@@ -2,6 +2,46 @@
 
 ## MOAC Nuwa 1.0.x 
 
+Nuwa v1.0.8 only runs on testnet and is used to test the new Multiple contracts on MicroChain:
+
+1.  Allow multiple contracts to be deployed on one MicroChain;
+2.  Enable new RPCdebug methods in SCS to work with MicroChain and DAPPs;
+3.  Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+4.  Added more bootnodes to improve the P2P connections;
+
+MicroChain contracts
+
+The example contracts are used to form a MicroChain with capability to support Atomic Token Swap of ERC20 token.
+
+* erc20.sol: Example contract to generate an ERC20 token on MOAC mother chain which can be used to swap with tokens on the MicroChain. This contract used a fixed supply for the token and user can change the name/symbol of the token before deploy;
+* SubChainProtocolBase.sol: Contract with protocol to register SCSs;
+* VnodeProtocolBase.sol: Vnode Protocol contract for VNODES to enable the multiple contracts.
+* SubChainBase.sol: Subchain contract for SCSs to form the MicroChain and hold multiple contracts;
+* Dappbase.sol: Contract required to first deploy on the MicroChain and enable multiple contracts deployment;
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.arm.tar.gz)
+
+Support contracts to form the MicroChain
+
+* [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/erc20.sol)
+* [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/VnodeProtocolBase.sol)
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainProtocolBase.sol)
+
+MicroChain contract
+
+* [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainBase.sol)
+
+DAPP control contract
+
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/DappBase.sol)
+
 ### Nuwa v1.0.7: 
 
 Nuwa v1.0.7 is a package released to use cross chain service between MotherChain and MicroChain. 

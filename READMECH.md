@@ -4,6 +4,36 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa v1.0.9: 
+
+版本特性 
+
+1.  在主网和测试网上支持多合约。子链多合约指的是在一条子链中部署多个智能合约，多合约可以将业务逻辑进行拆分，相互调用，合约之间也可以进行升级;
+2.  为SCS提供更多开发接口，便于用户使用；
+3.  提供更多JSON-RPC接口；
+4.  优化了交易池中对子链确认过程的处理；
+5.  优化了P2P的连接方式；
+6.  更新了ASM和AST两种子链的合约；
+7.  提供了部署ASM和AST子链合约的脚本；
+
+更多信息可以参考最新的[开发文档](https://moac-docs.readthedocs.io/en/latest/index.html).
+
+开发团队同时提供可以接入子链的API和SDK，可以参考[API 文档](https://moac-docs.readthedocs.io/en/latest/restapi/index.html).
+接入API需要首先获取access token，请联系开发团队:moacapi@mossglobal.net.
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.arm.tar.gz)
+
+跨链交换子链的合约文件和执行脚本
+
+* [ASM contracts and script](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.ASM.tar.gz)
+* [AST contracts and script](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.AST.tar.gz)
 
 ### Nuwa 1.0.8
 

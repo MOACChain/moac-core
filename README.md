@@ -2,6 +2,46 @@
 
 ## MOAC Nuwa 1.0.x 
 
+Nuwa v1.0.10 runs on testnets only. It is used to test new algorithms on MicroChains:
+
+Allow multiple contracts to be deployed on one MicroChain;
+Enable new data structure supports in SCS RPCdebug APIs;
+Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+Update the README files in VNODE and added README file in SCS.
+
+The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports in nuwa1.0.10.ASM.tar.gz and nuwa1.0.10.AST.tar.gz;
+Also from this release, we call MicroChain as AppChain and MotherChain as BaseChain.
+Updated scripts to launch the MicroChains for both ASM and AST,
+Added scripts to deploy DappBase and Dapp,;
+Added script to call MicroChain and DappBase functions;
+More info can be found on the latest documentation
+More info can be found at:
+https://moac-docs.readthedocs.io/en/latest/subchain
+
+There are APIs and SDKs to use with the MicroChain.
+More info can be found on the API documentation:
+https://moac-docs.readthedocs.io/en/latest/restapi/introduction.html#access-control
+
+testnet API server：http://139.198.126.104:8080
+testnet access token can be get with the following login information:
+username：test
+password：123456
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.arm.tar.gz)
+
+Support contracts and scripts to create the MicroChain
+
+* [ASM contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.ASM.tar.gz)
+* [AST contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.AST.tar.gz)
+
 ### Nuwa v1.0.9: 
 
 Nuwa v1.0.9 is the version runs on both mainnet and testnet to support Multiple contracts on MicroChains:

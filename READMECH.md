@@ -4,6 +4,47 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa v1.0.10:
+
+版本特性 
+
+本版本仅在测试网上支持多合约，是为了测试子链新结构使用：
+
+1. 为SCS提供更多开发接口，便于用户使用；
+2. 在VNODE console中提供internal transaction的接口；
+3. 更新了ASM和AST两种子链中的DappBase合约；
+4. 修正了VNODE README中的错误，增加了SCS README；
+
+此外，本次发布还更新了nuwa1.0.10.ASM.tar.gz 和 nuwa1.0.10.AST.tar.gz
+本版开始，开始使用应用链（AppChain）来称呼子链（MicroChain），
+基础链（BaseChain）来称呼母链（MotherChain）。
+更新了部署ASM和AST子链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
+提供了在子链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
+提供了调用子链和DAPPBASE函数的例子；
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
+
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.arm.tar.gz)
+
+跨链交换子链的合约文件和执行脚本
+
+* [ASM contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.ASM.tar.gz)
+* [AST contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.AST.tar.gz)
+
 ### Nuwa v1.0.9: 
 
 版本特性 

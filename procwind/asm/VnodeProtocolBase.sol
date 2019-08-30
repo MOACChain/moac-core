@@ -4,9 +4,8 @@ pragma solidity ^0.4.11;
  * @title VnodeProtocolBase.sol
  * @author David Chen
  * @dev 
- * Subchain definition for application.
- * All the operations are done using the smallest and indivisible token unit,
- * just as on Ethereum all the operations are done in wei.
+ * VNODE protocol definition
+ * 
  */
 contract SysContract {
     function delayedSend(uint _blk, address _to, uint256 _value, bool bonded) public returns (bool success);

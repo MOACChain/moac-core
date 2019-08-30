@@ -8,7 +8,7 @@ pragma solidity ^0.4.11;
  * SCS need to use this contract to register/withdraw
  * from the subchain.
  * Requires : none
- * Required by: SubChainBase.sol
+ * Required by: ChainBaseASM.sol
  */
 
 contract SysContract {
@@ -150,16 +150,14 @@ contract SubChainProtocolBase {
     }
 
     function getSelectionTargetByCount(uint targetnum) public view returns (uint target) {
-        if (scsCount <= targetnum) {        
+        if (targetnum == 0 ) {
+            return 0;
+        } else if (scsCount <= targetnum) {        
             return 255;
         }
 
         //calculate distance
         target = (targetnum * 256 / scsCount + 1) / 2;
-
-        if (target == 0 ) {
-            target = 0;
-        }
 
         return target;
     }
@@ -315,6 +313,7 @@ contract SubChainProtocolBase {
             scsArray.push(scsId);
         }
     }
+
     function removeScsId(address scsId) private {
         uint len = scsArray.length;
         for (uint i=len; i>0; i--) {

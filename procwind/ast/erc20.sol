@@ -1,5 +1,13 @@
 pragma solidity ^0.4.13;
 
+/**
+ * @title erc20.sol
+ *
+ * @dev Implementation of the basic standard token.
+ * https://github.com/ethereum/EIPs/issues/20
+ * Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
+ */
+
 library SafeMath {
   function mul(uint256 a, uint256 b) internal pure returns (uint256) {
     if (a == 0) {
@@ -262,6 +270,8 @@ contract PausableToken is StandardToken, Pausable {
     return super.decreaseApproval(_spender, _subtractedValue);
   }
 }
+
+
 
 contract TestCoin is PausableToken {
   struct ErcMapping {

@@ -2,6 +2,14 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### LICENSE update and AppChain code is uploaded
+2019/08/29
+We updated the LICENSE of AppChain contracts to MIT LICENSE so we can provide better services to our customers and commercial partners.
+We also uploaded the source code for ProcWind AppChain to the procwind directory. This is to replace the previous contractsamples
+
+### Nuwa v1.0.10: 
+2019/07/12
+
 Nuwa v1.0.10 runs on testnets only. It is used to test new algorithms on MicroChains:
 
 Allow multiple contracts to be deployed on one MicroChain;

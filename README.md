@@ -2,6 +2,44 @@
 
 ## MOAC Nuwa 1.0.x 
 
+### Nuwa v1.0.11: 
+2019/09/25
+
+Nuwa v1.0.11 runs on mainnet and testnet.
+
+Allow multiple contracts to be deployed on one MicroChain;
+Supports SCS RPCdebug APIs;
+Supports JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+
+The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports in nuwa1.0.11.ASM.tar.gz and nuwa1.0.11.AST.tar.gz;
+
+Updated scripts to launch the MicroChains for both ASM and AST,
+Added scripts to deploy DappBase and Dapp,;
+Added script to call MicroChain and DappBase functions;
+More info can be found on the latest documentation
+More info can be found at:
+https://moac-docs.readthedocs.io/en/latest/subchain
+
+There are APIs and SDKs to use with the MicroChain.
+More info can be found on the API documentation:
+https://moac-docs.readthedocs.io/en/latest/restapi/introduction.html#access-control
+
+testnet API server：http://139.198.126.104:8080
+testnet access token can be get with the following login information:
+username：test
+password：123456
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.arm.tar.gz)
+
+
 ### LICENSE update and AppChain code is uploaded
 2019/08/29
 We updated the LICENSE of AppChain contracts to MIT LICENSE so we can provide better services to our customers and commercial partners.

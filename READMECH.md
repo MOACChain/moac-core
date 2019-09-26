@@ -4,6 +4,39 @@
 
 ## 墨客女娲 1.0.x 
 
+### Nuwa v1.0.11:
+2019/09
+
+版本特性 
+
+本版本可在主网和测试网上支持子链多合约，并进行了以下优化：
+
+1. 为 SCS 提供 RPCdebug 开发接口，便于用户调试；
+2. 为 SCS 提供 JSON-RPC ；
+3. 更新了ASM和AST两种子链中的合约；
+
+Supports SCS RPCdebug APIs;
+Supports JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+
+此外，本次发布一同更新了nuwa1.0.11.ASM.tar.gz 和 nuwa1.0.11.AST.tar.gz
+
+更新了部署ASM和AST子链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
+提供了在子链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
+提供了调用子链和DAPPBASE函数的例子；
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
+
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
 ### LICENSE 文件更新和应用链源程序发布
 2019/08/29
 为了更好地服务社区和商业用户，我们把应用链的LICENSE从GPL更换为MIT。

@@ -1,23 +1,21 @@
 MOAC Source Code for ProcWind AppChain
 
 
-This version of sources code is from Nuwa v1.0.10. It runs on testnets only. It is used to test new algorithms on MicroChains:
+This version of sources code is for Nuwa v1.0.11. 
 
-Allow multiple contracts to be deployed on one MicroChain;
+Allow multiple contracts to be deployed on one AppChain;
 Enable new data structure supports in SCS RPCdebug APIs;
-Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+Enable new JSON-RPC methods in SCS to work with AppChain and DAPPs;
 Update the README files in VNODE and added README file in SCS.
 
-The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports in nuwa1.0.10.ASM.tar.gz and nuwa1.0.10.AST.tar.gz;
-Also from this release, we call MicroChain as AppChain and MotherChain as BaseChain.
-Updated scripts to launch the MicroChains for both ASM and AST,
+Updated scripts to launch the AppChains for both ASM and AST,
 Added scripts to deploy DappBase and Dapp,;
-Added script to call MicroChain and DappBase functions;
+Added script to call AppChain and DappBase functions;
 More info can be found on the latest documentation
 More info can be found at:
 https://moac-docs.readthedocs.io/en/latest/subchain
 
-There are APIs and SDKs to use with the MicroChain.
+There are APIs and SDKs to use with the AppChain.
 More info can be found on the API documentation:
 https://moac-docs.readthedocs.io/en/latest/restapi/introduction.html#access-control
 
@@ -29,23 +27,18 @@ Testnet moac can be get from：https://faucet.moacchina.com/
 
 版本特性 
 
-本版本仅在测试网上支持多合约，是为了测试子链新结构使用：
-
 为SCS提供更多开发接口，便于用户使用；
 在VNODE console中提供internal transaction的接口；
-更新了ASM和AST两种子链中的DappBase合约；
+更新了ASM和AST两种应用链中的DappBase合约；
 修正了VNODE README中的错误，增加了SCS README；
 
-此外，本次发布还更新了nuwa1.0.10.ASM.tar.gz 和 nuwa1.0.10.AST.tar.gz
-本版开始，开始使用应用链（AppChain）来称呼子链（MicroChain），
-基础链（BaseChain）来称呼母链（MotherChain）。
-更新了部署ASM和AST子链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
-提供了在子链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
-提供了调用子链和DAPPBASE函数的例子；
+更新了部署ASM和AST应用链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
+提供了在应用链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
+提供了调用应用链和DAPPBASE函数的例子；
 更多信息可以参考最新的开发文档
 https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
-开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+开发团队同时提供可以接入应用链的API和SDK，可以参考API 文档.
 https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi/RestfulAPI%E7%AE%80%E4%BB%8B.html#id2
 
 测试环境地址：http://139.198.126.104:8080

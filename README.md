@@ -34,10 +34,10 @@ Testnet moac can be get from：https://faucet.moacchina.com/
 
 VNODE+SCS client
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.mac.tar.gz)
-* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.arm.tar.gz)
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.mac.tar.gz)
+* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.arm.tar.gz)
 
 
 ### LICENSE update and AppChain code is uploaded

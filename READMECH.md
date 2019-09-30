@@ -37,6 +37,12 @@ https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
 
 VNODE+SCS 可执行文件包
 
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.mac.tar.gz)
+* [ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.arm.tar.gz)
+
+
 ### LICENSE 文件更新和应用链源程序发布
 2019/08/29
 为了更好地服务社区和商业用户，我们把应用链的LICENSE从GPL更换为MIT。

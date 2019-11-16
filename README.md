@@ -619,6 +619,12 @@ from another terminal, run moac again to attach the running node
 
 	./moac.exe attach \\.\pipe\moac.ipc
 
+#### To run 'scsserver'
+
+It has to be under directory containing 'scsserver' file, run
+
+	./scsserver
+
 #### Example Console commands
 
 If console is not open, open the console using the instructions from above.

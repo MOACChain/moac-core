@@ -421,7 +421,7 @@ function addMicroChainFund(inaddr, num){
 // num - deposit for VNODE to join the VNODE pool
 // data - VNODE register FUNCTION
 function vnoderegister(vnode,num,via,ip){
-  var data=vnode.register.getData(vnode.address,via.toLowerCase(),ip,'')
+  var data=vnode.register.getData(via.toLowerCase(),ip)
   sendtx(baseaddr,vnode.address,num,data)
 }
 

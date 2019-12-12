@@ -274,7 +274,7 @@ deploy_subchainbase().then((data) => {
 	  }
 	}
 
-	vnoderegister(vnodePool, minVnodeDeposit, vnodeConnectUrl)
+	vnoderegister(vnodePool, minVnodeDeposit, vnodeVia, vnodeConnectUrl)
 
 	console.log("Registering SCS to the pool", scsPool.address);
 	registerScsToPool(scsPool.address,minScsDeposit);
@@ -452,8 +452,8 @@ function addMicroChainFund(inaddr, num){
 // vnode - vnode contract object with register function, and address
 // num - deposit for VNODE to join the VNODE pool
 // data - VNODE register FUNCTION
-function vnoderegister(vnode,num,ip){
-  var data=vnode.register.getData(vnode.address,ip)
+function vnoderegister(vnode,num,vnodetoadd,ip){
+  var data=vnode.register.getData(vnodetoadd,ip)
   console.log("Registering VNODE ......")
   sendtx(baseaddr,vnode.address,num,data)
 }

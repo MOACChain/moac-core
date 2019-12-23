@@ -29,14 +29,6 @@ var basepsd = "";//keystore password
 // Appchain address to be closed
 var appchainAddress = "";
 
-// need to have a valid account to use for contracts deployment
-baseaddr = "0xf6a36118751c50f8932d31d6d092b11cc28f2258";
-basepsd = "test";
-
-
-// The VNODE benificial address, should be found in the vnodeconfig.json 
-appchainAddress="0x97d4667ed5f70c4586b5b436c9bbd15eafdbfc02";
-
 //===============Check the Blockchain connection===============================
 // Setup VNODE server to send TX command and the SCS to monitor the AppChain
 

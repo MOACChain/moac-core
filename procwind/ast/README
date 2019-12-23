@@ -22,9 +22,10 @@ DappBasePrivate_0.5.sol  - DappControl contract for solidity compiler 0.5.x, thi
 DappBasePublic_0.5.sol   - DappControl contract for solidity compiler 0.5.x, this needs to be deployed separately with 
                            solidity 0.5.x compiler;
 SCSProtocolBase.sol      - AppChain definition contract for SCS pool, SCS calls this contract to 
-                           register/withdraw from the AppChain.
+                           register/withdraw from the AppChain;
 VNODEProtocolBase.sol    - AppChain definition protocol for VNODE pool, VNODE calls this contract to 
-                           register/withdraw the AppChain and handle the traffic of AppChain to the BaseChain network.
+                           register/withdraw the AppChain and handle the traffic of AppChain to the BaseChain network;
+erc20.sol                - Simple ERC20 token contract.
 
 Scripts
 deployAST.js             - Example JS script to deploy the AST AppChain and the Dappbase on the AppChain;

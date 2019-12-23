@@ -29,13 +29,8 @@ const Chain3 = require('chain3');
 const fs = require('fs');
 const solc = require('solc');//only 0.4.24 version should be used, npm install solc@0.4.24
 
-//===============Step 1. Deploy required Mother Chain contracts=========================
-// If you have all these contracts deployed earlier, you can skip this and go to Step 2.
-// 1.1 ERC20
-// 1.2 vnode pool
-// 1.3 scs pool
 
-// 1.1 Deploy the ERC20 contract with precompiled name as "AST COIN", supply with 10000000
+// Deploy the ERC20 contract
 var basepath = '.';
 var contractName = 'erc20';
 var solpath = basepath + '/' + contractName + '.sol';
@@ -43,17 +38,6 @@ var solpath = basepath + '/' + contractName + '.sol';
 var contract = fs.readFileSync(solpath, 'utf8');
 var output = solc.compile(contract, 1);
 
-// console.log("================================");
-// console.log(output);
-
-// `output` here contains the JSON output as specified in the documentation
-// for (var contractName in output.contracts['erc20.sol']) {
-//   console.log(
-//     contractName +
-//       ': ' +
-//       output.contracts['erc20.sol'][contractName].evm.bytecode.object
-//   );
-// }
 
 //Choose the right variable name
 abi = output.contracts[':TestCoin'].interface;

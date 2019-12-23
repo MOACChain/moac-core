@@ -3,7 +3,7 @@
 ## MOAC Nuwa 1.0.x 
 
 ### Nuwa v1.0.12: 
-2019/12/18
+2019/12/23
 
 Nuwa v1.0.12 runs for testnet only.
 

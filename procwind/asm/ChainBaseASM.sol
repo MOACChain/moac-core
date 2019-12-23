@@ -1,18 +1,18 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.24;
 pragma experimental ABIEncoderV2;
 
 /**
  * @title ChainBaseASM.sol
  * @author David Chen
  * @dev 
- * Chain definition with Atomic Swap of MOAC(ASM).
- * SCS need to use this contract to form the MicroChain.
+ * ProcWind AppChain contract with Atomic Swap of MOAC(ASM) function.
+ * This is the contract to deploy on the BaseChain to form a ProcWind AppChain.
  * 
- * Requires : SubChainBaseProtocol.sol
+ * Requires : SCSProtocolBase.sol
  * Required by: N/A
  */
 
-import "./SubChainProtocolBase.sol";
+import "./SCSProtocolBase.sol";
 
 
 contract SCSRelay {
@@ -20,7 +20,7 @@ contract SCSRelay {
     function notifySCS(address cnt, uint msgtype) public returns (bool success);
 }
 
-contract SubChainBase {
+contract ChainBaseASM {
     enum ProposalFlag {noState, pending, disputed, approved, rejected, expired, pendingAccept}
     enum ProposalCheckStatus {undecided, approval, expired}
     enum ConsensusStatus {initStage, workingStage, failure}
@@ -192,7 +192,7 @@ contract SubChainBase {
 
 
     //constructor
-    function SubChainBase(address proto, address vnodeProtocolBaseAddr, uint min, uint max, uint thousandth, uint flushRound, uint256 tokensupply, uint256 exchangerate) public {
+    function ChainBaseASM(address proto, address vnodeProtocolBaseAddr, uint min, uint max, uint thousandth, uint flushRound, uint256 tokensupply, uint256 exchangerate) public {
         require(min == 1 || min == 3 || min == 5 || min == 7);
         require(max == 11 || max == 21 || max == 31 || max == 51 || max == 99);
         require(flushRound >= 40  && flushRound <= 500);
@@ -200,7 +200,7 @@ contract SubChainBase {
         flushInRound = flushRound;
         initialFlushInRound = flushRound;
         VnodeProtocolBaseAddr = vnodeProtocolBaseAddr;
-        SubChainProtocolBase protocnt = SubChainProtocolBase(proto);
+        SCSProtocolBase protocnt = SCSProtocolBase(proto);
         selTarget = protocnt.getSelectionTarget(thousandth, min);
         protocnt.setSubchainActiveBlock();
 
@@ -326,7 +326,7 @@ contract SubChainBase {
             }
         }
         
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         if (protocnt.isPerforming(scs)) {
             if (matchSelTarget(scs, randIndex[0], randIndex[1])) {
                 return 4;
@@ -405,7 +405,7 @@ contract SubChainBase {
             return false;
         }
         //check if valid registered in protocol pool
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         if (!protocnt.isPerforming(msg.sender)) {
             //ReportStatus("SCS not performing");
             return false;
@@ -464,7 +464,7 @@ contract SubChainBase {
         }
 
         //check if valid registered in protocol pool
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         if (!protocnt.isPerforming(msg.sender)) {
             return false;
         }
@@ -570,7 +570,7 @@ contract SubChainBase {
         
 
         address cur = nodeList[index];
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         protocnt.releaseFromSubchain(
             cur,
             penaltyBond
@@ -600,7 +600,7 @@ contract SubChainBase {
         registerFlag = 0;
 
         if (nodeCount < minMember) {
-            SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+            SCSProtocolBase protocnt = SCSProtocolBase(protocol);
             //release already enrolled scs
             //release already enrolled scs
             for (uint i = nodeCount; i > 0; i--) {
@@ -635,7 +635,7 @@ contract SubChainBase {
         registerFlag = 2;
         joinCntMax = maxMember - joinCntNow - nodeCount;
         joinCntNow = nodesToJoin.length;
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         selTarget = protocnt.getSelectionTargetByCount(nodeToAdd);
 
         //call precompiled code to invoke action on v-node
@@ -1018,7 +1018,7 @@ contract SubChainBase {
         }
 
         //punish bad actors
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         uint i = 0;
         for (i=0; i<prop.badActors.length; i++) {
             uint badguy = prop.badActors[i];
@@ -1246,7 +1246,7 @@ contract SubChainBase {
         subchainstatus = uint(SubChainStatus.close);
         registerFlag = 0;
         //release fund
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         //release already enrolled scs
         for (uint i = nodeCount; i > 0; i--) {
             //release fund
@@ -1315,7 +1315,7 @@ contract SubChainBase {
         }
 
         //check if valid registered in protocol pool
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
         if (!protocnt.isPerforming(addr)) {
             return false;
         }
@@ -1346,7 +1346,7 @@ contract SubChainBase {
     // reuse this code for remove bad node or other volunteerly leaving node
     // nodetype 0: bad node, 1: volunteer leaving node
     function applyRemoveNodes(uint nodetype) private {
-        SubChainProtocolBase protocnt = SubChainProtocolBase(protocol);
+        SCSProtocolBase protocnt = SCSProtocolBase(protocol);
 
         uint count = nodesToDispel.length;
         if (nodetype == 1) {

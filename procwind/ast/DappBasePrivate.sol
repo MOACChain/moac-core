@@ -7,14 +7,14 @@ pragma experimental ABIEncoderV2;
  *         Qing Xu
  * @dev 
  * Dapp control contract.
- * MicroChain needs to run before deploy this contract.
+ * AppChain needs to run before deploy this contract.
  * This contract is used to operate multiple DAPPs
- * on the MicroChain and needs to be deployed before
+ * on the AppChain and needs to be deployed before
  * all other DAPPs.
- * This contract only the MicroChain owner to deploy DAPPs.
+ * This contract only the AppChain owner to deploy DAPPs.
  * Updated:
  * 2019/05/23 Added allDeploySwitch to allow non-owner deploy
- *            Dapps on the MicroChain. Default is false,
+ *            Dapps on the AppChain. Default is false,
  */
 contract DappBase {
     enum DappState {disable, enable, haveCoin, noCoin}

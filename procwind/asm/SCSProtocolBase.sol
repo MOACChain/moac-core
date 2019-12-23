@@ -1,14 +1,14 @@
 pragma solidity ^0.4.11;
 
 /**
- * @title SubChainProtocolBase.sol
+ * @title SCSProtocolBase.sol
  * @author David Chen
  * @dev 
- * Subchain definition for application.
+ * Contract to form the SCS pool on the BaseChain.
  * SCS need to use this contract to register/withdraw
- * from the subchain.
+ * in the SCS pool, and will be selected from the AppChain later.
  * Requires : none
- * Required by: SubChainBase.sol
+ * Required by: ChainBaseASM.sol
  */
 
 contract SysContract {
@@ -16,7 +16,7 @@ contract SysContract {
 }
 
 
-contract SubChainProtocolBase {
+contract SCSProtocolBase {
     enum SCSStatus { notRegistered, performing, withdrawPending, initialPending, withdrawDone, badActor }
 
     struct SCS {
@@ -57,7 +57,7 @@ contract SubChainProtocolBase {
     uint public protocolType;
 
     //constructor
-    function SubChainProtocolBase(string protocol, uint bmin, uint _protocolType) public {
+    function SCSProtocolBase(string protocol, uint bmin, uint _protocolType) public {
         scsCount = 0;
         subChainProtocol = protocol;
         bondMin = bmin;
@@ -68,7 +68,7 @@ contract SubChainProtocolBase {
         revert();
     }
 
-    // register for SCS
+    // register a certain SCS
     // SCS will be notified through 3rd party communication method. SCS will need to register here manually.
     // One protocol base can have several different subchains.
     function register(address scs) public payable returns (bool) {
@@ -224,7 +224,7 @@ contract SubChainProtocolBase {
         return true;
     }
 
-    //must called from SubChainBase
+    //must called from ChainBaseASM
     function forfeitBond(address scs, uint amount) public payable returns (bool) {
         //require( (subChainLastActiveBlock[msg.sender] + subChainExpireBlock[msg.sender])  > block.number);
         

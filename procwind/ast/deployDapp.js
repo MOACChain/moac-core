@@ -19,25 +19,18 @@
  * Usage:
  *   node deployDapp.js hello.sol
  * 
- * Further Readings:
- * This script calls the MicroChain and Dappbase functions
- * To generates a MicroChain with no DAPP on it, check 
- * deployASM.js or deployAST.js.
- * To deploy the Dappbase and additional DAPP contracts on MicroChain
- * Check deployDapp.js
- * To call the MicroChain functions and Dapp functions, please check 
- * callDappExample.js
- * 
- * For MicroChain related info, please check online documents:
+ * For AppChain related info, please check online documents:
  * English:
- * https://moac-docs.readthedocs.io/en/latest/subchain
+ * https://moac-docs.readthedocs.io/en/latest
  * 中文：
- * https://moacdocs-chn.readthedocs.io/zh_CN/latest/subchain
+ * https://moacdocs-chn.readthedocs.io/zh_CN/latest
  */
 
-var fs = require('fs');
-var solc = require('solc');
+// only 0.4.24 or 0.4.26 version should be used, 
+// To install a certain version of solc: npm install solc@0.4.24
+const solc = require('solc');
 const Chain3 = require('chain3');
+const fs = require('fs');
 
 //===============Setup the Parameters==========================================
 
@@ -49,7 +42,7 @@ baseaddr = "";//mc.accounts[0];
 basepsd  = "";//
 // Note these addresses should be changed if VNODE and SCS changed
 var viaAddress = "";//The VNODE via address, can be get from vnodeconfig.json
-var microchainAddress="";// MicroChain address,
+var appchainAddress="";// MicroChain address,
 
 //===============Step 1========================================================
 // Check the MicroChain address and the source account nonce on the MicroChain;
@@ -73,8 +66,8 @@ if (!chain3.isConnected()){
 }
 
 // Display MicroChain Info on the SCS server
-console.log("MicroChain ", microchainAddress,",state:", chain3.scs.getDappState(microchainAddress)," blockNumber:", chain3.scs.getBlockNumber(microchainAddress));
-console.log("DAPP list:", chain3.scs.getDappAddrList(microchainAddress), chain3.scs.getNonce(microchainAddress,baseaddr));
+console.log("MicroChain ", appchainAddress,",state:", chain3.scs.getDappState(appchainAddress)," blockNumber:", chain3.scs.getBlockNumber(appchainAddress));
+console.log("DAPP list:", chain3.scs.getDappAddrList(appchainAddress), chain3.scs.getNonce(appchainAddress,baseaddr));
 
 //===============Step 2========================================================
 // Compiled the input sol source file for the DAPP;
@@ -108,19 +101,19 @@ var mcabi = JSON.parse(ctt.interface);
 //===============Step 3========================================================
 // Prepare and Send TX to VNODE to deploy the DAPP on the MicroChain;
 // Deploy the Dapp with correct nonce
-var inNonce = chain3.scs.getNonce(microchainAddress,baseaddr);
+var inNonce = chain3.scs.getNonce(appchainAddress,baseaddr);
 
 console.log("Src nonce:", inNonce);
 
 // No need to pass the amount when deploying the DAPP
-var mchash = sendshardingflagtx(baseaddr,basepsd,microchainAddress,viaAddress, 0, bytecode,inNonce,'0x3')
+var mchash = sendshardingflagtx(baseaddr,basepsd,appchainAddress,viaAddress, 0, bytecode,inNonce,'0x3')
 console.log("dappbase TX HASH:", mchash);
 
 // Check the DAPP status after deploy, need to wait for several blocks
 // If successful, you should see the new DAPP address
-waitForMicroChainBlocks(microchainAddress,2);
+waitForMicroChainBlocks(appchainAddress,2);
 
-console.log("Should see DAPP list on :",microchainAddress, "\n at: ", chain3.scs.getDappAddrList(microchainAddress));
+console.log("Should see DAPP list on :",appchainAddress, "\n at: ", chain3.scs.getDappAddrList(appchainAddress));
 
 
 return;

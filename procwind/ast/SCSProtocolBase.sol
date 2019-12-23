@@ -1,14 +1,14 @@
 pragma solidity ^0.4.11;
 
 /**
- * @title SubChainProtocolBase.sol
+ * @title SCSProtocolBase.sol
  * @author David Chen
  * @dev 
- * Subchain definition for application.
+ * Contract to form the SCS pool on the BaseChain.
  * SCS need to use this contract to register/withdraw
- * from the subchain.
+ * in the SCS pool, and will be selected from the AppChain later.
  * Requires : none
- * Required by: ChainBaseASM.sol
+ * Required by: SubChainBase.sol
  */
 
 contract SysContract {
@@ -16,7 +16,7 @@ contract SysContract {
 }
 
 
-contract SubChainProtocolBase {
+contract SCSProtocolBase {
     enum SCSStatus { notRegistered, performing, withdrawPending, initialPending, withdrawDone, badActor }
 
     struct SCS {
@@ -57,7 +57,7 @@ contract SubChainProtocolBase {
     uint public protocolType;
 
     //constructor
-    function SubChainProtocolBase(string protocol, uint bmin, uint _protocolType) public {
+    function SCSProtocolBase(string protocol, uint bmin, uint _protocolType) public {
         scsCount = 0;
         subChainProtocol = protocol;
         bondMin = bmin;

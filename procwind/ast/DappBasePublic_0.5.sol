@@ -1,21 +1,17 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.12;
 pragma experimental ABIEncoderV2;
 
 /**
- * @title DappBasePublic.sol
+ * @title DappBasePublic_0.5.sol
  * @author David Chen, 
  *         Qing Xu
  * @dev 
  * Dapp control contract.
- * AppChain needs to run before deploy this contract.
- * This contract is used to operate multiple DAPPs
- * on the AppChain and needs to be deployed before
- * all other DAPPs.
- * This contract allows other users to deploy DAPP than
- * the AppChain owner.
- * Note the input token supply needs to be the same as 
- * the AppChain token supply.
+ * AppChain need to deploy this contract first to run
+ * the Dapps compiled with solidity 0.5.x compiler.
  * 
+ * Requires : N/A
+ * Required by: N/A
  */
 contract DappBase {
     enum DappState {disable, enable, haveCoin, noCoin}
@@ -58,18 +54,18 @@ contract DappBase {
     mapping(address => uint256) public dappRecord;
     bool public allDeploySwitch = true;//false-only owner can deploy; true-anyone can deploy
     
-	function DappBase(string _name, bool _switch) public payable {
+	constructor(string memory _name, bool _switch) public payable {
 		owner = msg.sender;
 		coinName = _name;
 		allDeploySwitch = _switch;
 	}
 	
-	function getCurNodeList() public view returns (address[] nodeList) {
+	function getCurNodeList() public view returns (address[] memory nodeList) {
         
         return curNodeList;
     }
     
-    function getEnterRecords(address userAddr) public view returns (uint256[] enterAmt, uint256[] entertime) {
+    function getEnterRecords(address userAddr) public view returns (uint256[] memory enterAmt, uint256[] memory entertime) {
         uint256 i;
         uint256 j = 0;
         
@@ -92,7 +88,7 @@ contract DappBase {
         return (amounts, times);
     }
 	
-	function getRedeemMapping(address userAddr, uint256 pos) public view returns (address[] redeemingAddr, uint256[] redeemingAmt, uint256[] redeemingtime) {
+	function getRedeemMapping(address userAddr, uint256 pos) public view returns (address[] memory redeemingAddr, uint256[] memory redeemingAmt, uint256[] memory redeemingtime) {
         uint256 j = 0;
         uint256 k = 0;
         
@@ -132,7 +128,7 @@ contract DappBase {
         redeem.time.push(now);
     }
     
-    function have(address[] addrs, address addr) public view returns (bool) {
+    function have(address[] memory addrs, address addr) public view returns (bool) {
         uint256 i;
         for (i = 0; i < addrs.length; i++) {
             if(addrs[i] == addr) {
@@ -142,14 +138,14 @@ contract DappBase {
         return false;
     }
     
-    function updateNodeList(address[] newlist) public {
+    function updateNodeList(address[] memory newlist) public {
         //if owner, can directly update
         if(msg.sender==owner) {
             curNodeList = newlist;
         }
         //count votes
-        bytes32 hash = sha3(newlist);
-        bytes32 oldhash = sha3(curNodeList);
+        bytes32 hash = sha256(abi.encodePacked(newlist));
+        bytes32 oldhash = sha256(abi.encodePacked(curNodeList));
         if( hash == oldhash) return;
         
         bool res = have(nodeVoters[hash], msg.sender);
@@ -163,12 +159,12 @@ contract DappBase {
         return;
     }
     
-    function postFlush(uint256 pos, address[] tosend, uint256[] amount, uint256[] times) public {
+    function postFlush(uint256 pos, address payable[] memory tosend, uint256[] memory amount, uint256[] memory times) public {
         require(have(curNodeList, msg.sender));
         require(tosend.length == amount.length);
         require(pos == enterPos);
         
-        bytes32 hash = sha3(pos, tosend, amount, times);
+        bytes32 hash = sha256(abi.encodePacked(pos, tosend, amount, times));
         if( task[hash].distDone) return;
         if(!have(task[hash].voters, msg.sender)) {
             task[hash].voters.push(msg.sender);
@@ -180,21 +176,14 @@ contract DappBase {
                     enterRecords.amount.push(amount[i]);
                     enterRecords.time.push(now);
                     enterRecords.buyTime.push(times[i]);
-                    uint256 size;
-                    address addr = tosend[i];
-                    assembly {
-                        size := extcodesize(addr)
-                    }
-                    if (size == 0) {
-                        tosend[i].transfer(amount[i]);
-                    }
+                    tosend[i].transfer(amount[i]);
                 }
                 enterPos += tosend.length;
             }
         }
     }
 
-  function registerDapp(address dappAddr, address dappOwner, string  dappABI) public {
+    function registerDapp(address dappAddr, address dappOwner, string memory dappABI) public {
         require(owner == msg.sender);
         require(dappRecord[dappAddr] == 0);
         dappList.push(DappInfo(dappAddr, dappOwner, dappABI, uint256(DappState.enable)));
@@ -217,7 +206,7 @@ contract DappBase {
          }
     }
 
-    function updateDapp(address dappAddr, address dappOwner, string  dappABI, uint256 state) public {
+    function updateDapp(address dappAddr, address dappOwner, string memory dappABI, uint256 state) public {
         require(owner == msg.sender);
         require(dappRecord[dappAddr] > 0);
         uint256 count = dappList.length;
@@ -231,11 +220,15 @@ contract DappBase {
         }
     }
 
-    function getDappList() public view returns (DappInfo[]) {
+    function getDappList() public view returns (DappInfo[] memory) {
 		return dappList;
 	}
+	
+	function getDappAddr(uint256 index) public view returns (address) {
+		return dappList[index].dappAddr;
+	}
 
-    function getDappABI(address dappAddr) public view returns (string) {
+    function getDappABI(address dappAddr) public view returns (string memory) {
         for (uint256 i = 0; i<dappList.length; i++) {
             if (dappList[i].dappAddr ==  dappAddr) {
                 return dappList[i].dappABI;

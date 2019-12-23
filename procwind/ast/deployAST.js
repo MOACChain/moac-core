@@ -1,23 +1,24 @@
-/* Script to create a MOAC AST MicroChain using three contracts in the input files.
+/* Script to create a MOAC AST AppChain using three contracts in the input files.
  * 
  * Require:
  * 1. Valid account with enough moac to deploy the contracts;
  * 2. A running VNODE can connect and send Transaction to, need turn on personal in rpc api;
  --rpcapi "chain3,mc,net,vnode,personal,
  * 3. At least three SCSs, recommended 5;
- * 4. A VNODE used as proxy for the MicroChain, with VNODE settings in the vnodeconfig.json;
- * 5. Three contract files:
+ * 4. A VNODE used as proxy for the AppChain, with VNODE settings in the vnodeconfig.json;
+ * 5. The contract files:
+ *    erc20.sol
  *    VnodeProtocolBase.sol
  *    SubChainProtocolBase.sol
  *    ChainBaseAST.sol
  *
  * Steps:
- * 1. Deploy the erc20, VNODE and SCS pool contracts;
- * 2. Create the MicroChain contract using erc20, VNODE and SCS pools;
- * 3. Register the VNODE, SCSs, then open MicroChain to get all the SCSs registered.
+ * 1. Deploy the ERC20 token, VNODE pool and SCS pool contracts, if user already ;
+ * 2. Create the AppChain contract using erc20, VNODE and SCS pools;
+ * 3. Register the VNODE, SCSs, then open AppChain to get all the SCSs registered.
  *  
- * This script generates a MicroChain with no DAPP deployed.
- * To deploy the Dappbase and additional DAPP contracts on MicroChain
+ * This script generates a AppChain with no DAPP deployed.
+ * To deploy the Dappbase and additional DAPP contracts on AppChain
  * please check online documents:
  * 
  * https://moacdocs-chn.readthedocs.io/zh_CN/latest/subchain/%E5%AD%90%E9%93%BE%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%83%A8%E7%BD%B2.html
@@ -27,8 +28,9 @@
 
 const Chain3 = require('chain3');
 const fs = require('fs');
-const solc = require('solc');//only 0.4.24 version should be used, npm install solc@0.4.24
+const solc = require('solc');//only 0.4.24 or 0.4.26 version should be used, npm install solc@0.4.24
 
+const utils = require('./deployUtils');
 //===============Setup the Parameters==========================================
 
 // need to have a valid account to use for contracts deployment
@@ -42,15 +44,23 @@ var scs=["",
          "",
         ]
 
+// Choose the right DappBase contract 
+// DappBasePublic.sol allows other users to deploy the Dapp on the AppChain
+// DappBasePrivate.sol only allows the owner
+var inDappFile;
+
 // The VNODE benificial address, should be found in the vnodeconfig.json 
-vnodeVia="";
+var VNODEVia="";
+
 vnodeConnectUrl="127.0.0.1:50062";//VNODE connection as parameter to use for VNODE protocol
-var minScsRequired = 3; // Min number of SCSs in the MicroChain, recommended 3 or more
+var minScsRequired = 3; // Min number of SCSs in the AppChain, recommended 3 or more
 
 //===============Check the Blockchain connection===============================
 // 
 // Using local node or remote to send TX command
 const vnodeUri = 'http://localhost:8545';
+const scsUri = 'http://localhost:8548';
+
 
 let chain3 = new Chain3();
 chain3.setProvider(new chain3.providers.HttpProvider(vnodeUri));
@@ -63,11 +73,19 @@ if(!chain3.isConnected()){
     console.log('Check src account balance:' + baseaddr + ' has ' + balance*1e-18 + " MC");
 }
 
+//Setup the SCS monitor of the AppChain
+chain3.setScsProvider(new chain3.providers.HttpProvider(scsUri));
+
+if (!chain3.isScsConnected()){
+    console.log("Chain3 RPC is not connected on SCS!");
+    return;
+}
+
 // Min balance of the baseaddr needs to be larger than these numbers if all SCSs need to be funded
 // For example, if use 5 SCSs and 1 VNODE, the minimum balance is:
 // + SCS deposit (10 mc) * SCS number (=5)
 // + VNODE deposit (1 mc) * VNODE number (=1)
-// + MicroChain deposit (10 mc)
+// + AppChain deposit (10 mc)
 // = 50 + 1+ 10 = 61
 if (!checkBalance(baseaddr, 61) ){
   console.log("Need more balance in baseaddr")
@@ -87,11 +105,11 @@ if (chain3.personal.unlockAccount(baseaddr, basepsd, 0)) {
 
 //===============Step 1. Deploy required Mother Chain contracts=========================
 // If you have all these contracts deployed earlier, you can skip this and go to Step 2.
-// ERC20
-// vnode pool
-// scs pool
+// 1.1 ERC20
+// 1.2 vnode pool
+// 1.3 scs pool
 
-// Deploy the ERC20 coin with precompiled name as "TEST COIN", supply with 10000000
+// 1.1 Deploy the ERC20 contract with precompiled name as "AST COIN", supply with 10000000
 var basepath = '.';
 var contractName = 'erc20';
 var solpath = basepath + '/' + contractName + '.sol';
@@ -99,18 +117,19 @@ var solpath = basepath + '/' + contractName + '.sol';
 var contract = fs.readFileSync(solpath, 'utf8');
 var output = solc.compile(contract, 1);
 
-//Choose the right 
+//Choose the right variable name
 abi = output.contracts[':TestCoin'].interface;
 bin = output.contracts[':TestCoin'].bytecode;
 
 // Notice the parameters of this contract is defined in the erc20.sol
 // User can change these to other values
-// string public name = "Test Coin";
-// string public symbol = "TEST";
+// string public name = "AST Coin";
+// string public symbol = "AST";
 // uint public decimals = 6;
 // uint public INITIAL_SUPPLY = 100000000 * (10 ** decimals);
 
 var testcoinContract = chain3.mc.contract(JSON.parse(abi));
+
 
 var testcoin = testcoinContract.new(
    {
@@ -122,10 +141,13 @@ var testcoin = testcoinContract.new(
 
 console.log("ERC20 is being deployed at transaction HASH: " + testcoin.transactionHash);
 
+//ERC20 ADDRESS ON 106
+//0xc7d3c72d6a6a91f65f4d086485e94da280b1e10d
+
 // Deploy the VNODE pool contract to allow VNODE join as proxy to the microchain, 
 var minVnodeDeposit = 1 ;// number of deposit required for the VNODE proxy to register, unit is mc
 
-contractName = 'VnodeProtocolBase';
+contractName = 'VNODEProtocolBase';
 solpath = basepath + '/' + contractName + '.sol';
 
 contract = fs.readFileSync(solpath, 'utf8');
@@ -149,13 +171,13 @@ var vnodeprotocolbase = vnodeprotocolbaseContract.new(
 
 console.log("VNODE protocol is being deployed at transaction HASH: " + vnodeprotocolbase.transactionHash);
 
-// Deploy the MicroChain protocol pool to allow SCS join the pool to form the MicroChain 
+// Deploy the AppChain protocol pool to allow SCS join the pool to form the AppChain 
 var protocol = "POR";   //Name of the SCS pool, don't change
 var minScsDeposit = 10 ;// SCS must pay more than this in the register function to get into the SCS pool
-var _protocolType = 0 ; // type of the MicroChain protocol, don't change
+var _protocolType = 0 ; // type of the AppChain protocol, don't change
 
 
-contractName = 'SubChainProtocolBase';
+contractName = 'SCSProtocolBase';
 solpath = basepath + '/' + contractName + '.sol';
 
 contract = fs.readFileSync(solpath, 'utf8');
@@ -168,9 +190,9 @@ bin = output.contracts[':' + contractName].bytecode;
 var protocol = "POR";
 var bmin = 3;
 
-var subchainprotocolbaseContract = chain3.mc.contract(JSON.parse(abi));
+var scsprotocolbaseContract = chain3.mc.contract(JSON.parse(abi));
 
-var subchainprotocolbase = subchainprotocolbaseContract.new(
+var subchainprotocolbase = scsprotocolbaseContract.new(
    protocol,
    minScsDeposit,
    _protocolType,
@@ -190,19 +212,18 @@ var scsPoolAddr = waitBlock(subchainprotocolbase.transactionHash);
 
 erc20Contract = testcoinContract.at(erc20Addr);
 vnodePool = vnodeprotocolbaseContract.at(vnodePoolAddr);
-scsPool = subchainprotocolbaseContract.at(scsPoolAddr);
+scsPool = scsprotocolbaseContract.at(scsPoolAddr);
 
 console.log("ERC20 contract address:", erc20Contract.address);
-console.log("vnodeprotocolbase contract address:", vnodePool.address);
-console.log("subchainprotocolbase contract address:", scsPool.address);
-console.log("Please use the mined contract addresses in deploying the MicroChain contract!!!")
+console.log("vnodepoolbase contract address:", vnodePool.address);
+console.log("scspoolbase contract address:", scsPool.address);
+console.log("Please use the mined contract addresses in deploying the AppChain contract!!!")
+//===============Step 2. Use the deployed Contracts to start a AppChain======
 
-//===============Step 2. Use the deployed Contracts to start a MicroChain======
-
-// Deploy the MicroChain contract to form a MicroChain with Atomic Swap of Token (AST) function
-var ercRate = 1 ;       //Exchange rate between ERC20 token and MicroChain native token, must be int large than 1
-var min = 1 ;           //Min SCSs required in the MicroChain, only 1,3,5,7 should be used`
-var max = 11 ;          //Max SCSs needed in the MicroChain, Only 11, 21, 31, 51, 99
+// Deploy the AppChain contract to form a AppChain with Atomic Swap of Token (AST) function
+var ercRate = 1 ;       //Exchange rate between ERC20 token and AppChain native token, must be int large than 1
+var min = 1 ;           //Min SCSs required in the AppChain, only 1,3,5,7 should be used`
+var max = 11 ;          //Max SCSs needed in the AppChain, Only 11, 21, 31, 51, 99
 var thousandth = 1000 ; //Fixed, do not need change
 var flushRound = 60 ;   //Number of MotherChain rounds, must between 40 and 500
 
@@ -211,12 +232,12 @@ var flushRound = 60 ;   //Number of MotherChain rounds, must between 40 and 500
 // var scsPoolAddr = vnodePool.address;
 // var vnodePoolAddr = scsPool.address;
 
-var contractName = 'SubChainBase';
+var contractName = 'ChainBaseAST';
 
 // Need to read both contract files to compile
 var input = {
   '': fs.readFileSync(basepath + '/' +'ChainBaseAST.sol', 'utf8'),
-  'SubChainProtocolBase.sol': fs.readFileSync(basepath + '/' +'SubChainProtocolBase.sol', 'utf8')
+  'SCSProtocolBase.sol': fs.readFileSync(basepath + '/' +'SCSProtocolBase.sol', 'utf8')
 };
 
 output = solc.compile({sources: input}, 1);
@@ -227,37 +248,36 @@ bin = output.contracts[':' + contractName].bytecode;
 
 var subchainbaseContract = chain3.mc.contract(JSON.parse(abi));
 
-
-var microChain
+var appChain
 
 deploy_subchainbase().then((data) => {
-	var microChainAddr = data
-	microChain = subchainbaseContract.at(microChainAddr);
-	console.log(" **********  microChain Contract Address: " + microChainAddr );
+	var appChainAddr = data
+	appChain = subchainbaseContract.at(appChainAddr);
+	console.log(" **********  appChain Contract Address: " + appChainAddr );
 	
 	
-	//===============Step 3. Use the deployed Contracts to start a MicroChain======
+	//===============Step 3. Use the deployed Contracts to start a AppChain======
 
-	// The deposit is required for each SCS to join the MicroChain
-	var microChainDeposit = 10;
+	// The deposit is required for each SCS to join the AppChain
+	var appChainDeposit = 10;
 
-	if (checkBalance(microChainAddr, microChainDeposit) ){
+	if (checkBalance(appChainAddr, appChainDeposit) ){
 	   console.log("continue...")
 	}else{
-	   // Add balance to microChainAddr for MicroChain running
-	   console.log("Add funding to microChain!  microChain:", microChain.address);
-	   addMicroChainFund(microChainAddr, microChainDeposit)
-	   waitBalance(microChain.address, microChainDeposit);
+	   // Add balance to appChainAddr for AppChain running
+	   console.log("Add funding to appChain!  appChain:", appChain.address);
+	   addMicroChainFund(appChainAddr, appChainDeposit)
+	   waitBalance(appChain.address, appChainDeposit);
 	}
 
-	if (checkBalance(vnodeVia, minVnodeDeposit)) {
+	if (checkBalance(VNODEVia, minVnodeDeposit)) {
 	  console.log("VNODE has enough balance continue...")
 		// sendtx(baseaddr,vnodecontractaddr,num,data)
 	}else{
 	  // Add balance
 	  console.log("Add funding to VNODE!");
-	  sendtx(baseaddr,vnodeVia,minVnodeDeposit);
-	  waitBalance(vnodeVia, minVnodeDeposit);
+	  sendtx(baseaddr,VNODEVia,minVnodeDeposit);
+	  waitBalance(VNODEVia, minVnodeDeposit);
 	}
 
 
@@ -303,10 +323,10 @@ deploy_subchainbase().then((data) => {
 	}
 
 
-	// Open the register for the SCSs to join the MicroChain
-	registerOpen(microChain.address);
+	// Open the register for the SCSs to join the AppChain
+	registerOpen(appChain.address);
 	while (true) {
-		let count = microChain.nodeCount();
+		let count = appChain.nodeCount();
 		if (count >= minScsRequired) {
 		  console.log("registertopool has enough scs " + count);
 		  break;
@@ -315,21 +335,51 @@ deploy_subchainbase().then((data) => {
 		sleep(5000);
 	}
 
-	registerClose(microChain.address);
+	registerClose(appChain.address);
 	sleep(5000);
 
-	console.log("all Done!!!");
+  //===============Step 4. Deploy the DappBase contract at the AppChain======
+    console.log("AppChain is ready, prepare to deploy:", inDappFile, " on ", appChain.address);
+    // Deploy the DappBase contract to enable the Dapp deployment on the AppChain
+    // solc 0.4.24 and 0.4.26 version
+    var content = fs.readFileSync(inDappFile, 'utf8');
+
+    output = solc.compile(content, 1);
+
+    var key = Object.keys(output.contracts);
+
+    //this is the object contains the code and ABIs
+    var ctt = output.contracts[key];
+
+    if(ctt == null){
+      console.log("Contract CTT is empty1");
+      return;
+    }
+
+    var bytecode = "0x"+ctt.bytecode;
+    var mcabi = JSON.parse(ctt.interface);
 
 
+    // Prepare and Send TX to VNODE to deploy the DAPP on the AppChain;
+    //Deploy the DappBase with correct parameters
+    var inNonce = chain3.scs.getNonce(appChain.address,baseaddr);
+
+    console.log("Src nonce:", inNonce, " ProcWind AppChain TokenSupply", tokensupply);
+
+    var mchash = sendshardingflagtx(baseaddr,basepsd,appChain.address,SCSVia, tokensupply, bytecode,inNonce,'0x3')
+    console.log("dappbase TX HASH:", mchash);
+
+    // Check the DAPP status after deploy, need to wait for several blocks
+    // If successful, you should see the new DAPP address
+    waitForAppChainBlocks(appChain.address,5);
+
+    console.log("Should see DAPP list on :",appChain.address, "\n at: ", chain3.scs.getDappAddrList(appChain.address));
+
+  console.log("all Done!!!");
+
+  
 	
-}, (error) => {  console.log("deploy subchainbase error:" + error);});
-
-
-
-
-
-
-
+}, (error) => {  console.log("deploy ChainBaseAST error:" + error);});
 
 
 //===============Utils Functions===============================================
@@ -343,6 +393,7 @@ function checkBalance(inaddr, inMcAmt) {
   }
 }
 
+// Send the TX to VNODE with unlocked account
 function sendtx(src, tgtaddr, amount, strData) {
 
   chain3.mc.sendTransaction(
@@ -380,6 +431,7 @@ function waitForBlocks(innum) {
   }
 }
 
+// Get the receipt from one block generated.
 function waitBlock(transactionHash) {
   console.log("Waiting a mined block to include your contract...");
   
@@ -395,6 +447,7 @@ function waitBlock(transactionHash) {
   return chain3.mc.getTransactionReceipt(transactionHash).contractAddress;
 }
 
+// Check and make sure the balance.
 function waitBalance(addr, target) {
     while (true) {
         let balance = chain3.mc.getBalance(addr)/1000000000000000000;
@@ -430,13 +483,13 @@ function registerScsToPool(proto, num){
 
 }
 
-//Open the MicroChain register process
+//Open the AppChain register process
 function registerOpen(subchainaddr)
 {
   sendtx(baseaddr, subchainaddr, '0','0x5defc56c' );
 }
 
-//Close the MicroChain register process
+//Close the AppChain register process
 function registerClose(subchainaddr)
 {
   sendtx(baseaddr, subchainaddr, '0','0x69f3576f' );
@@ -462,9 +515,9 @@ function vnoderegister(vnode,num,ip){
 function deploy_subchainbase() {
 	return new Promise((resolve, reject) => {
 		
-		console.log("Start to deploy the subchainbase");
+		console.log("Start to deploy the chainbase");
 		
-		console.log(' subchainbase scsPoolAddr: ', scsPoolAddr, ' vnodePoolAddr: ', vnodePoolAddr, ' min: ', min, ' max: ', max, ' thousandth: ', thousandth, ' flushRound: ', flushRound, ' erc20Addr: ', erc20Addr, ' ercRate: ', ercRate, ' baseaddr: ', baseaddr); 
+		console.log(' chainbase scsPoolAddr: ', scsPoolAddr, ' vnodePoolAddr: ', vnodePoolAddr, ' min: ', min, ' max: ', max, ' thousandth: ', thousandth, ' flushRound: ', flushRound, ' erc20Addr: ', erc20Addr, ' ercRate: ', ercRate, ' baseaddr: ', baseaddr); 
 		
 		var subchainbase = subchainbaseContract.new(
 		   scsPoolAddr,
@@ -481,8 +534,8 @@ function deploy_subchainbase() {
 			 gas: '9000000'
 		   }, 
 		   function (e, contract){
-			   if (e!=null){console.log(' subchainbase deploy error : ', e); reject(e); return}
-			   console.log(' subchainbase Contract address: ', contract.address, ' transactionHash: ', contract.transactionHash); 
+			   if (e!=null){console.log(' chainbase deploy error : ', e); reject(e); return}
+			   console.log(' chainbase Contract address: ', contract.address, ' transactionHash: ', contract.transactionHash); 
 			   if (typeof(contract.address)!='undefined'){ resolve(contract.address);}		   
 		   }
 		 );	

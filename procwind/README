@@ -1,7 +1,7 @@
-MOAC Source Code for ProcWind AppChain
+MOAC Source Code for ProcWind AppChain Contracts
 
 
-This version of sources code is for Nuwa v1.0.11. 
+This version of sources code is for Nuwa v1.0.12. 
 
 Allow multiple contracts to be deployed on one AppChain;
 Enable new data structure supports in SCS RPCdebug APIs;
@@ -13,7 +13,7 @@ Added scripts to deploy DappBase and Dapp,;
 Added script to call AppChain and DappBase functions;
 More info can be found on the latest documentation
 More info can be found at:
-https://moac-docs.readthedocs.io/en/latest/subchain
+https://moac-docs.readthedocs.io/en/latest
 
 There are APIs and SDKs to use with the AppChain.
 More info can be found on the API documentation:

@@ -1,8 +1,8 @@
-MOAC AppChain contracts (Nuwa 1.0.11)
+MOAC AppChain contracts (Nuwa 1.0.12)
 
 SCS supports multiple contracts to be deployed on one AppChain;
 More info can be found at:
-https://moac-docs.readthedocs.io/en/latest/subchain/atomicswap.html#atomic-swap-of-moac-asm
+https://moac-docs.readthedocs.io/en/latest/
 中文文档在：
 https://moacdocs-chn.readthedocs.io/zh_CN/latest/
 To get some testnet moac, please go to https://faucet.moacchina.com/
@@ -17,13 +17,20 @@ DappBasePrivate.sol      - DappControl contract only allows the AppChain owner t
 DappBasePublic.sol       - DappControl contract allows other users to deploy DAPP than the AppChain owner,
                            should be the first contract deployed after MicorChain is running, 
                            to handle multiple contracts, required after Nuwa 1.0.9;
-SubChainProtocolBase.sol - AppChain definition protocol for SCS, SCS calls this contract to register/withdraw from the AppChain.
-VnodeProtocolBase.sol    - AppChain definition protocol for VNODE, VNODE calls this contract to 
-                           register/withdraw the AppChain and handle the traffic of AppChain to the MotherChain network.
+DappBasePrivate_0.5.sol  - DappControl contract for solidity compiler 0.5.x, this needs to be deployed separately with 
+                           solidity 0.5.x compiler;
+DappBasePublic_0.5.sol   - DappControl contract for solidity compiler 0.5.x, this needs to be deployed separately with 
+                           solidity 0.5.x compiler;
+SCSProtocolBase.sol      - AppChain definition contract for SCS pool, SCS calls this contract to 
+                           register/withdraw from the AppChain.
+VNODEProtocolBase.sol    - AppChain definition protocol for VNODE pool, VNODE calls this contract to 
+                           register/withdraw the AppChain and handle the traffic of AppChain to the BaseChain network.
 
 Scripts
-callDappExample.js       - Example JS script to call AppChain and Dappbase functions;
-deployDappbase.js        - Example JS script to deploy Dappbase on the AppChain;
+deployASM.js             - Example JS script to deploy the ASM AppChain on the AppChain;
+deployDappBase.js        - Example JS script to deploy the Dappbase on the AppChain;
 deployDapp.js            - Example JS script to deploy Dapp on the AppChain after Dappbase is deployed;
-deployASM.js             - Example JS script to deploy the ASM AppChain;
+callDappExample.js       - Example JS script to call AppChain and Dappbase functions;
+closeASM.js              - Example JS script to close a deployed ASM AppChain;
+crossASM.js              - Example JS script to perform cross chain functions between AppChain and BaseChain;
 mcABIs.js                - ABIs for AST, ASM and DappBase, used by callDappExample;

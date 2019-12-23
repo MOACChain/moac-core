@@ -1,10 +1,10 @@
 pragma solidity ^0.4.11;
 
 /**
- * @title VnodeProtocolBase.sol
+ * @title VNODEProtocolBase.sol
  * @author David Chen
  * @dev 
- * VNODE protocol definition
+ * Contract to form a Vnode pool used with AppChains
  * 
  */
 contract SysContract {
@@ -12,7 +12,7 @@ contract SysContract {
 }
 
 
-contract VnodeProtocolBase {
+contract VNODEProtocolBase {
     enum VnodeStatus { notRegistered, performing, withdrawPending, initialPending, withdrawDone, inactive }
 
     struct Vnode {
@@ -37,12 +37,9 @@ contract VnodeProtocolBase {
     uint public constant PEDNING_BLOCK_DELAY = 50; // 8 minutes
     uint public constant WITHDRAW_BLOCK_DELAY = 8640; // one day, given 10s block rate
  
-    //events
-    //event Registered(address vnode);
-    // event UnRegistered(address sender);
 
     //constructor
-    function VnodeProtocolBase(uint bmin) public {
+    function VNODEProtocolBase(uint bmin) public {
         vnodeCount = 0;
         bondMin = bmin;
         //register a dummy one
@@ -66,7 +63,7 @@ contract VnodeProtocolBase {
         revert();
     }
 
-    // register for vnode
+    // register a VNODE
     function register(address vnode, address via, string link, string rpclink) public payable returns (bool) {
         //already registered or not enough bond
         require( vnodeList[vnode] == 0 && msg.value >= bondMin*10**18 );
@@ -87,7 +84,7 @@ contract VnodeProtocolBase {
         return true;
     }
 
-    // withdrawRequest for vnode
+    // withdrawRequest for a registered VNODE
     function withdrawRequest() public returns (bool success) {
         //only can withdraw when active
         require(vnodeList[msg.sender] > 0 );
@@ -102,6 +99,7 @@ contract VnodeProtocolBase {
         return true;
     }
 
+    // Withdraw
     function withdraw() public {
         require( vnodeList[msg.sender] > 0 );
         uint index = vnodeList[msg.sender];
@@ -129,6 +127,7 @@ contract VnodeProtocolBase {
         }
     }
 
+    // Return the status of a VNODE
     function isPerforming(address _addr) public view returns (bool res) {
         if(vnodeList[_addr] == 0 ) {
             return false;
@@ -137,6 +136,7 @@ contract VnodeProtocolBase {
         vnodeStore[vnodeList[_addr]].registerBlock < block.number);
     }
 
+    // Return a VNODE address from the pool
     function pickRandomVnode(uint randness) public view returns (string target) {
         //com        
         if (vnodeCount < 2 ) {
@@ -155,7 +155,7 @@ contract VnodeProtocolBase {
         return  "";
     }
 
-    //report one vnode is outage. limit to 5, no duplicate report from one sender
+    //report one VNODE is outage. limit to 5, no duplicate report from one sender
     function reportOutage(address vnode ) public {
         if( outageReportList[vnode].length < 5 ) {
             //check if reported by this sender already
@@ -168,7 +168,7 @@ contract VnodeProtocolBase {
         }
     }
 
-    //sweep only n vnodes at a time
+    //sweep only n VNODEs at a time
     function sweepOutage(uint level, uint startpos, uint count) public {
         require(msg.sender == owner);
         require(level > 0 && level <= 5);

@@ -4,6 +4,7 @@ pragma solidity ^0.4.13;
  * @title erc20.sol
  *
  * @dev Implementation of the basic standard token.
+ * used for test only.
  * https://github.com/ethereum/EIPs/issues/20
  * Based on code by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol
  */
@@ -272,15 +273,15 @@ contract PausableToken is StandardToken, Pausable {
 }
 
 
-
+// 
 contract TestCoin is PausableToken {
   struct ErcMapping {
       address[] ercAddress;
       uint[] ercAmount;
       
   }
-  string public name = "Test Coin";
-  string public symbol = "TEST";
+  string public name = "AST Coin";
+  string public symbol = "AST";
   uint public decimals = 6;
   uint public INITIAL_SUPPLY = 100000000 * (10 ** decimals);
   mapping(uint => ErcMapping) internal erc;

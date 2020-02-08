@@ -1,6 +1,28 @@
 ## [墨客中文发布信息](READMECH.md)
 
-## MOAC Nuwa 1.0.x 
+## MOAC Nuwa 1.x 
+
+### Nuwa v1.1.0: 
+2020/02/08
+
+Nuwa v1.1.0 is the first release in 2020. It contains all the updates in the v1.0.x version and can be used on both mainnet and testnet. It improved the P2P connections between trusted VNODE peers and fully support the ProcWind AppChain.
+
+More info can be found at:
+https://moac-docs.readthedocs.io/en/latest
+
+testnet API server：http://139.198.126.104:8080
+testnet access token can be get with the following login information:
+username：test
+password：123456
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.mac.tar.gz)
 
 ### Nuwa v1.0.12: 
 2019/12/23
@@ -47,7 +69,7 @@ Added scripts to deploy DappBase and Dapp,;
 Added script to call MicroChain and DappBase functions;
 More info can be found on the latest documentation
 More info can be found at:
-https://moac-docs.readthedocs.io/en/latest/subchain
+https://moac-docs.readthedocs.io/en
 
 There are APIs and SDKs to use with the MicroChain.
 More info can be found on the API documentation:

@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+# Unused directory
+contractsamples
+
 # Compiled Object files
 *.slo
 *.lo

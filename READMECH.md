@@ -2,16 +2,41 @@
 
 ## [MOAC English](README.md)
 
-## 墨客女娲 1.0.x 
+## 墨客女娲 1.x 
+
+### Nuwa v1.1.0:
+2020/02/08
+
+本版本是2020年的主要升级，包括了之前v1.0.x的所有功能，并着重对VNODE节点之间的连接进行了优化，加强应用链SCS之间的通讯。
+本版本支持ProcWind应用链的所有功能。
+
+
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
+
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.mac.tar.gz)
 
 ### Nuwa v1.0.12:
-2019/12/18
+2019/12/23
 
 版本特性 
 
 本版本仅在测试网上运行，进行了以下改进：
 
-1. 可以部署支持solidity 0.5.x编译器的应用链合约，但需要部署相应的DappBase合约；
+1. 应用链客户端（SCS）可以部署使用solidity 0.5.x编译的DAPP合约，但需要部署相应的DappBase合约；
 2. 提供 JSON-RPC 接口scs_listening，并修正了scs_getBalance接口之前显示大数的错误；
 3. 更新了ASM和AST两种应用链中的合约；
 4. 增加了关闭应用链的脚本，和实现跨链操作的脚本；

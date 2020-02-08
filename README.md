@@ -20,9 +20,9 @@ Testnet moac can be get from：https://faucet.moacchina.com/
 
 VNODE+SCS client
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.13/nuwa1.0.13.mac.tar.gz)
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
 
 ### Nuwa v1.0.12: 
 2019/12/23

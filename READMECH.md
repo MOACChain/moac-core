@@ -14,8 +14,6 @@
 更多信息可以参考最新的开发文档
 https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
-开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
-https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
 
 测试环境地址：http://139.198.126.104:8080
 测试环境获取access token，可使用测试账号：test 密码：123456
@@ -25,9 +23,9 @@ https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
 
 VNODE+SCS 可执行文件包
 
-* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.linux.tar.gz)
-* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.win.zip)
-* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.mac.tar.gz)
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
 
 ### Nuwa v1.0.12:
 2019/12/23

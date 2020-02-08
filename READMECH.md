@@ -10,13 +10,9 @@
 本版本是2020年的主要升级，包括了之前v1.0.x的所有功能，并着重对VNODE节点之间的连接进行了优化，加强应用链SCS之间的通讯。
 本版本支持ProcWind应用链的所有功能。
 
-
 更多信息可以参考最新的开发文档
 https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
-
-测试环境地址：http://139.198.126.104:8080
-测试环境获取access token，可使用测试账号：test 密码：123456
 测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
 **下载链接**

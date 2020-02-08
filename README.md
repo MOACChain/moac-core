@@ -10,10 +10,6 @@ Nuwa v1.1.0 is the first release in 2020. It contains all the updates in the v1.
 More info can be found at:
 https://moac-docs.readthedocs.io/en/latest
 
-testnet API server：http://139.198.126.104:8080
-testnet access token can be get with the following login information:
-username：test
-password：123456
 Testnet moac can be get from：https://faucet.moacchina.com/
 
 **Download links**

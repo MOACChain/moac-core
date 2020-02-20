@@ -12,7 +12,7 @@
  * 6. Chain3.js library installed with verion 0.1.19 and later;
  * 
  * Usage:
- *   node deployDappBase.js DappBasePrivate.sol
+ *   node deployDappBase.js DappBasePublic.sol
  * 
  * For AppChain related info, please check online documents:
  * English:
@@ -35,14 +35,14 @@ var minScsRequired = 3; // Min number of SCSs in the AppChain, recommended 3 or 
 // DAPPs on the AppChain.
 // need turn on personal in rpc api
 // Need to add the addr and private key
-baseaddr = "";//mc.accounts[0];
+baseaddr = "";//should be an account on the via VNODE, such as mc.accounts[0];
 basepsd  = "";//
 // Note these addresses should be changed if VNODE and SCS changed
 var viaAddress = "";//The VNODE via address, can be get from vnodeconfig.json
-var appchainAddress="";// AppChain address,
-//For AST, this value should be the same as the TokenSupply in the ERC20 
-//the ChainBaseAST.sol
-var appChainTokenSupply=0;
+var appChainAddress="";// AppChain address,
+
+// For ASM chain, this needs to be the same parameter as defined in the ChainBaseASM
+var tokensupply=0;
 
 //===============Check the Blockchain connection===============================
 // Using local node or remote VNODE server to send TX command
@@ -112,7 +112,7 @@ if(cmds != null && cmds.length == 3){
 
     console.log("Src nonce:", inNonce, " ProcWind AppChain TokenSupply", tokensupply);
 
-    var mchash = sendshardingflagtx(baseaddr,basepsd,appChainAddress,SCSVia, tokensupply, bytecode,inNonce,'0x3')
+    var mchash = sendshardingflagtx(baseaddr,basepsd,appChainAddress,viaAddress, tokensupply, bytecode,inNonce,'0x3')
     console.log("dappbase TX HASH:", mchash);
 
   // Check the DAPP status after deploy, need to wait for several blocks
@@ -146,6 +146,7 @@ function sendshardingflagtx(baseaddr,basepsd, subchainaddr, via, amount,code,n,s
 // Wait for results to come
 function waitForAppChainBlocks(inMcAddr, innum) {
   let startBlk = chain3.scs.getBlockNumber(inMcAddr);
+  let preBlk = 0;
   // Incase the return is not valid, use 0 instead of NAN
   if ( startBlk > 0 ){
     let preBlk = startBlk;
@@ -172,4 +173,11 @@ function waitForAppChainBlocks(inMcAddr, innum) {
   }
 }
 
-	
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+}

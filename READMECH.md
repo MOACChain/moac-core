@@ -4,6 +4,39 @@
 
 ## 墨客女娲 1.x 
 
+### Nuwa v1.1.1:
+2020/03/15
+
+本版本仅在测试网上运行，是为了测试应用链的新交互界面。目前主要在SCS客户端提供了一个可以和用户交互的JavaScript界面，
+界面的启动需要首先运行SCS客户端并打开RPC端口：
+
+./scsserver --rpc --rpcport 8548
+
+然后打开另外一个窗口，运行以下命令(默认路径 ./scsdata)
+
+./scsserver attach
+
+或者
+
+./scsserver attach ./scsdata/scs.ipc
+
+用户应该可以看到一个交互命令行窗口。
+
+在交互界面中提供了appchain新组件，用于应用链的方法调用。用户可以在命令行中输入appchain看到所有的方法和属性。appchain新组件中提供SetAddress（）和GetAddress（）来设定和显示应用链地址，并且提供和scs组件中类似的应用链调用方法。不同之处在于不用每次输入应用链地址作为第一个参数。例如，下面的命令会返回应用链的最新区块高度：
+
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
+
 ### Nuwa v1.1.0:
 2020/02/08
 

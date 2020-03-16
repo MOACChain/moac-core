@@ -36,7 +36,7 @@
 // only 0.4.24 or 0.4.26 version should be used, 
 // To install a certain version of solc: npm install solc@0.4.24
 const solc = require('solc');
-const Chain3 = require('chain3');
+const Chain3 = require('chain3');// 0.1.22 version only
 const fs = require('fs');
 
 //===============Setup the Parameters==========================================

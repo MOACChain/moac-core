@@ -2,15 +2,31 @@
 
 ## MOAC Nuwa 1.x 
 
+### Nuwa v1.1.1: 
+2020/03/15
+
+Nuwa v1.1.1 is a version used for testnet only. The major updates are in the SCS server. SCS server provides a new console that is similar to VNODE console so users can interact with SCS server.
+
+There is a new package called appchain in the console. The appchain has an internal address property to be set with setAddress() method and it provides similar methods as the scs package except no need to input the AppChain address as the 1st parameter.
+
+More info can be found at the most recent documentation:
+https://moac-docs.readthedocs.io/en/latest
+
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
+
+
 ### Nuwa v1.1.0: 
 2020/02/08
 
 Nuwa v1.1.0 is the first release in 2020. It contains all the updates in the v1.0.x version and can be used on both mainnet and testnet. It improved the P2P connections between trusted VNODE peers and fully support the ProcWind AppChain.
-
-More info can be found at:
-https://moac-docs.readthedocs.io/en/latest
-
-Testnet moac can be get from：https://faucet.moacchina.com/
 
 **Download links**
 

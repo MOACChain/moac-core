@@ -33,9 +33,9 @@ https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
 VNODE+SCS 可执行文件包
 
-* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
-* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
-* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
 
 ### Nuwa v1.1.0:
 2020/02/08

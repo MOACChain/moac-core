@@ -1,0 +1,19 @@
+MOAC Source Code for ProcWind AppChain Contracts (Nuwa 1.1.2)
+
+This directory contains the sources codes and Node.Js scripts to launch the AppChain on MOAC BaseChain.
+
+More info can be found on the latest documentation at:
+https://moac-docs.readthedocs.io/en/latest
+
+The binary of VNODE and SCS can be downloaded from the [most recent release](https://github.com/MOACChain/moac-core/releases).
+Testnet mc can be get from：https://faucet.moacchina.com/
+
+MOAC 应用链合约源代码和部署脚本
+
+本目录包含了RandDrop应用链的合约源代码和Node.Js部署脚本。
+
+更多信息可以参考最新的中文开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+MOAC平台的VNODE和SCS软件可以从[最新的软件发布](https://github.com/MOACChain/moac-core/releases)下载.
+测试网的 mc 可以从这个网址获取：https://faucet.moacchina.com/

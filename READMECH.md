@@ -4,6 +4,36 @@
 
 ## 墨客女娲 1.x 
 
+### Nuwa v1.1.2:
+2020/05/04
+
+本版本仅在测试网上运行，是为了测试新型应用链RandDrop。
+本版本在VNODE和SCS上均有更新。
+
+RandDrop应用链是指采用BLS签名，支持多合约部署的MOAC应用链。
+
+RandDrop采用BLS签名，从共识层支持多个节点的签名片段进行合并得到阈值签名，以此为基础产生随机数。随机数可以在RandDrop的智能合约里面直接调用。RandDrop随机数的优点是可以杜绝单个节点对最终签名的可操作性，更加安全可靠。同时，RandDrop的信息量是O(n)，比其他类似的随机数区块链具有较大的优势。
+
+RandDrop应用链的验证过程由支持RandDrop应用链的客户端（SCS）完成，ProcWind和RandDrop的SCS节点不能混用。
+
+与ProcWind的部署相比，RandDrop主要有以下不同
+* 需要部署支持私钥共享的合约VssBase.sol
+* 在部署应用链合约时需要VssBase合约的地址作为输入
+* 在部署完VssBase和RandDropChainBase的合约后，需要在基础链上，调用VssBase合约的setCaller方法，传入之前的RandDrop合约地址。此方法调用后，保证了VssBase合约的部分关键函数只能由RandDrop的应用链合约调用，而无法由外部普通账户调用。
+
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
+
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.mac.tar.gz)
+
 ### Nuwa v1.1.1:
 2020/03/15
 

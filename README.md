@@ -2,6 +2,24 @@
 
 ## MOAC Nuwa 1.x 
 
+### Nuwa v1.1.2: 
+2020/05/04
+
+Nuwa v1.1.2 is a version used for testnet only. Both VNODE and SCS clients are updated to use RandDrop AppChain. 
+
+More info can be found at the most recent documentation:
+https://moac-docs.readthedocs.io/en/latest
+
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
+
 ### Nuwa v1.1.1: 
 2020/03/15
 

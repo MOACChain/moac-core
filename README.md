@@ -6,6 +6,7 @@
 2020/05/04
 
 Nuwa v1.1.2 is a version used for testnet only. Both VNODE and SCS clients are updated to use RandDrop AppChain. 
+RandDrop uses BLS signatures, and merges signature fragments that support multiple nodes from the consensus layer to obtain threshold signatures, and generates random numbers based on this. Random numbers can be directly called in RandDrop's smart contract. The advantage of RandDrop random number is that it can eliminate the operability of a single node to the final signature, which is more secure and reliable. At the same time, RandDrop's information volume is O (n), which has a greater advantage than other similar random number blockchains.
 
 More info can be found at the most recent documentation:
 https://moac-docs.readthedocs.io/en/latest

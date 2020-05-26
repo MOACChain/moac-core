@@ -1,4 +1,4 @@
-/* Script to close a MOAC ProcWind AppChain after deployed.
+/* Script to close a MOAC AppChain after deployed.
  * 
  * Require:
  * 1. Valid account with enough moac to deploy the contracts;

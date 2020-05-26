@@ -6,6 +6,7 @@ pragma experimental ABIEncoderV2;
  * @author Yifan Wang
  * @dev 
  * System smart contract for verifiable secret sharing
+ * 05/20/2020 Added setGeneralAttributes function
  * 
  */
 
@@ -178,11 +179,19 @@ contract VssBase{
     int public lastNodeChangeBlock = 0;
     int public slowNodeThreshold = 50; // number of blocks
 
+    // reserve for future usage
+    mapping(bytes32 => mapping(int => byte[])) public generalAttributes;
+
     enum VssMembership {noreg, active, inactive} // noreg: node never seen before
 
     function VssBase(int threshold) public {
         vssThreshold = threshold;
         owner = msg.sender;
+    }
+
+    function setGeneralAttributes(bytes32 namespace, int key, byte[] value) {
+        require(owner == msg.sender);
+        generalAttributes[namespace][key] = value;
     }
 
     function setThreshold(int newThreshold) public {

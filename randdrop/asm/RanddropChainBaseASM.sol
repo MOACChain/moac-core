@@ -7,8 +7,8 @@ import "./SCSProtocolBase.sol";
  * @title RanddropChainBaseASM.sol
  * @author David Chen
  * @dev 
- * ProcWind AppChain contract with Atomic Swap of MOAC(ASM) function.
- * This is the contract to deploy on the BaseChain to form a ProcWind AppChain.
+ * Main AppChain contract with Atomic Swap of MOAC(ASM) function.
+ * This is the contract to deploy on the BaseChain to form a RandDrop AppChain.
  * 
  * Requires : SCSProtocolBase.sol
  * Required by: N/A

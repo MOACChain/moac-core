@@ -4,6 +4,35 @@
 
 ## 墨客女娲 1.x 
 
+### Nuwa v1.1.3:
+2020/05/26
+
+本版本仅在测试网上运行，是为了测试新型应用链RandDrop。
+本版本在VNODE和SCS上均有更新。
+
+本版本进行了以下更新：
+
+* 加强了randdrop共识协议在高负载条件下的性能与稳定性；
+* 增加了rpc接口中对链上随机数查询的支持，getBlock的接口返回对象中多了一个random字段，类型为32字节数组；
+* 更新了应用链部署合约VssBase.sol以支持新功能；
+* 添加了调用应用链随机数的合约test.sol；
+* 更新了部署RandDrop的脚本程序；
+* 其他常规的bug修复与升级。
+
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
+
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.mac.tar.gz)
+
+
 ### Nuwa v1.1.2:
 2020/05/04
 

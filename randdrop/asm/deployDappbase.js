@@ -27,7 +27,8 @@ const solc = require('solc');
 const Chain3 = require('chain3');
 const fs = require('fs');
 
-var ABIs = require('./mcABIs');
+const ABIs = require('./mcABIs');
+const ByteCodes = require('./mcByteCodes');
 
 var vnodeConnectUrl="127.0.0.1:50062";//VNODE connection as parameter to use for VNODE pool protocol
 var minScsRequired = 3; // Min number of SCSs in the AppChain, recommended 3 or more
@@ -45,7 +46,8 @@ var appChainAddress="";// AppChain address,
 
 // For ASM chain, this needs to be the same parameter as defined in the ChainBaseASM
 // or can be read from 
-var tokensupply=0;
+var tokensupply=996;
+
 
 //===============Check the Blockchain connection===============================
 // Using local node or remote VNODE server to send TX command
@@ -87,42 +89,38 @@ if(cmds != null && cmds.length == 3){
 }
 
 //===============Deploy the DappBase contract at the AppChain======
-    // Deploy the DappBase contract to enable the Dapp deployment on the AppChain
-    // solc 0.4.24 and 0.4.26 version
-    var content = fs.readFileSync(inDappFile, 'utf8');
+ console.log("SCS ", appChainAddress,",state:", chain3.scs.getDappState(appChainAddress)," blockNumber:", chain3.scs.getBlockNumber(appChainAddress));
+ // Use pre-compiled codes
 
-    output = solc.compile(content, 1);
+  var inNonce = chain3.scs.getNonce(appChainAddress,baseaddr);
 
-    var key = Object.keys(output.contracts);
+  console.log("Src nonce:", inNonce, " RandDrop AppChain TokenSupply", tokensupply);
 
-    //this is the object contains the code and ABIs
-    var ctt = output.contracts[key];
+  // If the contract needs parameters, user can set them as the following:
+  // There are two params 
+  // true/false is the flag to set to allow non-owner deploy the contracts on the AppChain
+  // true is for public, false is for private AppChain
+  dappBaseContract = chain3.mc.contract(JSON.parse(ABIs.dappBase));
+  dappBaseContractByteCodes = dappBaseContract.new.getData(
+      "randdropAppChain01",
+      true,
+      {data:ByteCodes.dappBasePublic});
 
-    if(ctt == null){
-      console.log("Contract CTT is empty1");
-      return;
-    }
-
-    var bytecode = "0x"+ctt.bytecode;
-    var mcabi = JSON.parse(ctt.interface);
-
-    // Prepare and Send TX to VNODE to deploy the DAPP on the AppChain;
-    //Deploy the DappBase with correct parameters
-    var inNonce = chain3.scs.getNonce(appChainAddress,baseaddr);
-
-    console.log("Src nonce:", inNonce, "AppChain TokenSupply", tokensupply);
-
-
-    var mchash = sendAppChainTx(baseaddr,basepsd,appChainAddress,viaAddress, tokensupply, bytecode,inNonce,'0x3')
-    console.log("dappbase TX HASH:", mchash);
+  // set TX flag to '0x3' for deploy contract on the AppChain
+  var mchash = sendAppChainTx(baseaddr,basepsd,appChainAddress,viaAddress, tokensupply, dappBaseContractByteCodes, inNonce,'0x3')
+  console.log("dappbase TX HASH:", mchash);
 
   // Check the DAPP status after deploy, need to wait for several blocks
   // If successful, you should see the new DAPP address
-  waitForAppChainBlocks(appChainAddress,5);
+  waitForAppChainBlocks(appChainAddress,2);
 
   console.log("Should see DAPP list on :",appChainAddress, "\n at: ", chain3.scs.getDappAddrList(appChainAddress));
 
-	console.log("all Done!!!");
+  console.log("all Done!!!");
+    
+  return;
+
+
 
 // Functions to use in the process
 // Send TX with unlock account and Sharding Flag set

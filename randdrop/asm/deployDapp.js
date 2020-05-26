@@ -37,10 +37,10 @@ const fs = require('fs');
 // DAPPs on the AppChain.
 // need turn on personal in rpc api
 // Need to add the addr and private key
-baseaddr = "";//mc.accounts[0];
-basepsd  = "";//
-// Note these addresses should be changed if VNODE and SCS changed
-var SCSVia = "";//The VNODE via address, can be get from vnodeconfig.json
+var baseaddr = "";//mc.accounts[0];
+var basepsd  = "";//
+
+// AppChain address to deploy to
 var appchainAddress="";// AppChain address,
 /*--- End of Set Parameters---*/
 
@@ -75,50 +75,58 @@ if (!chain3.isScsConnected()){
 console.log("AppChain ", appchainAddress,",state:", chain3.scs.getDappState(appchainAddress)," blockNumber:", chain3.scs.getBlockNumber(appchainAddress));
 console.log("DAPP list:", chain3.scs.getDappAddrList(appchainAddress), chain3.scs.getNonce(appchainAddress,baseaddr));
 
-// 2. Compiled the input sol source file for the DAPP;
-// Read in the file from the command line
-var cmds = process.argv;
-if(cmds != null && cmds.length == 3){
-  var inDappFile = cmds[2];
-}else
-{
-  console.log("Input should have Dapp contract file and contract name:\neg: node deploy.js add.sol");
-  return;
-}
+  // 2. Compiled the input sol source file for the DAPP;
+  // Read in the file from the command line
+  var cmds = process.argv;
+  if(cmds != null && cmds.length == 3){
+    var inDappFile = cmds[2];
+  }else
+  {
+    console.log("Input should have Dapp contract file and contract name:\neg: node deploy.js add.sol");
+    return;
+  }
 
-var content = fs.readFileSync(inDappFile, 'utf8');
+  var content = fs.readFileSync(inDappFile, 'utf8');
 
-output = solc.compile(content, 1);
+  output = solc.compile(content, 1);
 
-var key = Object.keys(output.contracts);
+  var key = Object.keys(output.contracts);
 
-//this is the comiled object
-var ctt = output.contracts[key];
+  //this is the comiled object
+  var ctt = output.contracts[key];
 
-if(ctt == null){
-  console.log("Contract CTT is empty!");
-  return;
-}
+  if(ctt == null){
+    console.log("Contract CTT is empty!");
+    return;
+  }
 
-var bytecode = "0x"+ctt.bytecode;
-var mcabi = JSON.parse(ctt.interface);
+  var bytecode = "0x"+ctt.bytecode;
+  var mcabi = JSON.parse(ctt.interface);
 
+  // If the contract needs parameters, user can set them as the following:
+  // There are two params 
+  // true/false is the flag to set to allow non-owner deploy the contracts on the AppChain
+  // appchainContract = chain3.mc.contract(mcabi);
+  // appchainContractCodes = appchainContract.new.getData(
+  //     "parm 1",
+  //     "parm 2",
+  //     {data:bytecode});
 
-// 3. Prepare and Send TX to VNODE to deploy the DAPP on the AppChain;
-// Deploy the Dapp with correct nonce
-var inNonce = chain3.scs.getNonce(appchainAddress,baseaddr);
+  // 3. Prepare and Send TX to VNODE to deploy the DAPP on the AppChain;
+  // Deploy the Dapp with correct nonce
+  var inNonce = chain3.scs.getNonce(appchainAddress,baseaddr);
 
-console.log("Src nonce:", inNonce);
+  console.log("Src nonce:", inNonce);
 
-// No need to pass the amount when deploying the DAPP
-var mchash = sendAppChainTx(baseaddr,basepsd,appchainAddress,SCSVia, 0, bytecode,inNonce,'0x3')
-console.log("dappbase TX HASH:", mchash);
+  // No need to pass the amount when deploying the DAPP
+  var mchash = sendAppChainTx(baseaddr,basepsd,appchainAddress,VNODEVia, 0, bytecode,inNonce,'0x3')
+  console.log("dappbase TX HASH:", mchash);
 
-// Check the DAPP status after deploy, need to wait for several blocks
-// If successful, you should see the new DAPP address
-waitForAppChainBlocks(appchainAddress,2);
+  // Check the DAPP status after deploy, need to wait for several blocks
+  // If successful, you should see the new DAPP address
+  waitForAppChainBlocks(appchainAddress,2);
 
-console.log("Should see DAPP list on :",appchainAddress, "\n at: ", chain3.scs.getDappAddrList(appchainAddress));
+  console.log("Should see DAPP list on :",appchainAddress, "\n at: ", chain3.scs.getDappAddrList(appchainAddress));
 
 
 return;

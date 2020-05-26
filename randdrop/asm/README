@@ -34,7 +34,8 @@ deployVnodePool.js       - Example JS script to deploy the VnodePool contract on
 deployScsPool.js         - Example JS script to deploy the ScsPool contract on the BaseChain;
 deployVssBase.js         - Example JS script to deploy the VssBase on the BaseChain;
 deployDapp.js            - Example JS script to deploy Dapp on the AppChain after Dappbase is deployed;
-mcABIs.js                - JS files contains necessary contract ABIs;
+mcABIs.js                - JS file contains contracts ABIs;
+mcByteCodes.js           - JS file contains contracts precompiled binary codes;
 callAppChainMethods.js.  - Example JS shows how to call AppChain methods;
 closeASM.js              - Example JS close the AppChain;
 

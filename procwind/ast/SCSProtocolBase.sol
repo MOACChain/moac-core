@@ -116,7 +116,7 @@ contract SCSProtocolBase {
 
     function withdraw() public {
         if (
-            scsList[msg.sender].state = uint(SCSStatus.withdrawPending)
+            scsList[msg.sender].state == uint(SCSStatus.withdrawPending)
             && block.number > (scsList[msg.sender].withdrawBlock + WITHDRAW_BLOCK_DELAY)
         ) {
             scsList[msg.sender].state = uint(SCSStatus.withdrawDone);

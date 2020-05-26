@@ -40,7 +40,7 @@ contract SCSProtocolBase {
     uint public scsCount;
     string public subChainProtocol;
     uint public bondMin;
-    uint public constant PENDING_BLOCK_DELAY = 5; // 8 minutes
+    uint public constant PENDING_BLOCK_DELAY = 0; // 8 minutes
     uint public constant WITHDRAW_BLOCK_DELAY = 8640; // one day, given 10s block rate
     SysContract internal constant SYS_CONTRACT = SysContract(0x0000000000000000000000000000000000000065);
 
@@ -68,7 +68,7 @@ contract SCSProtocolBase {
         revert();
     }
 
-    // register a certain SCS
+    // register for SCS
     // SCS will be notified through 3rd party communication method. SCS will need to register here manually.
     // One protocol base can have several different subchains.
     function register(address scs) public payable returns (bool) {
@@ -116,10 +116,10 @@ contract SCSProtocolBase {
 
     function withdraw() public {
         if (
-            scsList[msg.sender].state = uint(SCSStatus.withdrawPending)
+            scsList[msg.sender].state == uint(SCSStatus.withdrawPending)
             && block.number > (scsList[msg.sender].withdrawBlock + WITHDRAW_BLOCK_DELAY)
         ) {
-            scsList[msg.sender].state = uint(SCSStatus.withdrawDone);
+            scsList[msg.sender].state == uint(SCSStatus.withdrawDone);
             scsList[msg.sender].from.transfer(scsList[msg.sender].bond);
         }
     }
@@ -150,14 +150,16 @@ contract SCSProtocolBase {
     }
 
     function getSelectionTargetByCount(uint targetnum) public view returns (uint target) {
-        if (targetnum == 0 ) {
-            return 0;
-        } else if (scsCount <= targetnum) {        
+        if (scsCount <= targetnum) {        
             return 255;
         }
 
         //calculate distance
         target = (targetnum * 256 / scsCount + 1) / 2;
+
+        if (target == 0 ) {
+            target = 0;
+        }
 
         return target;
     }
@@ -224,7 +226,7 @@ contract SCSProtocolBase {
         return true;
     }
 
-    //must called from ChainBaseASM
+    //must called from SubChainBase
     function forfeitBond(address scs, uint amount) public payable returns (bool) {
         //require( (subChainLastActiveBlock[msg.sender] + subChainExpireBlock[msg.sender])  > block.number);
         
@@ -313,7 +315,6 @@ contract SCSProtocolBase {
             scsArray.push(scsId);
         }
     }
-
     function removeScsId(address scsId) private {
         uint len = scsArray.length;
         for (uint i=len; i>0; i--) {

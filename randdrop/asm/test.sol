@@ -1,22 +1,25 @@
 pragma solidity ^0.4.8;
-/*
- * A test contract to run on RandDrop AppChain
- * It can use the internal precompileBLS() 
- * method to get a randcom number.
- * The address of the method is 0x20.
-*/
 
-// Internal function header
-contract precompileBLS {
-    function f() public returns(bytes32);
+/**
+ * @title test.sol
+ * @author Yifan Wang
+ * @dev 
+ * Example smart contract to use the random number function
+ * for a lottrery.
+ * 
+ */
+
+// 
+contract SCSRandom {
+    function random(uint256 blockNumber) public view returns(bytes32 r);
 }
 
-// Contract of a simple lottery program
 contract Lottery {
   mapping (uint8 => address[]) playersByNumber ;
   address owner;
   enum LotteryState { Accepting, Finished }
   LotteryState state;
+  SCSRandom internal constant SCS_RANDOM = SCSRandom(0x0000000000000000000000000000000000000020);
 
   function Lottery() public {
       owner = msg.sender;
@@ -51,12 +54,10 @@ contract Lottery {
       return this.balance;
   }
 
-  // Call the internal BLS function to the 
+  // Use internal AppChain function to get a random number
   function random() private view returns (uint8) {
-      precompileBLS bls = precompileBLS(0x20);
-      // get the 256-bit random number
-      bytes32 r = bls.f();
+      bytes32 r = SCS_RANDOM.random(block.number);
       // return its first 8 bits, range from 0-255
       return uint8(r[0]);
   }
-} 
+}

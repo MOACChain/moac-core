@@ -132,7 +132,7 @@ function withdrawFromAppChain(baseaddr,basepsd, appchainaddr, dappbassaddr, inno
 {
     console.log("Account:", baseaddr, "\nWithdrawing ", amount, " from ", appchainaddr)
     chain3.personal.unlockAccount(baseaddr,basepsd);
-    chain3.mc.sendTransaction( 
+    txhash = chain3.mc.sendTransaction( 
       { nonce: innonce, 
         from: baseaddr, 
         value:chain3.toSha(amount,'mc'), 

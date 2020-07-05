@@ -185,6 +185,7 @@ contract VssBase{
     enum VssMembership {noreg, active, inactive} // noreg: node never seen before
 
     function VssBase(int threshold) public {
+        require(threshold >= 2);
         vssThreshold = threshold;
         owner = msg.sender;
     }
@@ -196,6 +197,7 @@ contract VssBase{
 
     function setThreshold(int newThreshold) public {
         require(owner == msg.sender);
+        require(newThreshold >= 2);
         vssThreshold = newThreshold;
         vssConfigVersion++;
     }

@@ -82,7 +82,7 @@ console.log("DAPP list:", chain3.scs.getDappAddrList(appchainAddress), chain3.sc
     var inDappFile = cmds[2];
   }else
   {
-    console.log("Input should have Dapp contract file and contract name:\neg: node deploy.js add.sol");
+    console.log("Input should have Dapp contract file and contract name:\neg: node deploy.js test.sol");
     return;
   }
 

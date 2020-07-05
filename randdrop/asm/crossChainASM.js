@@ -21,7 +21,8 @@
  * 
 */
 
-const Chain3 = require('chain3');
+// const Chain3 = require('chain3');
+const Chain3 = require('../index.js');
 
 /*--- Parameters need to be set ---*/
 // Be aware that this need to be the owner of the AppChain to deploy
@@ -31,13 +32,27 @@ const Chain3 = require('chain3');
 baseaddr = "";//Account used to 
 basepsd  = "";//
 // Note these addresses should be changed if VNODE and SCS changed
+var viaAddress = "";//The VNODE via address, VnodeBeneficialAddress in the vnodeconfig.json 
 var appchainAddress="";// AppChain address,
 //For ASM, this value should be the same as the TokenSupply when deploying
 //the ChainBaseASM.sol,
 // var exchangerate = 100;// the exchange rate bewteen moac and AppChain token. 
 var appChainTokenSupply = 0;
-// The SCS via is in the userconfig.json, VNODE proxy
-var SCSVia = "";
+
+//==================================
+// baseaddr = "0xf6a36118751c50f8932d31d6d092b11cc28f2258";
+// basepsd = "test";
+basepsd = "test";
+baseaddr = "0xa8863fc8ce3816411378685223c03daae9770ebb";// for dev net
+viaAddress="0xD814F2ac2c4cA49b33066582E4e97EBae02F2aB9";
+
+
+// 注意部署dappbase合约的value为 1000(tokensupply) * 10的18次方(应用链原生币decimals)
+appChainTokenSupply = 996;//987654321 * 100 * 1e18;
+
+// The SCS via is in the userconfig.json
+// VNODE proxy
+SCSVia="0xD814F2ac2c4cA49b33066582E4e97EBae02F2aB9";
 
 /*--- End of Parameters need to be set ---*/
 
@@ -63,6 +78,16 @@ if (!chain3.isScsConnected()){
 }
 
 // Display AppChain Info on the SCS server
+mclist = chain3.scs.getAppChainList();
+
+if (mclist.length < 1){
+    console.log("No ASM AppChain on the SCS server!!! Exit with Error ");
+    return;
+}
+
+// The following can be processed 
+appchainAddress = mclist[0];
+// Display AppChain Info on the SCS server
 console.log("AppChain ASM", appchainAddress,",state should be 0:", chain3.scs.getDappState(appchainAddress)," blockNumber:", chain3.scs.getBlockNumber(appchainAddress));
 console.log("DAPP list should be 0:", chain3.scs.getDappAddrList(appchainAddress));
 
@@ -72,7 +97,7 @@ console.log("balance on baseChain:", chain3.mc.getBalance(baseaddr).toString()*1
 
 // Deposit the amount to baseaddr on BaseChain, 
 // the baseaddr will have less mc in the basechain and more token on the AppChain
-var amount = 1.0;
+var amount = 0.5;
 
 var depositFlag = 0;
 
@@ -187,7 +212,7 @@ function waitForAppChainBlocks(inMcAddr, innum) {
 }
 
 
-// Wait for results to come
+// Wait for results to show on the AppChain
 function waitForAppChainBalance(inMcAddr, inAddr) {
   let bal1 = chain3.scs.getBalance(appchainAddress, baseaddr).toString();
   let bal2 = bal1;

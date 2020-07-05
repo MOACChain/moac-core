@@ -2,6 +2,37 @@
 
 ## MOAC Nuwa 1.x 
 
+### Nuwa v1.1.4:
+2020/07/06
+
+Nuwa v1.1.4 is a release for the mainnet to support new AppChain type RandDrop. 
+Both VNODE and SCS clients are updated to support RandDrop AppChain.
+
+This release contains the following updates:
+
+* Improved the stability under high TPS for the RandDrop AppChain;
+* Updated the VssBase.sol to fix the bug in the previous tests;
+* Update the deploy scripts and added an example of crossing chain operations;
+* Other bug fixes;
+
+
+More info can be found at the most recent documentation:
+https://moac-docs.readthedocs.io/en/latest
+
+Testnet moac can be get from：https://faucet.moacchina.com/
+
+**Download links**
+
+RandDrop contract source files and node.js scripts.
+
+* [ASM cross chain](https://github.com/MOACChain/moac-core/tree/master/randdrop/asm)
+
+VNODE+SCS client
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.mac.tar.gz)
+
 ### Nuwa v1.1.3: 
 2020/05/26
 

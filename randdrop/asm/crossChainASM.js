@@ -8,7 +8,7 @@
  * 3. A running SCS with rpc port open, need turn on when start SCS:
  *    --rpc;
  * 4. A VNODE address used as proxy for the AppChain, can check the VNODE settings in the vnodeconfig.json;
- * 5. A running ProcWind ASM AppChain with valid AppChain address;
+ * 5. A running randdrop ASM AppChain with valid AppChain address;
  * 6. Chain3.js library installed with verion 0.1.19 and later;
  * 
  * Further Readings:

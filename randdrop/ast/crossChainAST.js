@@ -8,7 +8,7 @@
  * 3. A running SCS with rpc port open, need turn on when start SCS:
  *    --rpc;
  * 4. A VNODE address used as proxy for the AppChain, can check the VNODE settings in the vnodeconfig.json;
- * 5. A running procwind AST AppChain with valid AppChain address;
+ * 5. A running RandDrop AppChain with valid AppChain address;
  * 6. Chain3.js library installed with verion 0.1.19 and later;
  * 7. A valid ERC20 token contract and accout holding the token;
  * 
@@ -73,7 +73,7 @@ if (mclist.length < 1){
 }
 
 // Create the AppChain and ERC20 instance
-var appChainBaseContract = chain3.mc.contract(JSON.parse(ABIs.procwindAst));
+var appChainBaseContract = chain3.mc.contract(JSON.parse(ABIs.randdropAst));
 var appChainBase = appChainBaseContract.at(appchainAddress);
 
 var erc20Contract = chain3.mc.contract(JSON.parse(ABIs.ercToken));

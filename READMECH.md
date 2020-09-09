@@ -8,12 +8,14 @@
 2020/09/10
 
 本版本发布的VNODE和SCS为可以在正式网上运行新型应用链RandDrop的版本。
+增加了主网上的白名单功能，使用官方提供的编译代码可以直接在主网上部署RandDrop应用链。
 本版本在VNODE和SCS上有更新。
 
 本版本主要进行了以下更新：
 
 * VNODE 增加了admin.getSubnetP2PList 功能和JSON-RPC接口；
 * VNODE 修正了Subnet P2P网络异常退出的问题；
+* SCS版本号中加入Randdrop信息，便于用户识别;
 * 其他常规的bug修复与升级。
 
 更多信息可以参考最新的开发文档
@@ -30,9 +32,6 @@ VNODE+SCS 可执行文件包
 * [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.mac.tar.gz)
 
 ### Nuwa v1.1.4:
-2020/08/28
-增加了主网上的白名单功能，修正了之前LINUX和WINDOWS下的客户端，可以直接部署。
-SCS版本号中加入Randdrop信息，便于用户识别。
 
 2020/07/06
 

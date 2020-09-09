@@ -4,6 +4,31 @@
 
 ## 墨客女娲 1.x 
 
+### Nuwa v1.1.5:
+2020/09/10
+
+本版本发布的VNODE和SCS为可以在正式网上运行新型应用链RandDrop的版本。
+本版本在VNODE和SCS上有更新。
+
+本版本主要进行了以下更新：
+
+* VNODE 增加了admin.getSubnetP2PList 功能和JSON-RPC接口；
+* VNODE 修正了Subnet P2P网络异常退出的问题；
+* 其他常规的bug修复与升级。
+
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
+
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.mac.tar.gz)
+
 ### Nuwa v1.1.4:
 2020/07/06
 

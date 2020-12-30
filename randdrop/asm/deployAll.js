@@ -32,7 +32,6 @@
 
 
 const Chain3 = require('chain3');
-const fs = require('fs');
 // Use precompiled codes to deploy the AppChain
 const ABIs = require('./mcABIs');
 const ByteCodes = require('./mcByteCodes');

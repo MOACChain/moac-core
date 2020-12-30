@@ -1,5 +1,4 @@
-/* Script to create a MOAC ASM AppChain using three contracts in the input files.
- * Only works with solidity 0.4.24 and solidity 0.4.26.
+/* Script to create a MOAC ASM AppChain using precompiled codes in the input files.
  * 
  * Require:
  * 1. Valid account with enough moac to deploy the contracts;
@@ -33,11 +32,10 @@
 */
 
 
-// only 0.4.24 or 0.4.26 version should be used, 
-// To install a certain version of solc: npm install solc@0.4.24
-const solc = require('solc');
-const Chain3 = require('chain3');// 0.1.22 version only
-const fs = require('fs');
+const Chain3 = require('chain3');
+// Use precompiled codes to deploy the AppChain
+const ABIs = require('./mcABIs');
+const ByteCodes = require('./mcByteCodes');
 
 //===============Setup the Parameters==========================================
 
@@ -55,6 +53,7 @@ var scs=["",
 var VNODEVia="";// The VNODE benificial address, should be found in the vnodeconfig.json 
 var vnodeConnectUrl="127.0.0.1:50062";//VNODE connection as parameter to use for VNODE pool protocol
 var minScsRequired = 3; // Min number of SCSs in the AppChain, recommended 3 or more
+
 
 //===============Check the Blockchain connection===============================
 // 
@@ -111,27 +110,14 @@ if (chain3.personal.unlockAccount(baseaddr, basepsd, 0)) {
 // Deploy the VNODE pool contract to allow VNODE join as proxy to the microchain, 
 var minVnodeDeposit = 1 ;// number of deposit required for the VNODE proxy to register, unit is mc
 
-var basepath = '.';
-
-var contractName = 'VNODEProtocolBase';
-var solpath = basepath + '/' + contractName + '.sol';
-
-console.log("Read path:", solpath)
-contract = fs.readFileSync(solpath, 'utf8');
-
-output = solc.compile(contract, 1);
-
-abi = output.contracts[':' + contractName].interface;
-bin = output.contracts[':' + contractName].bytecode;
-
-
-var vnodepoolbaseContract = chain3.mc.contract(JSON.parse(abi));
+// use precompiled contracts
+var vnodepoolbaseContract = chain3.mc.contract(JSON.parse(ABIs.vnodePool));
 
 var vnodepoolbase = vnodepoolbaseContract.new(
    minVnodeDeposit,
    {
      from: baseaddr, 
-     data: '0x' + bin, 
+     data: ByteCodes.vnodePool, 
      gas: '8000000'
    }
  );
@@ -144,20 +130,7 @@ var minScsDeposit = 10 ;// SCS must pay more than this in the register function 
 var _protocolType = 0 ; // type of the AppChain protocol, don't change
 
 
-contractName = 'SCSProtocolBase';
-solpath = basepath + '/' + contractName + '.sol';
-
-console.log("Read path:", solpath)
-contract = fs.readFileSync(solpath, 'utf8');
-
-output = solc.compile(contract, 1);
-
-abi = output.contracts[':' + contractName].interface;
-bin = output.contracts[':' + contractName].bytecode;
-
-var bmin = 3;
-
-var scspoolContract = chain3.mc.contract(JSON.parse(abi));
+var scspoolContract = chain3.mc.contract(JSON.parse(ABIs.scsPool));
 
 var scspoolbase = scspoolContract.new(
    protocol,
@@ -165,7 +138,7 @@ var scspoolbase = scspoolContract.new(
    _protocolType,
    {
      from: baseaddr, 
-     data: '0x' + bin, 
+     data: ByteCodes.scsPool, 
      gas: '8000000'
    }
  );
@@ -199,29 +172,8 @@ var flushRound = 60 ;   //Number of MotherChain rounds, must between 40 and 500
 var tokensupply = 996;// AppChain token amount, used to exchange for native token, should 
 var exchangerate = 10;// the exchange rate bewteen moac and AppChain token.
 
-var contractName = 'ChainBaseASM';
 
-// Need to read both contract files to compile
-var input = {
-  '': fs.readFileSync(basepath + '/' +'ChainBaseASM.sol', 'utf8'),
-  'SCSProtocolBase.sol': fs.readFileSync(basepath + '/' +'SCSProtocolBase.sol', 'utf8')
-};
-
-// For deploy the AppChain contract, need to optimize the output size of the contract
-// need to set to 1
-// Before you deploy your contract, activate the optimizer while compiling using 
-// solc --optimize --bin sourceFile.sol. 
-// By default, the optimizer will optimize the contract for 200 runs. 
-// If you want to optimize for initial contract deployment and get the smallest output, 
-// set it to --runs=1. 
-var output = solc.compile({sources: input}, 1);
-
-abi = output.contracts[':' + contractName].interface;
-bin = output.contracts[':' + contractName].bytecode;
-
-
-var appchainASMContract = chain3.mc.contract(JSON.parse(abi));
-
+var appchainASMContract =  chain3.mc.contract(JSON.parse(ABIs.procwindAsm));
 var appChain;
 
 // Need to use callback function, otherwise this process may halt under Windows.
@@ -242,7 +194,7 @@ deploy_chainbase().then((data) => {
 	}else{
 	   // Add balance to appChainAddr for AppChain running
 	   console.log("Add funding to AppChain!");
-	   addMicroChainFund(appChainAddr, appChainDeposit)
+	   addFundToAppChain(appChainAddr, appChainDeposit)
 	   waitBalance(appChain.address, appChainDeposit);
 	}
 
@@ -270,6 +222,7 @@ deploy_chainbase().then((data) => {
 	  }
 	}
 
+  // register the VNODEVia in the POOL
 	vnoderegister(vnodePool, minVnodeDeposit, VNODEVia, vnodeConnectUrl)
 
 	console.log("Registering SCS to the pool", scsPool.address);
@@ -314,6 +267,39 @@ deploy_chainbase().then((data) => {
 	registerClose(appChain.address);
 	sleep(5000);
 
+    //===============Step 4. Deploy the DappBase contract at the AppChain======
+    console.log("AppChain is ready, prepare to deploy dappBase on ", appChain.address);
+    
+    // Check the DAPP status after deploy, need to wait for several blocks
+    // If successful, you should see the new DAPP address
+    // Need to wait on the new AppChains to run for a while
+    waitForAppChainBlocks(appChain.address,5);
+    // Prepare and Send TX to VNODE to deploy the DAPP on the AppChain;
+    //Deploy the DappBase with correct parameters
+    var inNonce = chain3.scs.getNonce(appChain.address,baseaddr);
+
+    console.log("Src nonce:", inNonce, " ProcWind AppChain ASM TokenSupply", tokensupply);
+
+    // Use precompiled codes and input parameters to deploy to the AppChain
+    var dappBaseContract = chain3.mc.contract(JSON.parse(ABIs.dappBase));
+    // There are two params 
+    // Name is a string for the DappBase
+    // true/false is the flag to set to allow non-owner deploy the contracts on the AppChain
+    var dappBaseContractByteCodes = dappBaseContract.new.getData(
+        "ProcWindPublic",
+        true,
+        {data:ByteCodes.dappBasePublic});
+    // set TX flag to '0x3' for deploy contract on the AppChain
+    var mchash = sendAppChainTx(baseaddr,basepsd,appChain.address,VNODEVia, tokensupply, dappBaseContractByteCodes, inNonce,'0x3')
+    console.log("dappbase TX HASH:", mchash);
+
+    // Check the DAPP status after deploy, need to wait for several blocks
+    // If successful, you should see the new DAPP address
+    waitForAppChainBlocks(appChain.address,5);
+
+    console.log("Should see DAPP list on :",appChain.address, "\n at: ", chain3.scs.getDappAddrList(appChain.address));
+
+
 	console.log("all Done!!!");
 
 	
@@ -325,13 +311,14 @@ deploy_chainbase().then((data) => {
 // utils for the program
 // Check if the input address has enough balance for the mc amount
 function checkBalance(inaddr, inMcAmt) {
-  if ( chain3.mc.getBalance(inaddr)/1e18 >= inMcAmt ){
+  if ( chain3.mc.getBalance(inaddr)*1e-18 >= inMcAmt ){
     return true;
   }else{
     return false;
   }
 }
 
+// Send tx to the VNODE
 function sendtx(src, tgtaddr, amount, strData) {
 
   chain3.mc.sendTransaction(
@@ -434,7 +421,7 @@ function registerClose(subchainaddr)
 }
 
 // must do before flush
-function addMicroChainFund(inaddr, num){
+function addFundToAppChain(inaddr, num){
   sendtx(baseaddr, inaddr, num,'0xa2f09dfa')
 }
 
@@ -445,7 +432,7 @@ function addMicroChainFund(inaddr, num){
 // data - VNODE register FUNCTION
 function vnoderegister(vnode,num,via,ip){
   // call the register method in VNODEProtocolBasel.sol
-  var data=vnode.register.getData(via.toLowerCase(),ip,'')
+  var data=vnode.register.getData(vnode.address, via.toLowerCase(),ip,'')
   sendtx(baseaddr,vnode.address,num,data)
 }
 
@@ -468,12 +455,12 @@ function deploy_chainbase() {
 		   exchangerate,
 		   {
 			 from: baseaddr, 
-			 data: '0x' + bin,
+			 data: ByteCodes.procwindAsm,
 			 gas: '9000000'
 		   }, 
 		   function (e, contract){
-			   if (e!=null){console.log(' AppChain contract deploy error : ', e); reject(e); return}
-			   console.log(' chainbase Contract transactionHash: ', contract.transactionHash); 
+			   if (e!=null){console.log(' ProcWind  AppChain deploy error : ', e); reject(e); return}
+			   console.log(' procwind Contract transactionHash: ', contract.transactionHash); 
 			   if (typeof(contract.address)!='undefined'){ resolve(contract.address);}		   
 		   }
 		 );	
@@ -481,9 +468,10 @@ function deploy_chainbase() {
 	})
 }
 
+
 // Functions to use in the process
-// Send TX with unlock account and Sharding Flag set
-function sendshardingflagtx(baseaddr,basepsd, subchainaddr, via, amount,code,n,sf)
+// Send TX to AppChain with account password and Sharding Flag set
+function sendAppChainTx(baseaddr,basepsd, subchainaddr, via, amount,code,n,sf)
 {
     chain3.personal.unlockAccount(baseaddr,basepsd);
     txhash = chain3.mc.sendTransaction(

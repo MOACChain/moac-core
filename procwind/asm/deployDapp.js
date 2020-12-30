@@ -44,6 +44,7 @@ var SCSVia = "";//The VNODE via address, can be get from vnodeconfig.json
 var appchainAddress="";// AppChain address,
 /*--- End of Set Parameters---*/
 
+
 // 1. Check the AppChain address and the source account nonce on the AppChain;
 // Be aware that this need to be the owner of the AppChain to deploy
 // DAPPs on the AppChain.

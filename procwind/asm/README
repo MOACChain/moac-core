@@ -1,5 +1,8 @@
 MOAC AppChain contracts 
 
+2020/12/30
+Updated the deployASM.js with precompiled binary code to be used on the mainnet.
+
 SCS supports multiple contracts to be deployed on one AppChain;
 More info can be found at:
 https://moac-docs.readthedocs.io/en/latest/
@@ -33,5 +36,6 @@ deployDappBase.js        - Example JS script to deploy the Dappbase on the AppCh
 deployDapp.js            - Example JS script to deploy Dapp on the AppChain after Dappbase is deployed;
 callDappExample.js       - Example JS script to call AppChain and Dappbase functions;
 closeASM.js              - Example JS script to close a deployed ASM AppChain;
-crossASM.js              - Example JS script to perform cross chain functions between AppChain and BaseChain;
+crossChainASM.js         - Example JS script to perform cross chain functions between AppChain and BaseChain;
 mcABIs.js                - ABIs for AST, ASM and DappBase, used by callDappExample;
+mcByteCodes.js           - JS file contains contracts precompiled binary codes;

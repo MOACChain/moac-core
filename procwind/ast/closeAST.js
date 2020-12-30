@@ -15,8 +15,6 @@
 */
 
 const Chain3 = require('chain3');
-const fs = require('fs');
-const solc = require('solc');//only 0.4.24 version should be used, npm install solc@0.4.24
 
 //===============Setup the Parameters==========================================
 

@@ -1,4 +1,7 @@
-MOAC Source Code for ProcWind AppChain Contracts (Nuwa 1.1.0)
+MOAC Source Code for ProcWind AppChain Contracts (Nuwa 1.0.x and above)
+
+Updated on Dec 30th, 2020
+Added the compiled code for ProcWind to avoid the compiler difference caused trouble on the mainnet.
 
 This directory contains the sources codes and Node.Js scripts to launch the AppChain on MOAC BaseChain.
 

@@ -1,27 +1,10 @@
-/* Script to create a MOAC AST AppChain using three contracts in the input files.
+/* Script to deploy an ERC20 contract named erc20.sol
  * 
  * Require:
  * 1. Valid account with enough moac to deploy the contracts;
  * 2. A running VNODE can connect and send Transaction to, need turn on personal in rpc api;
  --rpcapi "chain3,mc,net,vnode,personal,
- * 3. At least three SCSs, recommended 5;
- * 4. A VNODE used as proxy for the AppChain, with VNODE settings in the vnodeconfig.json;
- * 5. Three contract files:
- *    VnodeProtocolBase.sol
- *    SubChainProtocolBase.sol
- *    ChainBaseAST.sol
  *
- * Steps:
- * 1. Deploy the erc20, VNODE and SCS pool contracts;
- * 2. Create the AppChain contract using erc20, VNODE and SCS pools;
- * 3. Register the VNODE, SCSs, then open AppChain to get all the SCSs registered.
- *  
- * This script generates a AppChain with no DAPP deployed.
- * To deploy the Dappbase and additional DAPP contracts on AppChain
- * please check online documents:
- * 
- * https://moacdocs-chn.readthedocs.io/zh_CN/latest/subchain/%E5%AD%90%E9%93%BE%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E7%9A%84%E9%83%A8%E7%BD%B2.html
- * 
  * 
 */
 
@@ -29,6 +12,36 @@ const Chain3 = require('chain3');
 const fs = require('fs');
 const solc = require('solc');//only 0.4.24 version should be used, npm install solc@0.4.24
 
+
+let chain3 = new Chain3();
+
+//===============Check the Blockchain connection===============================
+// need to have a valid account to use for contracts deployment
+var baseaddr = "";//keystore address
+var basepsd = "";//keystore password
+
+// Using local node or remote VNODE server to send TX command
+const vnodeUri = 'http://localhost:8545';
+
+chain3.setProvider(new chain3.providers.HttpProvider(vnodeUri));
+
+if(!chain3.isConnected()){
+    throw new Error('unable to connect to moac vnode at ' + vnodeUri);
+}else{
+    console.log('connected to moac vnode at ' + vnodeUri);
+    let balance = chain3.mc.getBalance(baseaddr);
+    console.log('Check src account balance:' + baseaddr + ' has ' + balance*1e-18 + " MC");
+}
+// Unlock the baseaddr for contract deployment
+
+
+
+if (chain3.personal.unlockAccount(baseaddr, basepsd, 0)) {
+    console.log(`${baseaddr} is unlocked`);
+}else{
+    console.log(`unlock failed, ${baseaddr}`);
+    throw new Error('unlock failed ' + baseaddr);
+}
 
 // Deploy the ERC20 contract
 var basepath = '.';
@@ -63,5 +76,6 @@ var testcoin = testcoinContract.new(
 
 console.log("ERC20 is being deployed at transaction HASH: " + testcoin.transactionHash);
 
-
+  // Lock the account after use
+  chain3.personal.lockAccount(baseaddr);
 

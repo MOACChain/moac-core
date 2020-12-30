@@ -21,7 +21,9 @@
  * https://moacdocs-chn.readthedocs.io/zh_CN/latest
  */
 
+// const Chain3 = require('chain3');
 const Chain3 = require('chain3');
+
 var chain3 = new Chain3();
 
 // external file holds AppChain ABI
@@ -36,6 +38,9 @@ chain3.setScsProvider(new chain3.providers.HttpProvider('http://localhost:8548')
 // Note these addresses should be changed if VNODE and SCS changed
 var viaAddress = "";//The VNODE via address
 var appchainAddress="";//Input the AppChain address
+
+appchainAddress = "";
+viaAddress = "0xD814F2ac2c4cA49b33066582E4e97EBae02F2aB9";
 
 // Using local node or remote VNODE server to send TX command
 const vnodeUri = 'http://localhost:8545';
@@ -58,14 +63,14 @@ mclist = chain3.scs.getMicroChainList();
 console.log("SCS AppChain Info List:");
 for(var i = 0; i < mclist.length; i++){
       console.log("AppChain ", mclist[i],",state:", chain3.scs.getDappState(mclist[i])," blockNumber:", chain3.scs.getBlockNumber(mclist[i]));
-      console.log("MC balance:", chain3.scs.getMicroChainInfo(mclist[i]).balance);
-      console.log("DAPP list:", chain3.scs.getDappAddrList(mclist[i]));
+      console.log("MC balance:", chain3.scs.getAppChainInfo(mclist[i]).balance);
+      // console.log("DAPP list:", chain3.scs.getDappAddrList(mclist[i]));
 }
 
 //=======================================================
 //Create a AppChain Object and test functions
 //Load the contract ABI, must be fixed types, otherwise
-var mcabi = ABIs.asmABI;//load in the AppChain ABI from external file
+var mcabi = ABIs.procwindAsm;//load in the AppChain ABI from external file
 
 // Create the AppChain Object with abi
 var mcObject = chain3.microchain(JSON.parse(mcabi));
@@ -73,7 +78,8 @@ var mcObject = chain3.microchain(JSON.parse(mcabi));
 // Need to setup the via address
 mcObject.setVnodeAddress(viaAddress);
 
-// This enables the MICROCHAIN objec, which is a Global contract on the MotherChain
+// This enables the APPCHAIN objec, which is a Global contract on the BaseChain
+appchainAddress = mclist[0]
 var mchain=mcObject.at(appchainAddress);
 
 //call AppChain methods
@@ -86,7 +92,7 @@ console.log("flush Info:", mchain.getFlushInfo().toString());
 
 
 //Create a DappBase Object and test functions with it
-var baseabi = ABIs.dappBaseABI;//load in the DappBase ABI from external file
+var baseabi = ABIs.dappBase;//load in the DappBase ABI from external file
 var baseAddr = mclist[0]; //DappBase address should be the 1st Dapp address on the AppChain
 
 // Create the AppChain DappBase Object with abi and address

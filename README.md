@@ -1,5 +1,25 @@
 ## [墨客中文发布信息](READMECH.md)
 
+## MOAC Fuxi 2.x 
+
+### Fuxi v2.0.0:
+2020/12/30
+
+This release contains VNODE only and only used on the testnet.
+This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
+The MOAC testnet will be upgrade at block number 4900000, estimate time is on Wednesday, Dec 30th, 2020.
+The new VNODE can support the opcode as the following:
+SHL
+SHR
+SAR
+EXTCODEHASH
+CHAINID
+SELFBALANCE
+BEGINSUB
+RETURNSUB
+JUMPSUB
+CREATE2
+
 ## MOAC Nuwa 1.x 
 
 ### Nuwa v1.1.5:

@@ -25,7 +25,6 @@
 // To install a certain version of solc: npm install solc@0.4.24
 const solc = require('solc');
 const Chain3 = require('chain3');
-const fs = require('fs');
 
 const ABIs = require('./mcABIs');
 const ByteCodes = require('./mcByteCodes');

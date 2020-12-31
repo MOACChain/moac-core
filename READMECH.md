@@ -10,6 +10,7 @@
 本版本的更新仅限于VNODE，发布的版本仅能用于测试网.
 本次发布对Vnode节点的智能合约运行环境VM进行重大升级，新增对以下opcode的支持。升级后，Vnode节点可最高支持运行 Solidity 0.8编译器编译的合约字节码。按照发布计划，testnet升级后分叉高度为4900000区块，预计分叉时间为北京时间2020年12月30日（周三）。
 新增的opcode如下：
+
 SHL
 SHR
 SAR
@@ -20,6 +21,14 @@ BEGINSUB
 RETURNSUB
 JUMPSUB
 CREATE2
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.mac.tar.gz)
 
 ## 墨客女娲 1.x 
 

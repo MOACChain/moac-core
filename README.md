@@ -9,16 +9,24 @@ This release contains VNODE only and only used on the testnet.
 This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
 The MOAC testnet will be upgrade at block number 4900000, estimate time is on Wednesday, Dec 30th, 2020.
 The new VNODE can support the opcode as the following:
-SHL
-SHR
-SAR
-EXTCODEHASH
-CHAINID
-SELFBALANCE
-BEGINSUB
-RETURNSUB
-JUMPSUB
-CREATE2
+    SHL
+    SHR
+    SAR
+    EXTCODEHASH
+    CHAINID
+    SELFBALANCE
+    BEGINSUB
+    RETURNSUB
+    JUMPSUB
+    CREATE2
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.mac.tar.gz)
 
 ## MOAC Nuwa 1.x 
 

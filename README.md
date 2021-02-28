@@ -5,8 +5,10 @@
 ### Fuxi v2.0.1:
 2021/02/28
 
-本次发布的更新仅限于VNODE，包含对MOAC主网 mainnet 的Vnode节点的智能合约运行环境VM进行重大升级，新增对以下opcode的支持。升级后，Vnode节点可最高支持运行solidity 0.8编译器编译的合约字节码。按照发布计划，mainnet升级后分叉高度为6435000区块，预计分叉时间为北京时间3月5日前后（周五）。
-新增的opcode如下：
+This release contains VNODE only and can be used on mainnet and testnet.
+This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
+The MOAC mainnet will be upgrade at block number 6435000, estimate time is on Wednesday, March 5th, 2021.
+The new VNODE can support the opcode as the following:
 * SHL
 * SHR
 * SAR
@@ -18,13 +20,13 @@
 * JUMPSUB
 * CREATE2
 
-建议所有 VNODE 节点尽快升级到这一版本。此外，在本次 VNODE 节点程序升级的同时，为了MOAC公链未来更好的发展，我们建议参与挖矿的矿工将区块gas上限提升至1800万。
-具体方法为，在启动节点程序时，加入如下启动参数：
+We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
 ```
 --targetgaslimit 18000000
 ```
-经过一段时间后，新区块的gas上限会逐步由当前的900万提升至1800万，从而允许MOAC公链运行更加复杂的智能合约。
-如果节点不参与挖矿，则无需设置 targetgaslimit 参数。
+
+This will allow the VNODE supporting more advanced smart contracts and improve the performance of MOAC blockchain. 
+If the VNODE is not mining, then you don't need to setup the targetgaslimit parameter.
 
 **下载链接**
 

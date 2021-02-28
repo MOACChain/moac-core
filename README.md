@@ -2,6 +2,38 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.1:
+2021/02/28
+
+本次发布的更新仅限于VNODE，包含对MOAC主网 mainnet 的Vnode节点的智能合约运行环境VM进行重大升级，新增对以下opcode的支持。升级后，Vnode节点可最高支持运行solidity 0.8编译器编译的合约字节码。按照发布计划，mainnet升级后分叉高度为6435000区块，预计分叉时间为北京时间3月5日前后（周五）。
+新增的opcode如下：
+* SHL
+* SHR
+* SAR
+* EXTCODEHASH
+* CHAINID
+* SELFBALANCE
+* BEGINSUB
+* RETURNSUB
+* JUMPSUB
+* CREATE2
+
+建议所有 VNODE 节点尽快升级到这一版本。此外，在本次 VNODE 节点程序升级的同时，为了MOAC公链未来更好的发展，我们建议参与挖矿的矿工将区块gas上限提升至1800万。
+具体方法为，在启动节点程序时，加入如下启动参数：
+```
+--targetgaslimit 18000000
+```
+经过一段时间后，新区块的gas上限会逐步由当前的900万提升至1800万，从而允许MOAC公链运行更加复杂的智能合约。
+如果节点不参与挖矿，则无需设置 targetgaslimit 参数。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.mac.tar.gz)
+
 ### Fuxi v2.0.0:
 2020/12/30
 
@@ -9,16 +41,16 @@ This release contains VNODE only and only used on the testnet.
 This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
 The MOAC testnet will be upgrade at block number 4900000, estimate time is on Wednesday, Dec 30th, 2020.
 The new VNODE can support the opcode as the following:
-    SHL
-    SHR
-    SAR
-    EXTCODEHASH
-    CHAINID
-    SELFBALANCE
-    BEGINSUB
-    RETURNSUB
-    JUMPSUB
-    CREATE2
+* SHL
+* SHR
+* SAR
+* EXTCODEHASH
+* CHAINID
+* SELFBALANCE
+* BEGINSUB
+* RETURNSUB
+* JUMPSUB
+* CREATE2
 
 **Download links**
 

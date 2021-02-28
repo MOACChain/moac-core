@@ -7,7 +7,7 @@
 
 This release contains VNODE only and can be used on mainnet and testnet.
 This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
-The MOAC mainnet will be upgrade at block number 6435000, estimate time is on Wednesday, March 5th, 2021.
+The MOAC mainnet will be upgrade at block number 6435000, estimate time is between March 8th and 10th, 2021.
 The new VNODE can support the opcode as the following:
 * SHL
 * SHR

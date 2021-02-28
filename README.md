@@ -2,6 +2,38 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.1:
+2020/02/28
+
+This release contains VNODE only and can be used on mainnet and testnet.
+This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
+The MOAC mainnet will be upgrade at block number 6435000, estimate time is on Wednesday, March 5th, 2021.
+The new VNODE can support the opcode as the following:
+* SHL
+* SHR
+* SAR
+* EXTCODEHASH
+* CHAINID
+* SELFBALANCE
+* BEGINSUB
+* RETURNSUB
+* JUMPSUB
+* CREATE2
+
+We stronglly suggested all the mining nodes to increase their block gasLimit to 180,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+--targetgaslimit 18000000
+
+This will allow the VNODE supporting more advanced smart contracts and improve the performance of MOAC blockchain. 
+If the VNODE is not mining, then you don't need to setup the targetgaslimit parameter.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.mac.tar.gz)
+
 ### Fuxi v2.0.0:
 2020/12/30
 

@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.2:
+2021/03/18
+
+This version runs on testnets only. 
+The VNODE is upgraded to defuse the difficulty bomb on testnet at block 5042000.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.mac.tar.gz)
+
 ### Fuxi v2.0.1:
 2021/02/28
 

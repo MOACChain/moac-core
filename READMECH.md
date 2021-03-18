@@ -3,6 +3,20 @@
 ## [MOAC English](README.md)
 
 ## 墨客伏羲 2.x 
+
+### Fuxi v2.0.2:
+2021/03/18
+
+本次发布版本仅用于测试网络，更新了VNODE客户端，用于解除难度炸弹，提高出块速度，测试网分叉区块高度在5042000。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.mac.tar.gz)
+
 ### Fuxi v2.0.1:
 2021/02/28
 

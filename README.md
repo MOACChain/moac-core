@@ -3,7 +3,7 @@
 ## MOAC Fuxi 2.x 
 
 ### Fuxi v2.0.2:
-2020/03/18
+2021/03/18
 
 This version runs on testnets only. 
 The VNODE is upgraded to defuse the difficulty bomb on testnet at block 5042000.

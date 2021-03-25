@@ -2,6 +2,19 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.3:
+2021/03/25
+
+The VNODE is upgraded to defuse the difficulty bomb on mainnet at block height 6462000.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.mac.tar.gz)
+
 ### Fuxi v2.0.2:
 2021/03/18
 

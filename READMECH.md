@@ -4,6 +4,19 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.0.3:
+2021/03/25
+
+本次发布用于解除MOAC主网上的难度炸弹，以提高出块速度，主网mainnet升级后分叉高度为6462000区块，建议用户尽快升级到这一版本。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.mac.tar.gz)
+
 ### Fuxi v2.0.2:
 2021/03/18
 

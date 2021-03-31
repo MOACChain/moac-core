@@ -6,6 +6,8 @@
 2021/03/25
 
 The VNODE is upgraded to defuse the difficulty bomb on mainnet at block height 6462000.
+We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+--targetgaslimit 18000000
 
 **Download links**
 

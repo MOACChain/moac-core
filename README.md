@@ -2,6 +2,24 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.4:
+2021/04/06
+
+This release fixed the error when VNODE read block states and improve the stability of VNODE, especially while mining.
+We stronglly suggested all the mining nodes to upgrade to this version.
+We also suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+```
+--targetgaslimit 18000000
+```
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.mac.tar.gz)
+
 ### Fuxi v2.0.3:
 2021/03/25
 

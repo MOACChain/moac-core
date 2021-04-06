@@ -4,6 +4,23 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.0.4:
+2021/04/06
+
+本次发布提高了vnode节点运行时的稳定性，修复了访问区块状态数据时出现错误的问题。建议所有vnode节点尽快升级。
+同时在log文件中加入更多的debug信息，以帮助调试区块状态问题。
+此外，为了MOAC公链未来更好的发展，建议参与挖矿的矿工将区块gas上限提升至1800万。
+具体方法为，在启动节点程序时，加入如下启动参数：
+--targetgaslimit 18000000
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.mac.tar.gz)
+
 ### Fuxi v2.0.3:
 2021/03/25
 

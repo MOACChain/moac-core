@@ -9,7 +9,7 @@ This release fixed the error when VNODE read block states and improve the stabil
 We stronglly suggested all the mining nodes to upgrade to this version.
 We also suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
 ```
---targetgaslimit 18000000
+moac --targetgaslimit 18000000
 ```
 
 **Download links**
@@ -25,7 +25,9 @@ VNODE client only
 
 The VNODE is upgraded to defuse the difficulty bomb on mainnet at block height 6462000.
 We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
---targetgaslimit 18000000
+```
+moac --targetgaslimit 18000000
+```
 
 **Download links**
 
@@ -68,7 +70,9 @@ The new VNODE can support the opcode as the following:
 * CREATE2
 
 We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
---targetgaslimit 18000000
+```
+moac --targetgaslimit 18000000
+```
 
 This will allow the VNODE supporting more advanced smart contracts and improve the performance of MOAC blockchain. 
 If the VNODE is not mining, then you don't need to setup the targetgaslimit parameter.

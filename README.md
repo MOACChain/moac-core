@@ -2,6 +2,19 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.5:
+2021/04/18
+
+This version runs on testnets only and will be enabled after block height 5260000 on testnet. It enables the web3 RPC commands and transactions can be send to MOAC basechain/mother chain with Ethereum EIP155 signed methods. An example is provided in send_web3.js.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.mac.tar.gz)
+
 ### Fuxi v2.0.4:
 2021/04/06
 

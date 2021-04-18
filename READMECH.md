@@ -4,6 +4,20 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.0.5:
+2021/04/18
+
+本次发布版本仅用于测试网络的VNODE，测试网升级区块高度为5260000区块。本次更新在VNODE客户端增加了对web3的接口支持，使得用户可以使用以太坊的 EIP155 签名方式发送交易到MOAC基础链/母链。这次升级可以让开发者使用以太坊类的开发工具，如MetaMask，直接接入MOAC基础链。
+本次发布也提供了示例程序 send_web3.js，使用 web 1.2.1 发送签名交易到MOAC VNODE。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.mac.tar.gz)
+
 ### Fuxi v2.0.4:
 2021/04/06
 

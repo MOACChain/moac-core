@@ -4,6 +4,20 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.0.6:
+2021/04/28
+
+本次发布版本仅用于测试网络，测试网升级区块高度为5330000区块。
+本次更新在VNODE客户端增加了支持以太坊 EIP-2537(https://eips.ethereum.org/EIPS/eip-2537) 中 BLS12-381 签名的预编译合约模块，使得MOAC网络能够使用和以太坊网络相同的签名验证算法，来验证BLS和SNARKS的签名。这个新的特征为下一步实现MOAC网络和以太坊网络的跨链做准备，也是MOAC网络上实现聚合自动化市商（AMM）的一个重要工具，。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.mac.tar.gz)
+
 ### Fuxi v2.0.5:
 2021/04/18
 

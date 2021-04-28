@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.0.6:
+2021/04/28
+
+This release runs on testnets only and the new features will be enabled after block height 5330000 on the testnet. 
+This release added the precompiled contract for BLS12-381 curve operations as suggested on Ethereum EIP-2537(https://eips.ethereum.org/EIPS/eip-2537). This new feature will enable the operations such as BLS signature verification and perform SNARKs verifications on MOAC network, which are required for future cross-chain operations.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.mac.tar.gz)
+
 ### Fuxi v2.0.5:
 2021/04/18
 

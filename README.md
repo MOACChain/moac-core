@@ -1,90 +1,143 @@
-## [墨客中文发布信息](READMECH.md)
+## 墨客项目中文更新信息
 
-## MOAC Fuxi 2.x 
+## [MOAC English](READMEen.md)
+
+## 墨客伏羲 2.x 
+
+### Fuxi v2.0.7:
+2021/05/09
+
+本次发布版本仅用于测试网络，修复了eth_subscribe接口中支持参数的问题，使得用户可以在提供websocket接口的客户端订阅信息。
+目前可以订阅的信息包括：
+* newHeads
+* logs
+* newPendingTransactions
+* syncing
+
+为了使用订阅功能，需要VNODE客户端在启动时候使用"ws"选项：
+
+``````
+moac --testnet --ws --wsaddr 0.0.0.0 --wsport 8546 --wsapi "chain3,mc,net,db,personal" --wsorigins "*"
+``````
+
+然后，在web3中使用订阅功能
+
+``````
+const Web3 = require('web3')
+const web3 = new Web3("wss://localhost:8546")
+
+function newBlockHeaders(){
+  var subscription = eth.subscribe('newBlockHeaders', function(error, result){
+      
+        if (!error){
+            console.log(result);
+        }else{
+            console.log(error);
+        }
+    })
+    .on("data", function(transaction){
+        console.log(`transaction:${transaction}`);
+    })
+}
+
+// Start listening to different events
+newBlockHeaders();
+
+``````
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.7/fuxi2.0.7-beta.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.7/fuxi2.0.7-beta.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.7/fuxi2.0.7-beta.mac.tar.gz)
+
 
 ### Fuxi v2.0.6:
 2021/04/28
 
-This release runs on testnets only and the new features will be enabled after block height 5330000 on the testnet. 
-This release added the precompiled contract for BLS12-381 curve operations as suggested on Ethereum EIP-2537(https://eips.ethereum.org/EIPS/eip-2537). This new feature will enable the operations such as BLS signature verification and perform SNARKs verifications on MOAC network, which are required for future cross-chain operations.
+本次发布版本仅用于测试网络，测试网升级区块高度为5330000区块。
+本次更新在VNODE客户端增加了支持以太坊 EIP-2537(https://eips.ethereum.org/EIPS/eip-2537) 中 BLS12-381 签名的预编译合约模块，使得MOAC网络能够使用和以太坊网络相同的签名验证算法，来验证BLS和SNARKS的签名。这个新的特征为下一步实现MOAC网络和以太坊网络的跨链做准备，也是MOAC网络上实现聚合自动化市商（AMM）的一个重要工具，。
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.6/fuxi2.0.6-beta.mac.tar.gz)
 
 ### Fuxi v2.0.5:
 2021/04/18
 
-This version runs on testnets only and will be enabled after block height 5260000 on testnet. It enables the web3 RPC commands and transactions can be send to MOAC basechain/mother chain with Ethereum EIP155 signed methods. An example is provided in send_web3.js.
+本次发布版本仅用于测试网络的VNODE，测试网升级区块高度为5260000区块。本次更新在VNODE客户端增加了对web3的接口支持，使得用户可以使用以太坊的 EIP155 签名方式发送交易到MOAC基础链/母链。这次升级可以让开发者使用以太坊类的开发工具，如MetaMask，直接接入MOAC基础链。
+本次发布也提供了示例程序 send_web3.js，使用 web 1.2.1 发送签名交易到MOAC VNODE。
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.5/fuxi2.0.5-beta.mac.tar.gz)
 
 ### Fuxi v2.0.4:
 2021/04/06
 
-This release fixed the error when VNODE read block states and improve the stability of VNODE, especially while mining.
-We stronglly suggested all the mining nodes to upgrade to this version.
-We also suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+本次发布提高了vnode节点运行时的稳定性，修复了访问区块状态数据时出现错误的问题。建议所有vnode节点尽快升级。
+同时在log文件中加入更多的debug信息，以帮助调试区块状态问题。
+此外，为了MOAC公链未来更好的发展，建议参与挖矿的矿工将区块gas上限提升至1800万。
+具体方法为，在启动节点程序时，加入如下启动参数：
 ```
 moac --targetgaslimit 18000000
 ```
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.4/fuxi2.0.4-stable.mac.tar.gz)
 
 ### Fuxi v2.0.3:
 2021/03/25
 
-The VNODE is upgraded to defuse the difficulty bomb on mainnet at block height 6462000.
-We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+本次发布用于解除MOAC主网上的难度炸弹，以提高出块速度，主网mainnet升级后分叉高度为6462000区块，建议用户尽快升级到这一版本。
+为了MOAC公链未来更好的发展，同时建议参与挖矿的矿工将区块gas上限提升至1800万。
+具体方法为，在启动节点程序时，加入如下启动参数：
 ```
 moac --targetgaslimit 18000000
 ```
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.3/fuxi2.0.3-stable.mac.tar.gz)
 
 ### Fuxi v2.0.2:
 2021/03/18
 
-This version runs on testnets only. 
-The VNODE is upgraded to defuse the difficulty bomb on testnet at block 5042000.
+本次发布版本仅用于测试网络，更新了VNODE客户端，用于解除难度炸弹，提高出块速度，测试网分叉区块高度在5042000。
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.2/fuxi2.0.2-test.mac.tar.gz)
 
 ### Fuxi v2.0.1:
-2020/02/28
+2021/02/28
 
-This release contains VNODE only and can be used on mainnet and testnet.
-This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
-The MOAC mainnet will be upgrade at block number 6435000, estimate time is on Wednesday, March 5th, 2021.
-The new VNODE can support the opcode as the following:
+本次发布的更新仅限于VNODE，包含对MOAC主网 mainnet 的Vnode节点的智能合约运行环境VM进行重大升级，新增对以下opcode的支持。升级后，Vnode节点可最高支持运行solidity 0.8编译器编译的合约字节码。按照发布计划，mainnet升级后分叉高度为6435000区块，预计分叉时间为北京时间3月5日前后（周五）。
+新增的opcode如下：
+
 * SHL
 * SHR
 * SAR
@@ -96,29 +149,30 @@ The new VNODE can support the opcode as the following:
 * JUMPSUB
 * CREATE2
 
-We stronglly suggested all the mining nodes to increase their block gasLimit to 18,000,000. To do this, please setup the targetgaslimit parameter when starting the MOAC VNODE:
+建议所有 VNODE 节点尽快升级到这一版本。此外，在本次 VNODE 节点程序升级的同时，为了MOAC公链未来更好的发展，我们建议参与挖矿的矿工将区块gas上限提升至1800万。
+具体方法为，在启动节点程序时，加入如下启动参数：
 ```
 moac --targetgaslimit 18000000
 ```
 
-This will allow the VNODE supporting more advanced smart contracts and improve the performance of MOAC blockchain. 
-If the VNODE is not mining, then you don't need to setup the targetgaslimit parameter.
+经过一段时间后，新区块的gas上限会逐步由当前的900万提升至1800万，从而允许MOAC公链运行更加复杂的智能合约。
+如果节点不参与挖矿，则无需设置 targetgaslimit 参数。
 
-**Download links**
+**下载链接**
 
-VNODE client only
+VNODE 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.1/fuxi2.0.1-stable.mac.tar.gz)
 
 ### Fuxi v2.0.0:
 2020/12/30
 
-This release contains VNODE only and only used on the testnet.
-This release upgrade the VNODE VM to support the Solidity 0.8 compiler. 
-The MOAC testnet will be upgrade at block number 4900000, estimate time is on Wednesday, Dec 30th, 2020.
-The new VNODE can support the opcode as the following:
+本版本的更新仅限于VNODE，发布的版本仅能用于测试网.
+本次发布对Vnode节点的智能合约运行环境VM进行重大升级，新增对以下opcode的支持。升级后，Vnode节点可最高支持运行 Solidity 0.8编译器编译的合约字节码。按照发布计划，testnet升级后分叉高度为4900000区块，预计分叉时间为北京时间2020年12月30日（周三）。
+新增的opcode如下：
+
 * SHL
 * SHR
 * SAR
@@ -130,672 +184,686 @@ The new VNODE can support the opcode as the following:
 * JUMPSUB
 * CREATE2
 
-**Download links**
 
-VNODE client only
+**下载链接**
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.mac.tar.gz)
+VNODE 可执行文件包
 
-## MOAC Nuwa 1.x 
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.0.0/fuxi2.0.0-test.mac.tar.gz)
+
+## 墨客女娲 1.x 
 
 ### Nuwa v1.1.5:
 2020/09/10
 
-Nuwa v1.1.5 is a release for the mainnet to support the RandDrop AppChain. 
-Both VNODE and SCS clients are updated to better support RandDrop AppChain.
+本版本发布的VNODE和SCS为可以在正式网上运行新型应用链RandDrop的版本。
+增加了主网上的白名单功能，使用官方提供的编译代码可以直接在主网上部署RandDrop应用链。
+本版本在VNODE和SCS上有更新。
 
-This release contains the following updates:
+本版本主要进行了以下更新：
 
-* VNODE added admin.getSubnetP2PList function and JSON-RPC methods；
-* VNODE fixed the Subnet P2P2 network bug that caused unusual exit;
-* Other bug fixes;
+* VNODE 增加了admin.getSubnetP2PList 功能和JSON-RPC接口；
+* VNODE 修正了Subnet P2P网络异常退出的问题；
+* SCS版本号中加入Randdrop信息，便于用户识别;
+* 其他常规的bug修复与升级。
 
-More info can be found at the most recent documentation:
-https://moac-docs.readthedocs.io/en/latest
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
 
-Testnet moac can be get from：https://faucet.moacchina.com/
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
-**Download links**
+**下载链接**
 
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.5/nuwa1.1.5.mac.tar.gz)
 
 ### Nuwa v1.1.4:
+
 2020/07/06
 
-Nuwa v1.1.4 is a release for the mainnet to support new AppChain type RandDrop. 
-Both VNODE and SCS clients are updated to support RandDrop AppChain.
+本版本发布的VNODE和SCS为可以在正式网上运行新型应用链RandDrop的版本。
+本版本在VNODE、SCS和应用链合约上均有更新。
 
-This release contains the following updates:
+本版本主要进行了以下更新：
 
-* Improved the stability under high TPS for the RandDrop AppChain;
-* Updated the VssBase.sol to fix the bug in the previous tests;
-* Update the deploy scripts and added an example of crossing chain operations;
-* Other bug fixes;
+* 加强了randdrop共识协议在高负载条件下的性能与稳定性；
+* 更新了应用链部署合约VssBase.sol以解决测试中发现的问题；
+* 更新了部署RandDrop的脚本程序并增加了跨链调用的脚本；
+* 其他常规的bug修复与升级。
 
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
 
-More info can be found at the most recent documentation:
-https://moac-docs.readthedocs.io/en/latest
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
-Testnet moac can be get from：https://faucet.moacchina.com/
+**下载链接**
 
-**Download links**
+RandDrop 合约文件和部署脚本
 
-RandDrop contract source files and node.js scripts.
+* [ASM 跨链模式](https://github.com/MOACChain/moac-core/tree/master/randdrop/asm)
 
-* [ASM cross chain](https://github.com/MOACChain/moac-core/tree/master/randdrop/asm)
+VNODE+SCS 可执行文件包
 
-VNODE+SCS client
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.mac.tar.gz)
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.4/nuwa1.1.4.mac.tar.gz)
-
-### Nuwa v1.1.3: 
+### Nuwa v1.1.3:
 2020/05/26
 
-Nuwa v1.1.3 is a version used on testnet only. 
-Both VNODE and SCS clients are updated to support RandDrop AppChain.
+本版本仅在测试网上运行，是为了测试新型应用链RandDrop。
+本版本在VNODE和SCS上均有更新。
 
-This release contains the following updates:
+本版本进行了以下更新：
 
-* Improved the stability under high TPS for the RandDrop AppChain;
-* Added the random number info in the getBlock JSON object;
-* Updated the VssBase.sol;
-* Updated example contract test.sol;
-* Update the deploy scripts;
-* Other bug fixes;
+* 加强了randdrop共识协议在高负载条件下的性能与稳定性；
+* 增加了rpc接口中对链上随机数查询的支持，getBlock的接口返回对象中多了一个random字段，类型为32字节数组；
+* 更新了应用链部署合约VssBase.sol以支持新功能；
+* 添加了调用应用链随机数的合约test.sol；
+* 更新了部署RandDrop的脚本程序；
+* 其他常规的bug修复与升级。
 
-More info can be found at the most recent documentation:
-https://moac-docs.readthedocs.io/en/latest
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
 
-Testnet moac can be get from：https://faucet.moacchina.com/
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
-**Download links**
+**下载链接**
 
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.mac.tar.gz)
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.3/nuwa1.1.3.mac.tar.gz)
 
 
-### Nuwa v1.1.2: 
+### Nuwa v1.1.2:
 2020/05/04
 
-Nuwa v1.1.2 is a version used for testnet only. Both VNODE and SCS clients are updated to use RandDrop AppChain. 
-RandDrop uses BLS signatures, and merges signature fragments that support multiple nodes from the consensus layer to obtain threshold signatures, and generates random numbers based on this. Random numbers can be directly called in RandDrop's smart contract. The advantage of RandDrop random number is that it can eliminate the operability of a single node to the final signature, which is more secure and reliable. At the same time, RandDrop's information volume is O (n), which has a greater advantage than other similar random number blockchains.
+本版本仅在测试网上运行，是为了测试新型应用链RandDrop。
+本版本在VNODE和SCS上均有更新。
 
-More info can be found at the most recent documentation:
-https://moac-docs.readthedocs.io/en/latest
+RandDrop应用链是指采用BLS签名，支持多合约部署的MOAC应用链。
 
-Testnet moac can be get from：https://faucet.moacchina.com/
+RandDrop采用BLS签名，从共识层支持多个节点的签名片段进行合并得到阈值签名，以此为基础产生随机数。随机数可以在RandDrop的智能合约里面直接调用。RandDrop随机数的优点是可以杜绝单个节点对最终签名的可操作性，更加安全可靠。同时，RandDrop的信息量是O(n)，比其他类似的随机数区块链具有较大的优势。
 
-**Download links**
+RandDrop应用链的验证过程由支持RandDrop应用链的客户端（SCS）完成，ProcWind和RandDrop的SCS节点不能混用。
 
-VNODE+SCS client
+与ProcWind的部署相比，RandDrop主要有以下不同
+* 需要部署支持私钥共享的合约VssBase.sol
+* 在部署应用链合约时需要VssBase合约的地址作为输入
+* 在部署完VssBase和RandDropChainBase的合约后，需要在基础链上，调用VssBase合约的setCaller方法，传入之前的RandDrop合约地址。此方法调用后，保证了VssBase合约的部分关键函数只能由RandDrop的应用链合约调用，而无法由外部普通账户调用。
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/appchain/RandDrop.html
 
-### Nuwa v1.1.1: 
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.2/nuwa1.1.2.mac.tar.gz)
+
+### Nuwa v1.1.1:
 2020/03/15
 
-Nuwa v1.1.1 is a version used for testnet only. The major updates are in the SCS server. SCS server provides a new console that is similar to VNODE console so users can interact with SCS server.
+本版本仅在测试网上运行，是为了测试应用链的新交互界面。目前主要在SCS客户端提供了一个可以和用户交互的JavaScript界面，
+界面的启动需要首先运行SCS客户端并打开RPC端口：
 
-There is a new package called appchain in the console. The appchain has an internal address property to be set with setAddress() method and it provides similar methods as the scs package except no need to input the AppChain address as the 1st parameter.
+./scsserver --rpc --rpcport 8548
 
-More info can be found at the most recent documentation:
-https://moac-docs.readthedocs.io/en/latest
+然后打开另外一个窗口，运行以下命令(默认路径 ./scsdata)
 
-Testnet moac can be get from：https://faucet.moacchina.com/
+./scsserver attach
 
-**Download links**
+或者
 
-VNODE+SCS client
+./scsserver attach ./scsdata/scs.ipc
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
+用户应该可以看到一个交互命令行窗口。
 
+在交互界面中提供了appchain新组件，用于应用链的方法调用。用户可以在命令行中输入appchain看到所有的方法和属性。appchain新组件中提供SetAddress（）和GetAddress（）来设定和显示应用链地址，并且提供和scs组件中类似的应用链调用方法。不同之处在于不用每次输入应用链地址作为第一个参数。例如，下面的命令会返回应用链的最新区块高度：
 
-### Nuwa v1.1.0: 
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.1.1/nuwa1.1.1.mac.tar.gz)
+
+### Nuwa v1.1.0:
 2020/02/08
 
-Nuwa v1.1.0 is the first release in 2020. It contains all the updates in the v1.0.x version and can be used on both mainnet and testnet. It improved the P2P connections between trusted VNODE peers and fully support the ProcWind AppChain.
+本版本是2020年的主要升级，包括了之前v1.0.x的所有功能，并着重对VNODE节点之间的连接进行了优化，加强应用链SCS之间的通讯。
+本版本支持ProcWind应用链的所有功能。
 
-**Download links**
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
-VNODE+SCS client
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
+**下载链接**
 
-### Nuwa v1.0.12: 
+VNODE+SCS 可执行文件包
+
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.1.0/nuwa1.1.0.mac.tar.gz)
+
+### Nuwa v1.0.12:
 2019/12/23
 
-Nuwa v1.0.12 runs for testnet only.
+版本特性 
 
-1. Supports Solidity 0.5.12 contracts on AppChain, this requires deploying the DappBasePublic_0.5.sol or 
-DappBasePrivate_0.5.sol with solidity compiler 0.5.12 and above;
-2. Added JSON-RPC method scs_listening, fixed the scs_getBalance method when displaying large numbers with AppChain;
-3. The contracts used to generate ProcWind AppChains are updated to the latest version with ASM and AST supports in nuwa1.0.12.ASM.tar.gz and nuwa1.0.12.AST.tar.gz;
-4. Added scripts to close AppChain and perform cross chain functions between AppChain and BaseChain;
+本版本仅在测试网上运行，进行了以下改进：
 
-More info can be found at:
-https://moac-docs.readthedocs.io/en/latest
-
-testnet API server：http://139.198.126.104:8080
-testnet access token can be get with the following login information:
-username：test
-password：123456
-Testnet moac can be get from：https://faucet.moacchina.com/
-
-**Download links**
-
-VNODE+SCS client
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.mac.tar.gz)
+1. 应用链客户端（SCS）可以部署使用solidity 0.5.x编译的DAPP合约，但需要部署相应的DappBase合约；
+2. 提供 JSON-RPC 接口scs_listening，并修正了scs_getBalance接口之前显示大数的错误；
+3. 更新了ASM和AST两种应用链中的合约；
+4. 增加了关闭应用链的脚本，和实现跨链操作的脚本；
 
 
-### Nuwa v1.0.11: 
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
+
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.12/nuwa1.0.12.mac.tar.gz)
+
+### Nuwa v1.0.11:
 2019/09/26
 
-Nuwa v1.0.11 runs on mainnet and testnet.
+版本特性 
 
-Allow multiple contracts to be deployed on one MicroChain;
-Supports SCS RPCdebug APIs;
-Supports JSON-RPC methods in SCS to work with MicroChain and DAPPs;
+本版本可在主网和测试网上支持子链多合约，并进行了以下优化：
 
-The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports in nuwa1.0.11.ASM.tar.gz and nuwa1.0.11.AST.tar.gz;
-
-Updated scripts to launch the MicroChains for both ASM and AST,
-Added scripts to deploy DappBase and Dapp,;
-Added script to call MicroChain and DappBase functions;
-More info can be found on the latest documentation
-More info can be found at:
-https://moac-docs.readthedocs.io/en
-
-There are APIs and SDKs to use with the MicroChain.
-More info can be found on the API documentation:
-https://moac-docs.readthedocs.io/en/latest/restapi/introduction.html#access-control
-
-testnet API server：http://139.198.126.104:8080
-testnet access token can be get with the following login information:
-username：test
-password：123456
-Testnet moac can be get from：https://faucet.moacchina.com/
-
-**Download links**
-
-VNODE+SCS client
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.linux.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.mac.tar.gz)
-* [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.arm.tar.gz)
+1. 为 SCS 提供 RPCdebug 开发接口，便于用户调试；
+2. 为 SCS 提供 JSON-RPC ；
+3. 更新了ASM和AST两种子链中的合约；
 
 
-### LICENSE update and AppChain code is uploaded
+此外，本次发布一同更新了nuwa1.0.11.ASM.tar.gz 和 nuwa1.0.11.AST.tar.gz
+更新了部署ASM和AST子链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
+提供了在子链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
+提供了调用子链和DAPPBASE函数的例子；
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
+
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
+
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
+
+**下载链接**
+
+VNODE+SCS 可执行文件包
+
+* [Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.linux.tar.gz)
+* [Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.win.zip)
+* [MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.mac.tar.gz)
+* [ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.11/nuwa1.0.11.arm.tar.gz)
+
+
+### LICENSE 文件更新和应用链源程序发布
 2019/08/29
-We updated the LICENSE of AppChain contracts to MIT LICENSE so we can provide better services to our customers and commercial partners.
-We also uploaded the source code for ProcWind AppChain to the procwind directory. This is to replace the previous contractsamples
+为了更好地服务社区和商业用户，我们把应用链的LICENSE从GPL更换为MIT。
+同时把目前ProcWind应用链的源程序发布到新目录 procwind，替代之前的contractsamples目录。
+之后我们也计划把MOAC底层的不同软件库和应用程序的源程序逐步开源，欢迎大家使用。
 
-### Nuwa v1.0.10: 
+### Nuwa v1.0.10:
 2019/07/12
 
-Nuwa v1.0.10 runs on testnets only. It is used to test new algorithms on MicroChains:
+版本特性 
 
-Allow multiple contracts to be deployed on one MicroChain;
-Enable new data structure supports in SCS RPCdebug APIs;
-Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
-Update the README files in VNODE and added README file in SCS.
+本版本仅在测试网上支持多合约，是为了测试子链新结构使用：
 
-The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports in nuwa1.0.10.ASM.tar.gz and nuwa1.0.10.AST.tar.gz;
-Also from this release, we call MicroChain as AppChain and MotherChain as BaseChain.
-Updated scripts to launch the MicroChains for both ASM and AST,
-Added scripts to deploy DappBase and Dapp,;
-Added script to call MicroChain and DappBase functions;
-More info can be found on the latest documentation
-More info can be found at:
-https://moac-docs.readthedocs.io/en/latest/subchain
+1. 为SCS提供更多开发接口，便于用户使用；
+2. 在VNODE console中提供internal transaction的接口；
+3. 更新了ASM和AST两种子链中的DappBase合约；
+4. 修正了VNODE README中的错误，增加了SCS README；
 
-There are APIs and SDKs to use with the MicroChain.
-More info can be found on the API documentation:
-https://moac-docs.readthedocs.io/en/latest/restapi/introduction.html#access-control
+此外，本次发布还更新了nuwa1.0.10.ASM.tar.gz 和 nuwa1.0.10.AST.tar.gz
+本版开始，开始使用应用链（AppChain）来称呼子链（MicroChain），
+基础链（BaseChain）来称呼母链（MotherChain）。
+更新了部署ASM和AST子链合约的NODEJS脚本，可以实现一键发链，修正了之前脚本在windows下的问题；
+提供了在子链上部署控制合约和普通合约的NODEJS脚本，可以用来部署DappBase和更多的Dapp；
+提供了调用子链和DAPPBASE函数的例子；
+更多信息可以参考最新的开发文档
+https://moacdocs-chn.readthedocs.io/zh_CN/latest
 
-testnet API server：http://139.198.126.104:8080
-testnet access token can be get with the following login information:
-username：test
-password：123456
-Testnet moac can be get from：https://faucet.moacchina.com/
+开发团队同时提供可以接入子链的API和SDK，可以参考API 文档.
+https://moacdocs-chn.readthedocs.io/zh_CN/latest/restapi
 
-**Download links**
+测试环境地址：http://139.198.126.104:8080
+测试环境获取access token，可使用测试账号：test 密码：123456
+测试环境的moac可以免费获取：https://faucet.moacchina.com/
 
-VNODE+SCS client
+**下载链接**
+
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.mac.tar.gz)
 * [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.arm.tar.gz)
 
-Support contracts and scripts to create the MicroChain
+跨链交换子链的合约文件和执行脚本
 
 * [ASM contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.ASM.tar.gz)
 * [AST contracts and script](https://github.com/MOACChain/moac-core/releases/download/v1.0.10/nuwa1.0.10.AST.tar.gz)
 
 ### Nuwa v1.0.9: 
 
-Nuwa v1.0.9 is the version runs on both mainnet and testnet to support Multiple contracts on MicroChains:
+版本特性 
 
-1.  Allow multiple contracts to be deployed on one MicroChain;
-2.  Enable new data structure supports in SCS RPCdebug APIs;
-3.  Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
-4.  Optimized txpool handling of MicroChain flushing process.
-5.  Updated bootnodes to improve the P2P connections;
-6.  The contracts used to generate MicroChains are also updated to the latest version with ASM and AST supports;
-7.  Added scripts to launch the MicroChains for both ASM and AST;
+1.  在主网和测试网上支持多合约。子链多合约指的是在一条子链中部署多个智能合约，多合约可以将业务逻辑进行拆分，相互调用，合约之间也可以进行升级;
+2.  为SCS提供更多开发接口，便于用户使用；
+3.  提供更多JSON-RPC接口；
+4.  优化了交易池中对子链确认过程的处理；
+5.  优化了P2P的连接方式；
+6.  更新了ASM和AST两种子链的合约；
+7.  提供了部署ASM和AST子链合约的脚本；
 
-More info can be found on the latest [documentation](https://moac-docs.readthedocs.io/en/latest/index.html).
+更多信息可以参考最新的[开发文档](https://moac-docs.readthedocs.io/en/latest/index.html).
 
-There are APIs and SDKs to use with the MicroChain.
-More info can be found on the [API documentation](https://moac-docs.readthedocs.io/en/latest/restapi/index.html).
-To get the Access Token to the REST-API, please contact: moacapi@mossglobal.net
+开发团队同时提供可以接入子链的API和SDK，可以参考[API 文档](https://moac-docs.readthedocs.io/en/latest/restapi/index.html).
+接入API需要首先获取access token，请联系开发团队:moacapi@mossglobal.net.
 
-**Download links**
+**下载链接**
 
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.mac.tar.gz)
 * [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.arm.tar.gz)
 
-Support contracts and scripts to create the MicroChain
+跨链交换子链的合约文件和执行脚本
 
 * [ASM contracts and script](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.ASM.tar.gz)
 * [AST contracts and script](https://github.com/MOACChain/moac-core/releases/download/1.0.9/nuwa1.0.9.AST.tar.gz)
 
-### Nuwa v1.0.8: 
+### Nuwa 1.0.8
 
-Nuwa v1.0.8 only runs on testnet and is used to test the new Multiple contracts on MicroChain:
+本次发布的软件包仅用测试网，用于测试子链的多合约部署。
+本版本的SCS和VNODE需要一起使用以支持子链上部署多个合约。
+子链多合约指的是在一条子链中部署多个智能合约，多合约可以将业务逻辑进行拆分，相互调用，合约之间也可以进行升级;
+为SCS提供更多开发接口，便于用户使用；
 
-1.  Allow multiple contracts to be deployed on one MicroChain;
-2.  Enable new RPCdebug methods in SCS to work with MicroChain and DAPPs;
-3.  Enable new JSON-RPC methods in SCS to work with MicroChain and DAPPs;
-4.  Added more bootnodes to improve the P2P connections;
+1.  允许子链上同时部署多个合约;
+2.  通过 SCS RPCdebug 接口提供多个合约查询方法以允许用户调用子链上的多个合约，并查询结果;
+3.  通过 SCS RPC 接口提供多个合约查询方法以允许用户调用子链上的多个合约，并查询结果;
+4.  优化了P2P的连接方式；
 
-MicroChain contracts
+合约例子里面提供了可以部署一条支持AST的多合约子链，包括以下合约
 
-The example contracts are used to form a MicroChain with capability to support Atomic Token Swap of ERC20 token.
+* erc20.sol: 母链上的ERC20 token合约，可以用于交换子链原生token；
+* SubChainProtocolBase.sol: 支持多合约的子链池合约;
+* VnodeProtocolBase.sol: 支持多合约的VNODE代理池合约.
+* SubChainBase.sol: 支持多合约的子链合约.;
+* Dappbase.sol: 支持多合约的子链DAPP控制合约;
 
-* erc20.sol: Example contract to generate an ERC20 token on MOAC mother chain which can be used to swap with tokens on the MicroChain. This contract used a fixed supply for the token and user can change the name/symbol of the token before deploy;
-* SubChainProtocolBase.sol: Contract with protocol to register SCSs;
-* VnodeProtocolBase.sol: Vnode Protocol contract for VNODES to enable the multiple contracts.
-* SubChainBase.sol: Subchain contract for SCSs to form the MicroChain and hold multiple contracts;
-* Dappbase.sol: Contract required to first deploy on the MicroChain and enable multiple contracts deployment;
+**下载链接**
 
-**Download links**
-
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.mac.tar.gz)
 * [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/1.0.8/nuwa1.0.8.arm.tar.gz)
 
-Support contracts to form the MicroChain
+母链 ERC20 token 跨链交换子链 tokens
 
 * [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/erc20.sol)
 * [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.8/VnodeProtocolBase.sol)
 * [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainProtocolBase.sol)
 
-MicroChain contract
+带有跨链功能的子链协议合约
 
 * [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/1.0.8/SubChainBase.sol)
 
-DAPP control contract
+带有跨链功能的子链DAPP控制合约
 
 * [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/1.0.8/DappBase.sol)
 
 ### Nuwa v1.0.7: 
 
-Nuwa v1.0.7 is a package released to use cross chain service between MotherChain and MicroChain. 
-It optimized the MicroChain service with:
-1.  Enable the fast deposit to MicroChain from MotherChain and increase the flush limit larger than 500;
-2. Optimized the via reward model;
-3. Added express Smart Contract channel for white list;
-4. Fixed the bug that MicroChain flush stop before DAPP deployed;
-5. Provide a Atomic Swap of Moac (ASM) in addition to Atomic Swap of Token (AST).Enabled the atomic swap of tokens and MOACs between MicroChains and MotherChain;
-6. Added compiled binaries for ARM linux.
-
-For VNODE users:
-* If you want to use the cross-chain atomic swap, you need to upgrade the VNODE software to this version v1.0.7.
-* If you only mining or monitoring the network, you don't have to upgrade your VNODE software.
-
-For SCS users:
-* Please upgrade to this version to allow cross-chain atomic swap functions.
-* Please also use the MicroChain contracts provided with v1.0.7.
-
-VNODE
-
-* Enable the cross-chain atomic swap of tokens and MOACs between MicroChains and MotherChain;
-* Optimized the via reward model;
-* Added express Smart Contract channel for white list;
-
-SCS
-
-* Enable the cross-chain atomic swap of Moacs between MicroChains and MotherChain;
-* Fixed the bug that MicroChain flush stop before DAPP deployed;
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了母链和子链之间的使用MOAC和ERC20 token的原子跨链交易；
+优化了跨链功能：
+1. 允许快速充值并将充值上限提高到500以上；
+2. 优化VIA节点奖励模式;
+3. 增加白名单快速通道，使得符合一定条件的母链合约可以不经审核直接部署;
+4. 修正Fixed the bug that MicroChain flush stop before DAPP deployed;
+5. 提供MOAC和母链ERC20 TOKEN对子链的跨链兑换功能;
+6. 提供ARM linux的编译版本.
 
 
-**Download links**
+**下载链接**
 
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.mac.tar.gz)
 * [Binary package for ARM Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/nuwa1.0.7.arm.tar.gz)
 
-MicroChain contracts v1.0.7
+带有跨链功能的子链合约
 
-Atomic Swap of MOAC with MicroChain tokens
+MOAC 跨链交换子链 tokens
 
 * [SubChainBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseASM.sol)
 * [VnodeProtocolBaseASM](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseASM.sol)
 
-Atomic Swap of ERC20 token with MicroChain tokens
+母链 ERC20 token 跨链交换子链 tokens
 
 * [ERC20 sample](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/erc20.sol)
 * [SubChainBaseAST](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainBaseAST.sol)
 * [VnodeProtocolBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/VnodeProtocolBaseAST.sol)
 
-MicroChain protocol 
+带有跨链功能的子链协议合约
+
 * [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/SubChainProtocolBase.sol)
 
-Example DAPP contract using Atomic Swap of MOAC/tokens
-* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
+带有跨链功能的子链DAPP合约
+
+* [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.7/dappbase.sol)
+
+
 
 ### Nuwa v1.0.6: 
 
-Nuwa v1.0.6 is a package released for both mainnet and testnet. 
-It enable the cross-chain atomic swap of tokens between MicroChains and MotherChain.
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了母链和子链之间的原子跨链交易；
 
-For VNODE users:
-* If you want to use the cross-chain atomic swap, you need to upgrade the VNODE software to this version v1.0.6.
-* If you only mining or monitoring the network, you don't have to upgrade your VNODE software.
 
-For SCS users:
-* Please upgrade to this version to allow cross-chain atomic swap functions.
-* Please also use the MicroChain contracts provided with v1.0.6.
+对于VNODE节点用户
+* 如果要使用跨链功能，必须升级到v1.0.6；
+* 如果只是使用VNODE挖矿，或者作为监听节点，短期内不会有影响，但建议升级；
+
+对于SCS节点用户
+* 如果要使用跨链功能，必须升级到v1.0.6；
+* 必须使用v1.0.6提供的带有跨链功能的子链合约来部署子链；
 
 VNODE
 
-* Enable the cross-chain atomic swap of tokens between MicroChains and MotherChain;
-* Fixed the issues found in the v1.0.5;
+* 在母链上提供了原子跨链功能;
+* 修正之前测试发现的一些问题;
 
 SCS
 
-* Enable the cross-chain atomic swap of tokens between MicroChains and MotherChain;
-* Support proxy server cache and added NotifySyncEvent in proxy server;
+* 为子链提供了原子跨链功能，可以配合子链DAPP来完成和母链之间的原子交易，每次充/提不超过500母链token;
+* 和子链代理节点之间提供了缓存功能，增加了NotifySyncEvent;
 
 
 **Download links**
 
-VNODE+SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/nuwa1.0.6.mac.tar.gz)
 
-MicroChain contracts v1.0.6
+MicroChain contracts
+
+带有跨链功能的子链合约
 
 * [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainProtocolBase.sol)
 * [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/VnodeProtocolBase.sol)
-* [SubChainBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainBaseAST.sol)
+* [SubChainBaseAST.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/SubChainBase.sol)
 * [dappbase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.6/dappbase.sol)
 
-### Nuwa v1.0.5: 
+### Nuwa 1.0.5:
 
-Nuwa v1.0.5 is a package released for both mainnet and testnet. It enable all the functionality of MicroChain and fixed a few issues discovered during the test.
-It provides JSON-RPC commands for the SCS server.
+本次发布的软件包可用于主网和测试网。
+修正了之前测试中发现的一些问题，提供了完整的子链功能；
+为用户提供了便于使用的SCS端的JSON-RPC的接口。
 
-For VNODE users:
-* If you want to become a VNODE proxy and join MicroChain mining, you need to upgrade the VNODE software to this version v1.0.5.
-* If you only mining or monitoring the network, you don't need to upgrade your VNODE software.
+对于VNODE节点用户
+* 如果要配置子链，成为子链代理节点（MicroChain Proxy）的，请尽快升级到v1.0.5；
+* 如果只是使用VNODE挖矿，或者作为监听节点，短期内不会有影响，但建议升级；
 
-For SCS users:
-* Please upgrade to this version as soon as possible to allow MicroChain usage.
-* Please also use the MicroChain contracts provided with v1.0.5.
+对于SCS节点用户
+* 必须升级到v1.0.5；
+* 必须使用v1.0.5提供的子链合约来初始部署子链；
 
 VNODE
 
-* Enabled the whitelist for Microchains in the mainnet;
-* Increased SubChainBase contract functions;
-* Fixed the issues found in the test process;
+* 在SubChainBase中增加了更多功能；
+* 在主链上提供了子链whitelist的控制功能;
+* 修正之前测试发现的一些问题;
 
 SCS
 
-* Fixed the bugs in HandleProposalDistribute and getCurNodeList  functions;
-* Modified the way to get account nonce;
-* In command line flags, changed 'rpc1' to 'rpcdebug', 'rpc2' to 'rpc';
-* Used 'rpccorsdomain' flag to control the domains from which to accept cross origin requests;
+* 修正 HandleProposalDistribute 和 getCurNodeList  函数中的问题;
+* 修改 account 在子链上获取 nonce 的方式;
+* 把SCS命令行的 RPC 命令名称进行了修改，之前'rpc1'改为'rpcdebug', 'rpc2'改为'rpc';
+* SCS命令行使用 'rpccorsdomain' 来控制外部访问SCS的功能;
 
+**下载链接**
 
-**Download links**
-
-VNOD + SCS client v1.0.5
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/nuwa1.0.5.mac.tar.gz)
 
-MicroChain contracts v1.0.5
+MicroChain contracts
 
-* [SubChainProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainProtocolBase.sol)
-* [VnodeProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/VnodeProtocolBase.sol)
-* [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainBase.sol)
+* [SubChainProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainProtocolBase.sol)
+* [VnodeProtocolBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/VnodeProtocolBase.sol)
+* [SubChainBase.sol](https://github.com/MOACChain/moac-core/releases/download/v1.0.5/SubChainBase.sol)
 
 ### Nuwa 1.0.4:
 
-Release Date: 10/31/2018
+发布日期: 10/31/2018
 
-This release is for testnet only.
-It fixed a few issues discovered during the test.
-It provides JSON-RPC commands for the SCS server in addition to nuwa1.0.3 RPC commands.
-A video tutorial can be found on MOAC youtube channel.
-For Linux and Windows platform, we provided both 386 and amd64 compilations.
+本次发布的软件包仅适用于测试网。
+修正了测试中发现的一些问题，SCS端增加了JSON-RPC类型的RPC接口。
+本次发布对linux和windows提供了386和amd64的编译版本.
 
 VNODE
 
-* Discarded the vnode address error in vnodeconfig.json when scsservice is false;
-* NotifiedSCS only for mining SCS;
-* Fixed the issues found in the flush process;
+* 修正了配置文件vnodeconfig.json中scsservice设置为false时，via没配置报错；
+* 仅对进行子链确认的SCS节点发送通知;
+* 修正子链对主链的写入确认中的问题;
 
 SCS
 
-* Fixed an "out of gas" error when calling contract function using JSON-RPC calls
-* Fixed some issues found in the flush process;
-* Provided a new command options, user can use -h to see the new options ;
-* Added JSON-RPC rpc interfaces with new RPC commands;
+* 修正子链对主链的写入确认中的问题;
+* 修改了command line界面的选项，提供了更多信息，可以用"-h"来看最新的信息；
+* 增加多个SCS端JSON-RPC的命令，具体可以参考[文档部分](https://github.com/MOACChain/moac-core/wiki/JSON-RPC)；
 
 
-**Download links**
+**下载链接**
 
-VNODE + SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.linux.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.4/nuwa1.0.4.mac.tar.gz)
 
 
-### Nuwa 1.0.3:
+### 墨客女娲版本 1.0.3:
 
-Release Date: 09/29/2018
+发布日期: 09/29/2018
 
-This release is for testnet only.
-It fixed a few issues discovered during our pressure test on the microchain and implement new RPC commands for the SCS server.
+本次发布的软件包仅适用于非主网的测试网。
+主要更新包括修正了压力测试中发现的一些问题，提高了子链系统的处理能力，相应的子链部署合约也进行了更新。
+新的子链部署合约需要和更新的软件包一起使用。
 
-We also update the MicroChain protocol contracts. Please use the new contracts with the updated servers.
+**下载链接**
 
-**Download links**
-
-VNODE + SCS client
+VNODE+SCS 可执行文件包
 
 * [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.ubuntu.tar.gz)
 * [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.win.zip)
 * [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/nuwa1.0.3.mac.tar.gz)
 
-MicroChain contracts v1.0.3
+部署子链的合约文件
 
 * [SubChainProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainProtocolBase.sol)
 * [VnodeProtocolBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/VnodeProtocolBase.sol)
 * [SubChainBase](https://github.com/MOACChain/moac-core/releases/download/v1.0.3/SubChainBase.sol)
 
+### 文件风暴（FileStorm）1.0.1:
 
-### FileStorm:
-Release Date: 08/27/2018
-
-Added some small enhancements.
-[FileStorm 1.0.1](https://github.com/MOACChain/moac-core/releases/download/1.0.1/filestorm1.0.1.tar)
-
-Use [deploy.js](https://github.com/MOACChain/moac-core/releases/download/1.0.1/deploy.js) to create one vnode and 3 (or more) scs.
-
-Release Date: 08/18/2018
-
-The FileStorm is a DAPP running on MOAC MicroChain to perform the Interplanetary File System (IPFS) application. It requires a custom SCS client. The SCS client released works with MOAC VNODE Nuwa 1.0.2.
-
-**Download links**
-
-FileStorm MicroChain protocol:
-
-* [Smart Contract for the FileStorm protocol](https://github.com/MOACChain/moac-core/releases/download/v1.0/DeploySubChainBase.sol)
-
-FileStorm MicroChain:
-
-* [Smart Contract for the FileStorm Dapp](https://github.com/MOACChain/moac-core/releases/download/v1.0/FileStormMicroChain.sol)
-
-Custom SCS client for FileStorm:
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0/filestorm.tar)
-<!-- * [Binary package for Windows]()
-* [Binary package for MAC OS]() -->
-
-### Nuwa 1.0.2:
-
-Release Date: 08/10/2018
-
-Thanks for the support from the community, MOAC mainnet upgraded successfully from Pangu to Nuwa after block number 647,200. The VNODE and SCS clients release 1.0.2 can be used to build MicroChain and enable the MicroChain mining in both testnet and mainnet.
-To help the developers to try the SCS mining, we has a website providing information in the testnet, please check [Testnet MicroChain Information](https://nodes101.moac.io/) and [instructions to start SCS](https://github.com/MOACChain/moac-core/wiki/MicroChainSCSMining).
-
-**Download links**
-
-VNODE client
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.mac.tar.gz)
-
-SCS client
-
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.mac.tar.gz)
+发布日期: 08/27/2018
 
 
+[文件风暴 1.0.1](https://github.com/MOACChain/moac-core/releases/download/1.0.1/filestorm1.0.1.tar)
 
-### Nuwa 1.0.1:
+可以使用[deploy.js](https://github.com/MOACChain/moac-core/releases/download/1.0.1/deploy.js) 在一个VNODE和3个SCS来部署一个子链.
 
-Release Date: 08/01/2018
+### 文件风暴（FileStorm）1.0.0:
 
-This release is to fix a bug that event subscription in some machines does not work.
+发布日期: 08/18/2018
 
-**Download links**
+文件风暴（FileStorm）是一个通过墨客子链实现的IPFS存储平台。它需要专用的SCS客户端来部署和执行IPFS功能。当前的FileStorm SCS客户端可以接入墨客女娲版本 1.0.2。
+更多信息可以参考[FileStorm](https://github.com/MOACChain/moac-core/wiki/FileStorm)和[FileStorm使用指南](https://github.com/MOACChain/moac-core/wiki/FileStormUserGuide).
 
-VNODE client
+**下载链接**
 
-* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.ubuntu.tar.gz)
-* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.win.zip)
-* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.1/nuwa1.0.1.mac.tar.gz)
+FileStorm 子链共识协议:
 
-### Nuwa 1.0.0:
+* [FileStorm 子链共识协议合约](https://github.com/MOACChain/moac-core/releases/download/v1.0/DeploySubChainBase.sol)
 
-Release Date: 07/31/2018
+FileStorm 子链合约:
 
-**Major Progress：**
+* [FileStorm Dapp子链合约](https://github.com/MOACChain/moac-core/releases/download/v1.0/FileStormMicroChain.sol)
 
-* Fully functional VNODE to support MicroChain;
-* Fully functional SCS server to support MicroChain；
-* Enabled VNODE to get rewards from MicroChain mining;
-* MicroChain protocol smart contract;
-* MicroChain base smart contract that supports POS consensus;
-* Fully functional MicroChain supports sharding;
-* Supports FileStorm Protocol for IPFS MicroChain; 
-* Supports MicroChain without token;
+FileStorm 子链专用SCS客户端:
 
-**Available feature：**
-
-* MicroChain mining through SCSs and MicroChain contracts;
-* MicroChain supports POS consensus;
-* IPFS MicroChain support.
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0/filestorm.tar)
+<!-- * [Windows 可执行文件包]()
+* [MAC OS 可执行文件包]() -->
 
 
-SCS server
+### 墨客女娲版本 1.0.2:
 
-Will be released on 08/08/2018.
+发布日期: 08/10/2018
+
+感谢墨客社区的大力支持，墨客主网顺利地从盘古版本升级到女娲。本次发布的主链节点和子链服务器1.0.2版本可以在主网和101测试网上运行子链。目前我们在测试网上已经部署了一些子链所需的服务，请参考[测试网101子链部署信息](https://nodes101.moac.io/) 和[如何运行SCS服务器](https://github.com/MOACChain/moac-core/wiki/MicroChainSCSMining).
+
+**下载链接**
+
+主链节点服务器（VNODE）
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.ubuntu.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-vnode1.0.2.mac.tar.gz)
+   
+
+子链服务器（SCS）
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.ubuntu.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v1.0.2/nuwa-scs1.0.2.mac.tar.gz)
 
 
-## MOAC Pangu 0.8.x 
+### 墨客女娲版本 1.0.1:
 
-### Pangu 0.8.4:
+发布日期: 08/01/2018
 
-Release Date: 06/30/2018
+解决一些服务器无法正确接收event subscription的问题。
 
-This release is for testnet only. 
+### 墨客女娲版本 1.0.0:
 
-**Updates：**
+发布日期: 07/31/2018
 
-* Smart Contract Server(SCS) is released for public testing. Users can run the SCS and connect to the testnet. They can also get mining rewards from MicroChain.
-* The MOAC client can connect with SCSs.
-* MicroChain can be deployed on SCSs with instructions. 
+**主要更新：**
 
-**Other tools and useful links**
+* 墨客主链客户端（VNODE），可以在正式网络和测试网络连接子链服务器（SCS），以部署子链（MicroChain）。
+* 可以通过主链客户端在主链和测试链上部署子链，步骤可以参考WIKI部分说明. 
+* 主链客户端可以参与子链挖矿并获得奖励。
+* 提供一个使用POS共识的子链模板。
 
 
-* [MOAC explorer](http://explorer.moac.io/), (*mainnet*), network info, [Account list](), [ERC20 token](http://explorer.moac.io/tokenlist20), and [ERC721 token](http://explorer.moac.io/tokenlist721)
-* [MOAC testnet explorer](http://testnet.moac.io:3000/home), (*testnet*)
-* [MOAC online wallet](https://moacwalletonline.com/)
+**可用功能：**
 
-**Connecting with MOAC community**
+* 允许主网子链挖矿。
+* 支持子链分片。
+* 支持IPFS子链部署。
+* 支持无币区块链部署。
 
-* [Official Website](https://moac.io)
+**下载链接**
+
+主链节点服务器（VNODE）
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.ubuntu.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v1.0.0/nuwa1.0.0.mac.tar.gz)
+
+子链服务器（SCS）
+
+将于8月8日公布
+
+
+### 墨客盘古版本 0.8.4:
+
+发布日期: 06/30/2018
+
+本版本仅适用在测试网络（testnet, id=101）
+
+**主要更新**
+
+* 子链服务器(SCS)目前可以与测试网络连接，参与子链（MicroChain）的验证，并从中获得挖矿奖励.
+* 墨客链客户端（VNODE），可以连接测试网络和SCS服务器.
+* 测试链上可以部署子链，步骤可以参考WIKI部分说明. 
+
+**工具网站**
+
+* [MOAC explorer](http://explorer.moac.io/), (*mainnet*)：主网浏览器，可以看到区块状态，[帐号列表](), [发行的ERC20代币](http://explorer.moac.io/tokenlist20), 和 [发行的ERC721代币](http://explorer.moac.io/tokenlist721)
+* [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)：测试网络浏览器。
+* [MOAC online wallet](https://moacwalletonline.com/): 可以使用KEYSTORE JSON文件来发送交易
+
+**墨客社区网站**
+
+* [Official Website](https://moac.io)：官方主网
 * [Blog/Medium](https://medium.com/@moac_io)
 * [Facebook](https://www.facebook.com/moacchain/)
 * [Twitter](https://twitter.com/moac_io)
 * [Reddit](https://www.reddit.com/r/MOAC/)
 * [LinkedIn](https://www.linkedin.com/company/moac-chain)
 * [Telegram Developers](https://t.me/MOACDevelopers)
-* [Telegram English Users](https://t.me/moacblockchain)
+* [墨客中文电报群](https://t.me/moacchina)
 * [Youtube for Developers](https://www.youtube.com/channel/UC_U54wsGNrm_Yivj5bH9i7Q)
 
-### Pangu 0.8.2:
+### 墨客盘古 0.8.2 发布:
 
-Release Date: 04/30/2018
+发布日期: 04/30/2018
 
 This release is for both mainnet and testnet. 
 The mainnet was launched on April 30th, 2018.
 
-**Updates：**
+**主要更新**
 
 * Added the community message in the [genesis block](http://explorer.moac.io/block/0). 
 * Updated the system contract to fix future send issue.
@@ -805,13 +873,13 @@ The mainnet was launched on April 30th, 2018.
 * [MOAC explorer](http://explorer.moac.io/), (*mainnet*)
 * [MOAC testnet explorer](http://47.75.144.55:3000/home), (*testnet*)
 
-### Pangu 0.8.1:
+### 墨客盘古 0.8.1 发布:
 
-Release Date: 04/18/2018
+发布日期: 04/18/2018
 
 This release is for testnet only. The mainnet will be available in late April.
 
-**Updates：**
+**主要更新**
 
 * The network ID changed to 99 (mainnet) and 101 (testnet) to adopt the EIP155 specification.
 * Fixed a previous "no data attached" issue in contract deploying.
@@ -820,13 +888,13 @@ This release is for testnet only. The mainnet will be available in late April.
 * [Mining], (*provided by third party， updated to the new testnet 101*)
 * [Faucet], (*provided by third party*)
 
-### Pangu 0.8.0:
+### 墨客盘古 0.8.0 发布:
 
-Release Date： 3/31/2018
+发布日期: 3/31/2018
 
 This release is for testnet only. The mainnet will be available in April.
 
-**Major Progress：**
+**主要更新**
 
 * V-node module，
 * Smart Contract Service (POS) module (*in April*)，
@@ -835,7 +903,7 @@ This release is for testnet only. The mainnet will be available in April.
 * [Mining], (*provided by third parties*)
 * [Wallets]， (*provided by third parties*)
 
-**Available feature：**
+**可用功能：**
 
 * v-node mining
 * SCS mining
@@ -845,17 +913,17 @@ This release is for testnet only. The mainnet will be available in April.
 * Subchain contract for Dapp configuration and flush control
 * wallet
 
-### Binary Packages:
+### 可执行文件包:
 
 A stable release Pangu 0.8.2 is released April 30th, 2018.
 
-The default directory of mainnet is：
+墨客主网络（mainnet，id=99）的默认路径为:
 
 	Mac: ~/Library/MoacNode
 	Linux: ~/.moac
 	Windows: %APPDATA%\MOAC
 
-The default direcotry of testnet is:
+测试网络（testnet，id=101）的默认路径为:
 
 	Mac: ~/Library/MoacNode/testnet
 	Linux: ~/.moac/testnet
@@ -924,13 +992,13 @@ from another terminal, run moac again to attach the running node
 
 	./moac.exe attach \\.\pipe\moac.ipc
 
-#### To run 'scsserver'
+#### 运行'scsserver'
 
-It has to be under directory containing 'scsserver' file, run
+必须在含有'scsserver'文件的文件夹中，运行
 
 	./scsserver
 
-#### Example Console commands
+#### 命令行中的例子
 
 If console is not open, open the console using the instructions from above.
 
@@ -954,7 +1022,7 @@ If console is not open, open the console using the instructions from above.
 
 	`> mc.accounts`
 
-#### Example Console Javascript files
+#### 命令行下的Javascript文件例子
 
 MOAC can execute Javascript functions under the console.
 
@@ -990,11 +1058,9 @@ will fail.
 
 The transaction will happen when blocknumber = 20000.
 
-#### Community messages
+#### 墨客社区创世语
 
-MOAC saved some messages in a system contract to honor the contributors.
-
-Users can check these messages by calling the system contract.
+在墨客链启动前，向社区征集了创世语，并储存在一个智能合约中。使用者可以通过下面的调用来查看创世语。
 
 The binary package contains a sysinfo_test.js file. It contains four lines:
 

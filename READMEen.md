@@ -1,12 +1,49 @@
-## [墨客中文发布信息](READMECH.md)
+## [墨客中文发布信息](README.md)
 
 ## MOAC Fuxi 2.x 
 
 ### Fuxi v2.0.7:
 2021/05/09
 
-This release runs on testnets only and the new features will be enabled after block height 5330000 on the testnet. 
-This release added the precompiled contract for BLS12-381 curve operations as suggested on Ethereum EIP-2537(https://eips.ethereum.org/EIPS/eip-2537). This new feature will enable the operations such as BLS signature verification and perform SNARKs verifications on MOAC network, which are required for future cross-chain operations.
+This release runs on testnets only and fixed the issue of parameters in eth_subscribe method.
+Now the VNODE will support all four parameters in eth_subscribe method:
+* newHeads
+* logs
+* newPendingTransactions
+* syncing
+
+To enable the JSON-RPC notifications, VNODE client needs to start with ws options.
+For example, using the following parameters instead of "rpc".
+
+``````
+moac --testnet --ws --wsaddr 0.0.0.0 --wsport 8546 --wsapi "chain3,mc,net,db,personal" --wsorigins "*"
+``````
+
+Example code:
+
+``````
+const Web3 = require('web3')
+const web3 = new Web3("wss://localhost:8546")
+
+function newBlockHeaders(){
+  var subscription = eth.subscribe('newBlockHeaders', function(error, result){
+      
+        if (!error){
+            console.log(result);
+        }else{
+            console.log(error);
+        }
+    })
+    .on("data", function(transaction){
+        console.log(`transaction:${transaction}`);
+    })
+}
+
+// Start listening to different events
+newBlockHeaders();
+
+``````
+
 
 **Download links**
 

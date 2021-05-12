@@ -2,6 +2,30 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.1.0:
+2021/05/12
+
+This release runs on mainnet and contains all the updates from Fuxi 2.0.5.
+Mainnet will be updated after block height 6780000, estimated fork time is on Monday, May 18th, 2021.
+
+Enabled the web3 RPC commands and transactions can be send to MOAC basechain/mother chain with Ethereum EIP155 signed methods.
+
+Added the precompiled contract for BLS12-381 curve operations as suggested on Ethereum EIP-2537(https://eips.ethereum.org/EIPS/eip-2537). This new feature will enable the operations such as BLS signature verification and perform SNARKs verifications on MOAC network, which are required for future cross-chain operations.
+
+Fixed the issue of parameters in eth_subscribe method, the VNODE client supports all four parameters in eth_subscribe method:
+* newHeads
+* logs
+* newPendingTransactions
+* syncing
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.0/fuxi2.1.0-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.0/fuxi2.1.0-stable.win.zip)
+* [Binary package for MAC OS](https://github.com/MOACChain/moac-core/releases/download/v2.1.0/fuxi2.1.0-stable.mac.tar.gz)
+
 ### Fuxi v2.0.7:
 2021/05/09
 

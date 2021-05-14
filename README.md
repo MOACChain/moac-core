@@ -5,6 +5,14 @@
 ## 墨客伏羲 2.x 
 
 ### Fuxi v2.1.0:
+2021/05/14
+
+使用以太坊 web3.js 开发MOAC应用的两个注意问题
+1，MOAC链的一般交易, gaslimit是1000，如果用web3来做sign的话，gaslimit仍必须要21000以上了，这个21000是web3的限制，实际使用仍是1000 gas；
+
+2，当使用web3.eth.accounts.signTransaction 来做签名交易时，如果用web3.eth.sendSignedTransaction(signedTx.rawTransaction)来发送交易，sendSignedTransaction的结果里面有一个transactionHash。这个transactionHash是web3.js本地生成的，和以太坊上receipt中的transactionHash一致。但是，MOAC的receipt中的transactionHash，即实际链上产生的transactionHash，和web3.js本地产生的不一致。开发者需要使用receipt给出的为准。
+
+### Fuxi v2.1.0:
 2021/05/12
 
 本次发布版本用于正式网络，包含了测试网络上2.0.5以来的所有新增功能，主网预定分叉高度在6780000，预计分叉时间为北京时间5月17日到18日之间。

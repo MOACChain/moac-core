@@ -3,6 +3,14 @@
 ## MOAC Fuxi 2.x 
 
 ### Fuxi v2.1.0:
+2021/05/14
+
+Two reminders for the developers using Ethereum web3.js library on MOAC net work:
+1. The gas cost for one simple transaction, not contract call, on MOAC network is 1000 instead of 21000 on Ethereum network. But web3.js still requires the input gasLimit over 21000. The actual cost is 1000 gas.
+
+2. When using web3.eth.accounts.signTransaction to sign a transaction, if you use web3.eth.sendSignedTransaction(signedTx.rawTransaction) and get a returned transactionHash. This transactionHash is the same as Ethereum network, but not the MOAC network. This is because MOAC network has extra fields to perform layer 2 transactions. To get the correct transactionHash value, please use transactionHash in the TX receipt instead.
+
+### Fuxi v2.1.0:
 2021/05/12
 
 This release runs on mainnet and contains all the updates from Fuxi 2.0.5.

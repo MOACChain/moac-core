@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.1.2:
+2021/07/02
+
+This release runs on testnet only.
+Fix an issue where filtering of indexed logs, VNODE returns empty results for null topics.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.2/fuxi2.1.2-testnet.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.2/fuxi2.1.2-testnet.win.zip)
+* [Binary package for MacOS](https://github.com/MOACChain/moac-core/releases/download/v2.1.2/fuxi2.1.2-testnet.mac.tar.gz)
+
 ### Fuxi v2.1.1:
 2021/05/25
 

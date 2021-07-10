@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.1.3:
+2021/07/09
+
+This release is a stable release. It fixed the issue where filtering of indexed logs returns empty results for null topics.
+This release can support XBlox chain to enable cross-chain exchange of multiple tokens.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.win.zip)
+* [Binary package for MacOS](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.mac.tar.gz)
+
 ### Fuxi v2.1.2:
 2021/07/02
 

@@ -4,6 +4,19 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.1.3:
+2021/07/09
+
+本次发布版本可用于主网，修复了搜索事件索引时返回空值的问题，并支持XBlox的跨链操作。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.3/fuxi2.1.3-stable.mac.tar.gz)
+
 ### Fuxi v2.1.2:
 2021/07/02
 

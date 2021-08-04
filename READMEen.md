@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.1.4:
+2021/08/04
+
+This release is a stable release. It fixed the issue when using web3.js 1.0 to extract TX info, TX returnValues cannot be extracted correctly. If user uses chain3 0.1.x, this version needs to be started with --rpc.chain3 option to provide correct outputs.
+
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.win.zip)
+* [Binary package for MacOS](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.mac.tar.gz)
+
 ### Fuxi v2.1.3:
 2021/07/09
 

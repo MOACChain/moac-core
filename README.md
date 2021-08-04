@@ -4,6 +4,20 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.1.4:
+2021/08/04
+
+本次发布版本可用于主网，修复了VNODE输出和web3.js 1.0适配问题。使用本版本默认可以用 web3.js 1.0 正常读取交易中的returnValues。
+对于使用chain3 0.1.x的用户，则需要使用--rpc.chain3选项启动节点。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.4/fuxi2.1.4-stable.mac.tar.gz)
+
 ### Fuxi v2.1.3:
 2021/07/09
 

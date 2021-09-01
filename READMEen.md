@@ -2,6 +2,19 @@
 
 ## MOAC Fuxi 2.x 
 
+2021/09/01
+
+This release is a stable release. It upgraded the EVM in VNODE and can be used in main net.
+
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.win.zip)
+* [Binary package for MacOS](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.mac.tar.gz)
+
 ### Fuxi v2.1.4:
 2021/08/04
 

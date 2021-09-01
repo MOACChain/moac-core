@@ -4,6 +4,19 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.1.5:
+2021/09/01
+
+本次发布版本为MOAC VNODE正常维护升级，主要升级了VNODE的EVM，可以用于主网和测试网，不会造成分叉。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.5/fuxi2.1.5-stable.mac.tar.gz)
+
 ### Fuxi v2.1.4:
 2021/08/04
 

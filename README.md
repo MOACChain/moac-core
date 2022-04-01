@@ -4,6 +4,23 @@
 
 ## 墨客伏羲 2.x 
 
+### Fuxi v2.1.6:
+2022/04/01
+
+本次发布版本为MOAC VNODE测试版本，仅用于测试网络，分叉高度在区块 7155000。
+本版本增加了MOAC节点对以太坊EIP的支持，包括：
+https://eips.ethereum.org/EIPS/eip-2718
+https://eips.ethereum.org/EIPS/eip-3198
+https://eips.ethereum.org/EIPS/eip-1559。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-rc.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-rc.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-rc.mac.tar.gz)
+
 ### Fuxi v2.1.5:
 2021/09/01
 

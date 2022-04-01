@@ -2,6 +2,21 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.1.6:
+2022/04/01
+
+This release runs on testnet only.
+Added supports for Ethereum EIP 2718,3198 and 1559.
+
+**Download links**
+
+VNODE client only
+
+* [Binary package for Linux](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-stable.linux.tar.gz)
+* [Binary package for Windows](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-rc.win.zip)
+* [Binary package for MacOS](https://github.com/MOACChain/moac-core/releases/download/v2.1.6/fuxi2.1.6-rc.mac.tar.gz)
+
+### Fuxi v2.1.5:
 2021/09/01
 
 This release is a stable release. It upgraded the EVM in VNODE and can be used in main net.

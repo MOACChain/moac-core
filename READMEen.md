@@ -6,7 +6,11 @@
 2022/04/01
 
 This release runs on testnet only.
-Added supports for Ethereum EIP 2718,3198 and 1559.
+Vnode now supports Ethereum EIP 2718,3198 and 1559.
+* https://eips.ethereum.org/EIPS/eip-2718
+* https://eips.ethereum.org/EIPS/eip-3198
+* https://eips.ethereum.org/EIPS/eip-1559。
+
 
 **Download links**
 

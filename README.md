@@ -13,8 +13,8 @@
 VNODE 可执行文件包
 
 * [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.linux.tar.gz)
-* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-rc.win.zip)
-* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-rc.mac.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.mac.tar.gz)
 
 
 ### Fuxi v2.1.6:

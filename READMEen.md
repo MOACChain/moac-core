@@ -2,6 +2,20 @@
 
 ## MOAC Fuxi 2.x 
 
+### Fuxi v2.2.0:
+2022/11/24
+
+Mainnet will be updated after block height 1670011200, estimated fork time is on 2022-12-02 12:00:00 PST.
+The chain id changes from 99 to 1099.
+
+**Download links**
+
+VNODE client only
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.mac.tar.gz)
+
 ### Fuxi v2.1.6:
 2022/04/01
 

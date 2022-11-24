@@ -3,15 +3,28 @@
 ## [MOAC English](READMEen.md)
 
 ## 墨客伏羲 2.x 
+### Fuxi v2.2.0:
+2022/11/24
+
+本次发布版本用于MOAC主网络，修改了network ID，将 MOAC 主网络chain id从 99 改为 1099，主网修正高度为1670011200，时间大约为 2022-12-02 12:00:00 PST。
+
+**下载链接**
+
+VNODE 可执行文件包
+
+* [Linux 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-stable.linux.tar.gz)
+* [Windows 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-rc.win.zip)
+* [MAC OS 可执行文件包](https://github.com/MOACChain/moac-core/releases/download/v2.2.0/fuxi2.2.0-rc.mac.tar.gz)
+
 
 ### Fuxi v2.1.6:
 2022/04/01
 
 本次发布版本为MOAC VNODE测试版本，仅用于测试网络，分叉高度在区块 7155000。
 本版本增加了MOAC节点对以太坊EIP的支持，包括：
-https://eips.ethereum.org/EIPS/eip-2718
-https://eips.ethereum.org/EIPS/eip-3198
-https://eips.ethereum.org/EIPS/eip-1559。
+* https://eips.ethereum.org/EIPS/eip-2718
+* https://eips.ethereum.org/EIPS/eip-3198
+* https://eips.ethereum.org/EIPS/eip-1559。
 
 **下载链接**
 
